@@ -7,20 +7,20 @@ import reportWebVitals from './reportWebVitals';
 const rootElement = document.createElement("div");
 rootElement.id = 'danmaku-kakashi-root';
 
-// const globalStyles = document.createElement("style");
-// globalStyles.innerHTML = `
-//   #${rootElement.id} {
-//   position: fixed;
-//   left: 0;
-//   top: 0;
-//   width: 300px;
-//   height: 100vh;
-//   background: #ffffff;
-//   border-right: 1px solid #c2c2c2;
-//   z-index: 999;
-//   }
-// `;
-// rootElement.appendChild(globalStyles);
+const globalStyles = document.createElement("style");
+globalStyles.innerHTML = `
+  #${rootElement.id} {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 300px;
+  height: 100vh;
+  background: #ffffff;
+  border-right: 1px solid #c2c2c2;
+  z-index: 99999;
+  }
+`;
+document.head.appendChild(globalStyles);
 
 document.body.appendChild(rootElement);
 
