@@ -11,11 +11,10 @@ const globalStyles = document.createElement("style");
 globalStyles.innerHTML = `
   #${rootElement.id} {
   position: fixed;
-  left: 0;
+  right: 0;
   top: 0;
-  width: 300px;
-  height: 100vh;
-  background: #ffffff;
+  width: 235.33px;
+  height: 800px;
   border-right: 1px solid #c2c2c2;
   z-index: 99999;
   }
