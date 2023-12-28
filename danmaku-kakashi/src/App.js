@@ -78,9 +78,9 @@ function Modal({ show, onClose, children, arcurl, onLoadDanmakus }) {
   );
 }
 
-function App() {
+function App({show, poponClose}) {
   const Logo = chrome.runtime.getURL("icons/logo.png");
-  const SearchIcon = chrome.runtime.getURL("icons/search.png");
+  const LogoIcon = chrome.runtime.getURL("icons/logoicon.png");
 
   const possibleMatchVideos = [
     //...
@@ -181,70 +181,82 @@ function App() {
     return () => {
         chrome.runtime.onMessage.removeListener(handleNewUrl);
     };
-  }, [youtubeUrl]); 
+  }, [youtubeUrl]);
+  
+  const [isPopupOpen, setIsPopupOpen] = useState(true);
+  const handleCloseIconClick = () => {
+    setIsPopupOpen(false); // close popup page
+  };
+
+  const handleLogoClick = () => {
+    setIsPopupOpen(true); // return to popup page
+  };
 
   return (
-    <div id="DanMuPopup" className="DanMuPageBody dm-preload">
-{/* 
-      <button id="dmCloseButton" title="Close Popup" className="dmCloseButton">
-          <img src="/ICON/close.png" width="15" height="15" alt="Close icon"/>
-      </button> */}
+    <div>
+    {!isPopupOpen ? (
+      <img src={LogoIcon} alt="DamMuname" width="30" height="30" onClick={handleLogoClick} />
+    ) : (
+      <div id="DanMuPopup" className="DanMuPageBody dm-preload"v>
+          <IconButton color="inherit" onClick={handleCloseIconClick}
+          style={{position: 'relative', top: 5, left: 100, zIndex: 1, margin: 0, padding: 0,}}>
+            <CloseRoundedIcon />
+          </IconButton>
 
-      <IconButton 
-        color="inherit"
-        style={{position: 'relative', top: 5, left: 100, zIndex: 1, margin: 0, padding: 0,}}>
-          <CloseRoundedIcon />
-      </IconButton>
-
-      <header id="dmPopupLogo" className="dmPopupLogo">
-          {/* <img src="/ICON/LOGO.png" alt="DamMu" width="40" height="40" /> */}
-          <img src={Logo} alt="DamMuname" width="140" height="80" />
-      </header>
-
-      {/* <TopNav /> */}
-      <CustomizedInputBase />
-
-      {/* {youtubeUrl && <div>Current YouTube URL: {youtubeUrl}</div>} */}
-
-      <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)} 
-      arcurl={selectedVideo ? selectedVideo.arcurl : ''} onLoadDanmakus={handleLoadDanmakusClick}>
-        {selectedVideo && (
           <div>
-            <div className="popupThumbnail">
-              <img src={selectedVideo.pic} alt={selectedVideo.title}/>
-              <p className='popuptitle'>{selectedVideo.title}</p>
+
+            {/* <IconButton 
+              color="inherit"
+              style={{position: 'relative', top: 5, left: 100, zIndex: 1, margin: 0, padding: 0,}}>
+                <CloseRoundedIcon />
+            </IconButton> */}
+
+            <header id="dmPopupLogo" className="dmPopupLogo">
+                {/* <img src="/ICON/LOGO.png" alt="DamMu" width="40" height="40" /> */}
+                <img src={Logo} alt="DamMuname" width="140" height="80" />
+            </header>
+
+            {/* <TopNav /> */}
+            <CustomizedInputBase />
+
+            <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)} 
+            arcurl={selectedVideo ? selectedVideo.arcurl : ''} onLoadDanmakus={handleLoadDanmakusClick}>
+              {selectedVideo && (
+                <div>
+                  <div className="popupThumbnail">
+                    <img src={selectedVideo.pic} alt={selectedVideo.title}/>
+                    <p className='popuptitle'>{selectedVideo.title}</p>
+                  </div>
+                </div>
+              )}
+            </Modal>
+
+            <div id="mainControls" style={{ display: "block" }}>
+              <h1 className="dmHeader">Best match (User)</h1>
+              {bestMatchVideos.length > 0 ? (
+                bestMatchVideos.map((video, index) => (
+                  <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
+                ))
+              ) : (
+                <p className='Unfoundtext'>No match found :(</p>
+              )}
             </div>
+
+            <div id="mainControls" style={{ display: "block" }}>
+              <h1 className="dmHeader">Possible match</h1>
+              {possibleMatchVideos.length > 0 ? (
+                possibleMatchVideos.map((video, index) => (
+                  <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
+                ))
+              ) : (
+                <p className='Unfoundtext'>No match found :(</p>
+              )}
+            </div>
+
           </div>
-        )}
-      </Modal>
-
-      <div id="mainControls" style={{ display: "block" }}>
-        <h1 className="dmHeader">Best match (User)</h1>
-        {bestMatchVideos.length > 0 ? (
-          bestMatchVideos.map((video, index) => (
-            //uploadVideos
-            // <VideoBox key={index} {...video} onClick={() => uploadVideo(video)} />
-            <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
-          ))
-        ) : (
-          <p className='Unfoundtext'>No match found :(</p>
-        )}
-      </div>
-
-      <div id="mainControls" style={{ display: "block" }}>
-        <h1 className="dmHeader">Possible match</h1>
-        {possibleMatchVideos.length > 0 ? (
-          possibleMatchVideos.map((video, index) => (
-            // <VideoBox key={index} {...video} onClick={() => uploadVideo(video)} />
-            <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
-          ))
-        ) : (
-          <p className='Unfoundtext'>No match found :(</p>
-        )}
-      </div>
-
     </div>
-
+    )}
+  </div>
   );
 }
 
