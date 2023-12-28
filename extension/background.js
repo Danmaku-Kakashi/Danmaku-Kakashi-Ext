@@ -12,8 +12,8 @@
 //     console.error('Error in background script:', e);
 //   }
 
-chrome.tabs.onUpdated.addListener((tabId, tab) => {
-    if (tab.url && tab.url.includes("youtube.com/watch")) {
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.status === 'complete' && tab.url.includes("youtube.com/watch")) {
         const queryParameters = tab.url.split("?")[1];
         const urlParameters = new URLSearchParams(queryParameters);
         console.log(urlParameters);
@@ -23,11 +23,8 @@ chrome.tabs.onUpdated.addListener((tabId, tab) => {
         chrome.tabs.sendMessage(tabId, {
             type: 'youtubeid',
             vid: videoId,
-        });
-        chrome.runtime.sendMessage({ type: 'youtubeid', vid: videoId},
-         function(response){
+        }, function(response){
             console.log("Got it from React ", response.text);
         });
     }
-
 });
