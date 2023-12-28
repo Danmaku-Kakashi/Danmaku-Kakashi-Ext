@@ -71,12 +71,16 @@ function App() {
   };
 
   const uploadVideo = (video) => {
+    const VideoData = {
+      ...video,
+      youtubeid: youtubeUrl,  
+    };
     fetch('http://127.0.0.1:8000/create/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(video),
+      body: JSON.stringify(VideoData),
     })
     .then(response => response.json())
     .then(data => {console.log(data)})
@@ -126,16 +130,20 @@ function App() {
   const [youtubeUrl, setYoutubeUrl] = useState('');
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/videos/')  // Django API
-      .then(response => response.json())
-      .then(data => {
-        setBestMatchVideos(data);  // return videolist
-      })
-      .catch(error => console.error('Error:', error));
+    if (youtubeUrl){
+      const url = `http://127.0.0.1:8000/api/videos/?youtubeid=${youtubeUrl}`;
+
+      fetch(url)  // Django API
+        .then(response => response.json())
+        .then(data => {
+          setBestMatchVideos(data);  // return videolist
+        })
+        .catch(error => console.error('Error:', error));
+    }
 
       const handleNewUrl = (message, sender, sendResponse) => {
         if (message.type === 'youtubeid') {
-          setYoutubeUrl(message.vid); // 更新状态以保存新的 YouTube URL
+          setYoutubeUrl(message.vid); // Update new YouTube URL
           console.log('Received YouTube URL:', message.vid);
           var response_text = message.vid + ' received by React';
           sendResponse({text: response_text});
@@ -143,17 +151,14 @@ function App() {
         }
       };
   
-      // 添加 Chrome 消息监听器
+      // Add Chrome message listener
     chrome.runtime.onMessage.addListener(handleNewUrl);
   
-      // 清除监听器
+      // Clean up Chrome message listener
     return () => {
         chrome.runtime.onMessage.removeListener(handleNewUrl);
     };
-  }, []); // 确保依赖项数组为空，这样代码只在组件挂载时运行
-
-  
-
+  }, [youtubeUrl]); 
 
   return (
     <div id="DanMuPopup" className="DanMuPageBody dm-preload">
@@ -175,7 +180,7 @@ function App() {
 
       <TopNav />
 
-      {youtubeUrl && <div>Current YouTube URL: {youtubeUrl}</div>}
+      {/* {youtubeUrl && <div>Current YouTube URL: {youtubeUrl}</div>} */}
 
       <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)} 
       arcurl={selectedVideo ? selectedVideo.arcurl : ''} onLoadDanmakus={handleLoadDanmakusClick}>
