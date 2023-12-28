@@ -110,22 +110,9 @@
 } */
 
 /* Style the search box inside the navigation bar */
-.topnav input[type=text] {
-  margin-bottom: 8px;
-  top: -15px;
-  border: none;
-  outline: none;
-  padding: 0 0px 0 26px;
-  border-radius: 18px;
-  font-size: 16px; /* 修改字体大小 */
-  font-weight: 200;
-}
-.dmSearchButton {
-  border: 10px;
-  border-radius: 18px;
-  position: absolute;
-  left: 9px;
-  top: 112px;
+.topsearch{
+  width: 90%;
+  margin: auto;
 }
 /*   
 .dmSearchButton:hover {
@@ -281,7 +268,7 @@
 .modal-close-button{
   position: absolute;
   bottom: 5px;
-  right: 5px;
+  right: 6px;
   color: #fff;
 
 }

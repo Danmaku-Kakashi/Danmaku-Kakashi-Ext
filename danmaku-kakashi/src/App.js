@@ -4,7 +4,30 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
 
+
+export function CustomizedInputBase() {
+  return (
+    <div className="topsearch">
+      <Paper
+        component="form"
+        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 200 }}
+      >
+        <InputBase
+          sx={{ ml: 1, flex: 1 }}
+          placeholder="Search..."
+          inputProps={{ 'aria-label': 'search...' }}
+        />
+        <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+          <SearchIcon />
+        </IconButton>
+      </Paper>
+    </div>
+  );
+}
 
 function VideoBox({ title, author, danmaku, duration, arcurl, pic, onClick }) {
   return (
@@ -34,7 +57,7 @@ function Modal({ show, onClose, children, arcurl, onLoadDanmakus }) {
       <div className="modal-content">
         <IconButton 
         color="inherit"
-        style={{position: 'relative', bottom: 20, left: 65, zIndex: 9999, margin: 0, padding: 0,}}
+        style={{position: 'relative', bottom: 20, left: 60, zIndex: 9999, margin: 0, padding: 0,}}
         onClick={onClose} className="modal-close-button">
           <CloseRoundedIcon />
         </IconButton>
@@ -178,7 +201,8 @@ function App() {
           <img src={Logo} alt="DamMuname" width="140" height="80" />
       </header>
 
-      <TopNav />
+      {/* <TopNav /> */}
+      <CustomizedInputBase />
 
       {/* {youtubeUrl && <div>Current YouTube URL: {youtubeUrl}</div>} */}
 
