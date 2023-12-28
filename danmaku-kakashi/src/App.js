@@ -134,20 +134,21 @@ function App() {
       .catch(error => console.error('Error:', error));
 
       const handleNewUrl = (message, sender, sendResponse) => {
-        if (message.type === 'NEW_YOUTUBE_URL') {
-          setYoutubeUrl(message.url); // 更新状态以保存新的 YouTube URL
-          console.log('Received YouTube URL:', message.url);
+        if (message.type === 'youtubeid') {
+          sendResponse(message.videoID);
+          setYoutubeUrl(message.videoID); // 更新状态以保存新的 YouTube URL
+          console.log('Received YouTube URL:', message.videoID);
         }
       };
   
       // 添加 Chrome 消息监听器
-      chrome.runtime.onMessage.addListener(handleNewUrl);
+    chrome.runtime.onMessage.addListener(handleNewUrl);
   
       // 清除监听器
-      return () => {
+    return () => {
         chrome.runtime.onMessage.removeListener(handleNewUrl);
-      };
-    }, []); // 确保依赖项数组为空，这样代码只在组件挂载时运行
+    };
+  }, []); // 确保依赖项数组为空，这样代码只在组件挂载时运行
 
   
 

@@ -12,20 +12,22 @@
 //     console.error('Error in background script:', e);
 //   }
 
-
 chrome.tabs.onUpdated.addListener((tabId, tab) => {
-    if (tab.url && tab.url.includes('youtube.com/watch?v=')) {
-        const queryParameters = new URLSearchParams(tab.url.split('?')[1]);
+    if (tab.url && tab.url.includes("youtube.com/watch")) {
+        const queryParameters = tab.url.split("?")[1];
         const urlParameters = new URLSearchParams(queryParameters);
         console.log(urlParameters);
-        const videoId = queryParameters.get('v');
+        const videoId = urlParameters.get('v');
 
         console.log('YouTube Video URL Detected:', videoId);
         chrome.tabs.sendMessage(tabId, {
-            type: 'NEW_YOUTUBE_URL',
+            type: 'youtubeid',
             videoId,
         });
-        chrome.runtime.sendMessage({ type: 'NEW_YOUTUBE_ID', videoId});
+        chrome.runtime.sendMessage({ type: 'youtubeid', videoId},
+         function(response){
+            console.log("Got it from React ", response);
+        });
     }
 
 });
