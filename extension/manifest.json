@@ -1,7 +1,11 @@
 {
     "name": "Danmaku Kakashi",
     "version": "1.0.0",
+    "permissions" :["tabs"],
     "manifest_version": 3,
+    "host_permissions": [
+        "https://*.youtube.com/*"
+    ],
     "content_scripts": [
         {
             "matches": [
@@ -17,5 +21,8 @@
             "resources": ["/icons/*"],
             "matches": ["<all_urls>"]
         }
-    ]
+    ],
+    "background": {
+        "service_worker": "background.js"
+    }
 }

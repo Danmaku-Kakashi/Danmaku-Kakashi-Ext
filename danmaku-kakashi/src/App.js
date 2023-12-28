@@ -123,6 +123,7 @@ function App() {
   };
 
   const [bestMatchVideos, setBestMatchVideos] = useState([]);
+  const [youtubeUrl, setYoutubeUrl] = useState('');
 
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/videos/')  // Django API
@@ -131,7 +132,24 @@ function App() {
         setBestMatchVideos(data);  // return videolist
       })
       .catch(error => console.error('Error:', error));
-  }, []);
+
+      const handleNewUrl = (message, sender, sendResponse) => {
+        if (message.type === 'NEW_YOUTUBE_URL') {
+          setYoutubeUrl(message.url); // 更新状态以保存新的 YouTube URL
+          console.log('Received YouTube URL:', message.url);
+        }
+      };
+  
+      // 添加 Chrome 消息监听器
+      chrome.runtime.onMessage.addListener(handleNewUrl);
+  
+      // 清除监听器
+      return () => {
+        chrome.runtime.onMessage.removeListener(handleNewUrl);
+      };
+    }, []); // 确保依赖项数组为空，这样代码只在组件挂载时运行
+
+  
 
 
   return (
@@ -153,6 +171,8 @@ function App() {
       </header>
 
       <TopNav />
+
+      {youtubeUrl && <div>Current YouTube URL: {youtubeUrl}</div>}
 
       <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)} 
       arcurl={selectedVideo ? selectedVideo.arcurl : ''} onLoadDanmakus={handleLoadDanmakusClick}>
