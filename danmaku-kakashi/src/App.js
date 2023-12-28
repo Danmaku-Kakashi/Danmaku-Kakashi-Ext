@@ -56,6 +56,8 @@ function Modal({ show, onClose, children, arcurl, onLoadDanmakus }) {
 }
 
 function App() {
+  const Logo = chrome.runtime.getURL("icons/logo.png");
+  const SearchIcon = chrome.runtime.getURL("icons/search.png");
 
   const possibleMatchVideos = [
     //...
@@ -106,7 +108,7 @@ function App() {
           className="dmSearchButton"
           onClick={handleSearchSubmit}
         >
-          <img src="/ICON/search.png" width="12" height="12" alt="Search icon" />
+          <img src={SearchIcon} width="12" height="12" alt="Search icon" />
         </button>
       </div>
     );
@@ -147,7 +149,7 @@ function App() {
 
       <header id="dmPopupLogo" className="dmPopupLogo">
           {/* <img src="/ICON/LOGO.png" alt="DamMu" width="40" height="40" /> */}
-          <img src="/ICON/Name1.png" alt="DamMuname" width="140" height="80" />
+          <img src={Logo} alt="DamMuname" width="140" height="80" />
       </header>
 
       <TopNav />
