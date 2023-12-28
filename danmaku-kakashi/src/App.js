@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import Spinner from '@mui/material/CircularProgress';
 
 
 export function CustomizedInputBase() {
@@ -30,12 +31,24 @@ export function CustomizedInputBase() {
 }
 
 function VideoBox({ title, author, danmaku, duration, arcurl, pic, onClick }) {
+  const [thumbnail, setThumbnail] = useState('');
+  // Download the thumbnail image in background.js and pass it to React
+  useEffect(() => {
+    chrome.runtime.sendMessage({ type: 'GET_THUMBNAIL', url: pic }, (response) => {
+      setThumbnail(response.thumbnail);
+    });
+  }, [pic]);
+
+  const truncatedDuration = duration.replace(/^0(?:0:0?)?/, '');
+
   return (
     <a className="dmVideoLink" onClick={onClick}>
       <div className="dmVideoItem">
         <div className="dmVideoThumbnail">
-          <img src={pic} alt={title}/>
-          <span className="dmVideoDuration">{duration}</span>
+          {thumbnail === '' ? <Spinner /> :
+            <img src={thumbnail} alt={title} />
+          }
+          <span className="dmVideoDuration">{truncatedDuration}</span>
         </div>
         <div className="dmVideoDetails">
           <h2 className="dmVideoTitle">{title}</h2>
@@ -78,7 +91,7 @@ function Modal({ show, onClose, children, arcurl, onLoadDanmakus }) {
   );
 }
 
-function App({show, poponClose}) {
+function App() {
   const Logo = chrome.runtime.getURL("icons/logo.png");
   const LogoIcon = chrome.runtime.getURL("icons/logoicon.png");
 
@@ -203,8 +216,6 @@ function App({show, poponClose}) {
             <CloseRoundedIcon />
           </IconButton>
 
-          <div>
-
             {/* <IconButton 
               color="inherit"
               style={{position: 'relative', top: 5, left: 100, zIndex: 1, margin: 0, padding: 0,}}>
@@ -252,8 +263,6 @@ function App({show, poponClose}) {
                 <p className='Unfoundtext'>No match found :(</p>
               )}
             </div>
-
-          </div>
     </div>
     )}
   </div>

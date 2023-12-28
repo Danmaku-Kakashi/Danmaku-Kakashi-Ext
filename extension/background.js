@@ -14,3 +14,28 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         });
     }
 });
+
+// Download thumbnail image and send to React
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+      if (request.type === 'GET_THUMBNAIL') {
+        fetch(request.url, {
+          method: 'GET',
+          headers: {
+            'Referer': 'no-referer'
+          }
+        })
+        .then(response => response.blob())
+        .then(blob => {
+          const reader = new FileReader();
+          reader.onloadend = function() {
+            // Send the base64 encoded image
+            sendResponse({ thumbnail: reader.result });
+          };
+          reader.readAsDataURL(blob);
+        })
+        .catch(error => console.error('Error fetching thumbnail:', error));
+        return true; // Indicates that the response will be sent asynchronously
+      }
+    }
+  );

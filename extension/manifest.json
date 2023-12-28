@@ -24,5 +24,8 @@
     ],
     "background": {
         "service_worker": "background.js"
+    },
+    "content_security_policy": {
+        "extension_pages": "default-src 'self'; connect-src https://* data: blob: filesystem:;"
     }
 }
