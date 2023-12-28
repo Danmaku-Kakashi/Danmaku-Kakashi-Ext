@@ -135,9 +135,11 @@ function App() {
 
       const handleNewUrl = (message, sender, sendResponse) => {
         if (message.type === 'youtubeid') {
-          sendResponse(message.videoID);
-          setYoutubeUrl(message.videoID); // 更新状态以保存新的 YouTube URL
-          console.log('Received YouTube URL:', message.videoID);
+          setYoutubeUrl(message.vid); // 更新状态以保存新的 YouTube URL
+          console.log('Received YouTube URL:', message.vid);
+          var response_text = message.vid + ' received by React';
+          sendResponse({text: response_text});
+          return true;
         }
       };
   

@@ -1,7 +1,7 @@
 {
     "name": "Danmaku Kakashi",
     "version": "1.0.0",
-    "permissions" :["tabs", "runtime"],
+    "permissions" :["tabs"],
     "manifest_version": 3,
     "host_permissions": [
         "https://*.youtube.com/*"

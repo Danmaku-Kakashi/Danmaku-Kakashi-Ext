@@ -22,11 +22,11 @@ chrome.tabs.onUpdated.addListener((tabId, tab) => {
         console.log('YouTube Video URL Detected:', videoId);
         chrome.tabs.sendMessage(tabId, {
             type: 'youtubeid',
-            videoId,
+            vid: videoId,
         });
-        chrome.runtime.sendMessage({ type: 'youtubeid', videoId},
+        chrome.runtime.sendMessage({ type: 'youtubeid', vid: videoId},
          function(response){
-            console.log("Got it from React ", response);
+            console.log("Got it from React ", response.text);
         });
     }
 
