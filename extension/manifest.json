@@ -4,7 +4,8 @@
     "permissions" :["tabs"],
     "manifest_version": 3,
     "host_permissions": [
-        "https://*.youtube.com/*"
+        "https://*.youtube.com/*",
+        "https://*.bilibili.com/*"
     ],
     "content_scripts": [
         {
