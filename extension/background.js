@@ -37,5 +37,46 @@ chrome.runtime.onMessage.addListener(
         .catch(error => console.error('Error fetching thumbnail:', error));
         return true; // Indicates that the response will be sent asynchronously
       }
+
+      // Get Search Text from content search by bilibili api and send back result
+      if (request.type === 'SEARCH') {
+        const str = encodeURI(request.query);
+        fetch('https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword='+str, 
+        {
+          method: 'GET',
+          credentials: 'include'
+        })
+        .then(response => {console.log(response);
+            // sendResponse({videosResult: response})})
+            sendResponse({videosResult: "respons"});
+        })
+
+
+        // .then(sendResponse({videosResult: response}));
+        // .then(data => {console.log(data);
+        //     const videos = data.data.result.find(section => section.result_type === "video").data;
+        //     console.log(videos);
+        //     sendResponse({videosResult: videos});
+    // //     //     })
+        .catch(error => console.error('Error fetching thumbnail:', error));
+    }
     }
   );
+
+
+
+// // Test fetch
+// fetch('https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=', {method: 'GET', credentials: 'include'})
+// .then(response => response.json())
+// .then(data => console.log(data))
+// .catch(error => console.error('Error fetching thumbnail:', error));
+
+// const str = encodeURI("")
+// fetch('https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword='+str, 
+// {
+//     method: 'GET',
+//     credentials: 'include'
+// })
+// .then(response => console.log(response.json()))
+// .then(data => console.log(data))
+// .catch(error => console.error('Error fetching thumbnail:', error));

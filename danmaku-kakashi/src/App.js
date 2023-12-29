@@ -10,19 +10,33 @@ import SearchIcon from '@mui/icons-material/Search';
 import Spinner from '@mui/material/CircularProgress';
 
 
-export function CustomizedInputBase() {
+export function CustomizedInputBase({onSearchTrigger}) {
+  const [searchTerm, setSearchTerm] = useState(''); // Track contant of search box
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value); // Update searchTerm value
+  };
+  const handleSearch = () => {
+    onSearchTrigger(searchTerm); // Call the prop function
+    setSearchTerm(''); // Reset the input field
+  };
+  const handleKeyPress = (event) => { // Handle Enter key press
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSearch();
+    }
+  };
   return (
     <div className="topsearch">
-      <Paper
-        component="form"
-        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 200 }}
-      >
+      <Paper component="form" sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 200 }}>
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           placeholder="Search..."
           inputProps={{ 'aria-label': 'search...' }}
+          value={searchTerm}
+          onChange={handleSearchChange}
+          onKeyDown={handleKeyPress}
         />
-        <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+        <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleSearch}>
           <SearchIcon />
         </IconButton>
       </Paper>
@@ -99,6 +113,22 @@ function App() {
     //...
   ];
 
+  const [searchMatchVideos, setSearchMatchVideos] = useState([]);
+  const [showMainControls, setShowMainControls] = useState(true);
+  const handleSearchTrigger = (searchInput) => {
+    setShowMainControls(false);
+    chrome.runtime.sendMessage({ type: 'SEARCH', query: searchInput }, (response) => {
+      console.log(response.videosResult);
+      const resultList = response.videosResult.json();
+      searchMatch = resultList.data.result.find(section => section.result_type === "video").data;
+      console.log(searchMatch);
+      setSearchMatchVideos(searchMatch); //Get Search Result list
+    });
+  };
+  const showVideoBox = () => {
+    setShowMainControls(true); // return to popup page
+  };
+
   const handleLoadDanmakusClick = () => {
     if (selectedVideo) {
       uploadVideo(selectedVideo);
@@ -121,37 +151,6 @@ function App() {
     .then(response => response.json())
     .then(data => {console.log(data)})
     .catch((error) => console.error('Error:', error));
-  }
-
-  function TopNav() {
-    const [searchTerm, setSearchTerm] = useState(''); // Track contant of search box
-    const handleSearchChange = (event) => {
-      setSearchTerm(event.target.value); // Update searchTerm value
-    };
-  
-    const handleSearchSubmit = () => {
-      console.log('Searching for:', searchTerm); // Add search logic 
-      // Update result or API call
-    };
-  
-    return (
-      <div className="topnav">
-        <input 
-          type="text" 
-          placeholder="Search.." 
-          value={searchTerm} 
-          onChange={handleSearchChange} 
-        />
-        <button 
-          id="dmSearchButton" 
-          title="Search" 
-          className="dmSearchButton"
-          onClick={handleSearchSubmit}
-        >
-          <img src={SearchIcon} width="12" height="12" alt="Search icon" />
-        </button>
-      </div>
-    );
   }
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -237,19 +236,12 @@ function App() {
             <CloseRoundedIcon />
           </IconButton>
 
-            {/* <IconButton 
-              color="inherit"
-              style={{position: 'relative', top: 5, left: 100, zIndex: 1, margin: 0, padding: 0,}}>
-                <CloseRoundedIcon />
-            </IconButton> */}
-
             <header id="dmPopupLogo" className="dmPopupLogo">
-                {/* <img src="/ICON/LOGO.png" alt="DamMu" width="40" height="40" /> */}
                 <img src={Logo} alt="DamMuname" width="140" height="80" />
             </header>
 
-            {/* <TopNav /> */}
-            <CustomizedInputBase />
+            {/* Search bar */}
+            <CustomizedInputBase onSearchTrigger={handleSearchTrigger}/>
 
             <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)} 
             arcurl={selectedVideo ? selectedVideo.arcurl : ''} onLoadDanmakus={handleLoadDanmakusClick}>
@@ -263,27 +255,46 @@ function App() {
               )}
             </Modal>
 
-            <div id="mainControls" style={{ display: "block" }}>
-              <h1 className="dmHeader">Best match (User)</h1>
-              {bestMatchVideos.length > 0 ? (
-                bestMatchVideos.map((video, index) => (
-                  <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
-                ))
-              ) : (
-                <p className='Unfoundtext'>No match found :(</p>
-              )}
-            </div>
+            {!showMainControls ? (
+              <div>
+                <img src={LogoIcon} alt="DamMuname" width="30" height="30" onClick={showVideoBox} />
+                <div id="mainControls" style={{ display: "block" }}>
+                  <h1 className="dmHeader">Search Result</h1>
+                  {searchMatchVideos.length > 0 ? (
+                    searchMatchVideos.map((video, index) => (
+                      <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
+                    ))
+                  ) : (
+                    <p className='Unfoundtext'>No match found :(</p>
+                  )}
+                </div>
+              </div>
+            ) : (
 
-            <div id="mainControls" style={{ display: "block" }}>
-              <h1 className="dmHeader">Possible match</h1>
-              {possibleMatchVideos.length > 0 ? (
-                possibleMatchVideos.map((video, index) => (
-                  <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
-                ))
-              ) : (
-                <p className='Unfoundtext'>No match found :(</p>
-              )}
-            </div>
+              <div>
+                <div id="mainControls" style={{ display: "block" }}>
+                  <h1 className="dmHeader">Best match (User)</h1>
+                  {bestMatchVideos.length > 0 ? (
+                    bestMatchVideos.map((video, index) => (
+                      <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
+                    ))
+                  ) : (
+                    <p className='Unfoundtext'>No match found :(</p>
+                  )}
+                </div>
+
+                <div id="mainControls" style={{ display: "block" }}>
+                  <h1 className="dmHeader">Possible match</h1>
+                  {possibleMatchVideos.length > 0 ? (
+                    possibleMatchVideos.map((video, index) => (
+                      <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
+                    ))
+                  ) : (
+                    <p className='Unfoundtext'>No match found :(</p>
+                  )}
+                </div>
+              </div>
+            )}
     </div>
     )}
   </div>
