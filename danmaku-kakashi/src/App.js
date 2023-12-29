@@ -168,7 +168,7 @@ function App() {
   useEffect(() => {
     if (youtubeUrl){
       const url = `http://127.0.0.1:8000/api/videos/?youtubeid=${youtubeUrl}`;
-
+      newVideo();
       fetch(url)  // Django API
         .then(response => response.json())
         .then(data => {
@@ -177,15 +177,15 @@ function App() {
         .catch(error => console.error('Error:', error));
     }
 
-      const handleNewUrl = (message, sender, sendResponse) => {
-        if (message.type === 'youtubeid') {
+    const handleNewUrl = (message, sender, sendResponse) => {
+      if (message.type === 'youtubeid') {
           setYoutubeUrl(message.vid); // Update new YouTube URL
           console.log('Received YouTube URL:', message.vid);
           var response_text = message.vid + ' received by React';
           sendResponse({text: response_text});
           return true;
         }
-      };
+    };
   
       // Add Chrome message listener
     chrome.runtime.onMessage.addListener(handleNewUrl);
@@ -193,9 +193,29 @@ function App() {
       // Clean up Chrome message listener
     return () => {
         chrome.runtime.onMessage.removeListener(handleNewUrl);
+        // observer.disconnect();
     };
+
   }, [youtubeUrl]);
-  
+   
+  const newVideo = async() => {
+    const DanmuControl = document.getElementsByClassName("DanmuControl")[0];
+
+    if (!DanmuControl) {
+      const DanmuBtn = document.createElement("img");
+      DanmuBtn.src = LogoIcon;
+      DanmuBtn.className = "ytp-button " + "DanmuControl" ;
+      DanmuBtn.title = "Click to open danmaku conrol panel";
+      
+      const youtubeLeftControls = document.getElementsByClassName("ytp-left-controls")[0];
+      // const youtubePlayer = document.getElementsByClassName('video-stream')[0];
+      youtubeLeftControls.appendChild(DanmuBtn);
+      DanmuBtn.addEventListener("click", OpenDanmakuControlHandler);
+    }
+  }
+
+  const OpenDanmakuControlHandler = async() => {}
+
   const [isPopupOpen, setIsPopupOpen] = useState(true);
   const handleCloseIconClick = () => {
     setIsPopupOpen(false); // close popup page
@@ -204,6 +224,7 @@ function App() {
   const handleLogoClick = () => {
     setIsPopupOpen(true); // return to popup page
   };
+
 
   return (
     <div>
