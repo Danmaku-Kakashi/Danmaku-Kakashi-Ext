@@ -10,7 +10,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       type: 'youtubeid',
       vid: videoId,
     }, function (response) {
-      console.log("Got it from React ", response.text);
+      if (response)
+        console.log("Got it from React ", response.text);
     });
   }
 });

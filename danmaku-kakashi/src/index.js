@@ -15,6 +15,13 @@ globalStyles.innerHTML = `
 `;
 document.head.appendChild(globalStyles);
 
+const root = ReactDOM.createRoot(rootElement);
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
 // Wait for YouTube to load
 const checkExist = setInterval(function() {
   if (document.getElementById("secondary-inner")) {
@@ -23,13 +30,6 @@ const checkExist = setInterval(function() {
     const youtubeSideBar = document.getElementById("secondary-inner");
     console.log(youtubeSideBar);
     youtubeSideBar.prepend(rootElement);
-    
-    const root = ReactDOM.createRoot(rootElement);
-    root.render(
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    );
   }
 }, 100); // check every 100ms
 
