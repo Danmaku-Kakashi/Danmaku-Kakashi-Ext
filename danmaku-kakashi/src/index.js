@@ -10,27 +10,30 @@ rootElement.id = 'danmaku-kakashi-root';
 const globalStyles = document.createElement("style");
 globalStyles.innerHTML = `
   #${rootElement.id} {
-  position: fixed;
-  right: 0;
-  top: 0;
-  width: 235.33px;
-  height: 800px;
-  border-right: 1px solid #c2c2c2;
-  z-index: 99999;
+    max-height: 600px;
   }
 `;
 document.head.appendChild(globalStyles);
 
-document.body.appendChild(rootElement);
-
-const root = ReactDOM.createRoot(rootElement);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+// Wait for YouTube to load
+const checkExist = setInterval(function() {
+  if (document.getElementById("secondary-inner")) {
+    console.log("Exists!");
+    clearInterval(checkExist);// Find YouTube side bar and insert root element
+    const youtubeSideBar = document.getElementById("secondary-inner");
+    console.log(youtubeSideBar);
+    youtubeSideBar.prepend(rootElement);
+    
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+  }
+}, 100); // check every 100ms
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// reportWebVitals();

@@ -42,12 +42,14 @@
 
 
 #DanMuPopup {
+  position: relative;
   text-align: center;
   margin: 0;
-  width: 235.33px;
+  width: 374px;
   max-width: 100%; /* NOTE: Ensures content doesn't exceed restricted popup widths in Firefox */
-  height: 800px;
+  height: 600px;
   max-height: 100%;
+  border-radius: 12px;
   font-size: 14px;
   font-family: var(--dm-main-font-family);
   background-color: var(--dm-main-bg-color);
@@ -84,7 +86,7 @@
  */
  .dmPopupLogo {
   position: relative;
-  top: -10px;
+  top: 10px;
   font-weight: bold;
   user-select: none;
   /* padding: 10px 0px 0px; */
@@ -113,6 +115,8 @@
 .topsearch{
   width: 90%;
   margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 /*   
 .dmSearchButton:hover {

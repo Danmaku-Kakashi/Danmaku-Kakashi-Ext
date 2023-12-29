@@ -232,8 +232,8 @@ function App() {
     ) : (
       <div id="DanMuPopup" className="DanMuPageBody dm-preload"v>
           <IconButton color="inherit" onClick={handleCloseIconClick}
-          style={{position: 'relative', top: 5, left: 100, zIndex: 1, margin: 0, padding: 0,}}>
-            <CloseRoundedIcon />
+          style={{position: 'absolute', top: 5, right: 5, zIndex: 1, margin: 0, padding: 0}}>
+            <CloseRoundedIcon style={{fontSize: 24}}/>
           </IconButton>
 
             <header id="dmPopupLogo" className="dmPopupLogo">
