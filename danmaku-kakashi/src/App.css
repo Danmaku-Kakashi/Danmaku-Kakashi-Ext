@@ -49,12 +49,13 @@
   max-width: 100%; /* NOTE: Ensures content doesn't exceed restricted popup widths in Firefox */
   height: 600px;
   max-height: 100%;
+  overflow-y: auto;
   border-radius: 12px;
   font-size: 14px;
   font-family: var(--dm-main-font-family);
   background-color: var(--dm-main-bg-color);
   color: var(--dm-main-fg-color);
-  color-scheme: black;
+  color-scheme: dark;
 }
 
 #DanMuPopup a,

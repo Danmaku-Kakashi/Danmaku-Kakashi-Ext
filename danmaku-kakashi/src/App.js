@@ -118,10 +118,17 @@ function App() {
   const handleSearchTrigger = (searchInput) => {
     setShowMainControls(false);
     chrome.runtime.sendMessage({ type: 'SEARCH', query: searchInput }, (response) => {
-      console.log(response.videosResult);
-      const resultList = response.videosResult.json();
-      searchMatch = resultList.data.result.find(section => section.result_type === "video").data;
+      if (response.error) {
+        console.error('Error:', response.error);
+        return;
+      }
+      console.log("Raw results: ", response.videosResult);
+      const searchMatch = response.videosResult.data.result.find(section => section.result_type === "video").data;
       console.log(searchMatch);
+      searchMatch.forEach((video) => {
+        if (video.pic.startsWith('//'))
+          video.pic = video.pic.replace('//', 'https://');
+      });
       setSearchMatchVideos(searchMatch); //Get Search Result list
     });
   };
