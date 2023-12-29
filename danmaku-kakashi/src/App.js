@@ -122,12 +122,13 @@ function App() {
         console.error('Error:', response.error);
         return;
       }
-      console.log("Raw results: ", response.videosResult);
       const searchMatch = response.videosResult.data.result.find(section => section.result_type === "video").data;
-      console.log(searchMatch);
       searchMatch.forEach((video) => {
         if (video.pic.startsWith('//'))
           video.pic = video.pic.replace('//', 'https://');
+      });
+      searchMatch.forEach((video) => {
+        video.title = video.title.replace(/<em class="keyword">([\s\S]*?)<\/em>/g, '$1');
       });
       setSearchMatchVideos(searchMatch); //Get Search Result list
     });
@@ -264,7 +265,7 @@ function App() {
 
             {!showMainControls ? (
               <div>
-                <Button variant="contained" color="error" style={{marginLeft:'-220px'}}>
+                <Button variant="contained" color="error" style={{marginRight: '58%'}}>
                   <a target="_blank" rel="noopener noreferrer" onClick={showVideoBox}
                   style={{ textDecoration: 'none', color: 'inherit', textTransform: 'none'}}>
                   &lt;&lt; Return to Match Video

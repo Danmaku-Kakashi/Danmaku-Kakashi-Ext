@@ -2,7 +2,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete' && tab.url.includes("youtube.com/watch")) {
     const queryParameters = tab.url.split("?")[1];
     const urlParameters = new URLSearchParams(queryParameters);
-    console.log(urlParameters);
     const videoId = urlParameters.get('v');
 
     console.log('YouTube Video URL Detected:', videoId);
@@ -41,7 +40,6 @@ chrome.runtime.onMessage.addListener(
 
     // Get Search Text from content search by bilibili api and send back result
     if (request.type === 'SEARCH') {
-      console.log("Search Text: ", request.query);
       const str = encodeURI(request.query);
       fetch('https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=' + str,
         {
