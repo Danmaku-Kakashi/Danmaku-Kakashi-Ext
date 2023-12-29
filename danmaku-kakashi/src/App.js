@@ -27,7 +27,7 @@ export function CustomizedInputBase({onSearchTrigger}) {
   };
   return (
     <div className="topsearch">
-      <Paper component="form" sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 200 }}>
+      <Paper component="form" sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           placeholder="Search..."
@@ -213,9 +213,9 @@ function App() {
       DanmuBtn.className = "ytp-button " + "DanmuControl" ;
       DanmuBtn.title = "Click to open danmaku conrol panel";
       
-      const youtubeLeftControls = document.getElementsByClassName("ytp-left-controls")[0];
+      const youtubeLeftControls = document.getElementsByClassName("ytp-right-controls")[0];
       // const youtubePlayer = document.getElementsByClassName('video-stream')[0];
-      youtubeLeftControls.appendChild(DanmuBtn);
+      youtubeLeftControls.prepend(DanmuBtn);
       DanmuBtn.addEventListener("click", OpenDanmakuControlHandler);
     }
   }
@@ -264,7 +264,13 @@ function App() {
 
             {!showMainControls ? (
               <div>
-                <img src={LogoIcon} alt="DamMuname" width="30" height="30" onClick={showVideoBox} />
+                <Button variant="contained" color="error" style={{marginLeft:'-220px'}}>
+                  <a target="_blank" rel="noopener noreferrer" onClick={showVideoBox}
+                  style={{ textDecoration: 'none', color: 'inherit', textTransform: 'none'}}>
+                  &lt;&lt; Return to Match Video
+                  </a> 
+                </Button>
+
                 <div id="mainControls" style={{ display: "block" }}>
                   <h1 className="dmHeader">Search Result</h1>
                   {searchMatchVideos.length > 0 ? (
