@@ -262,7 +262,8 @@
 }
 
 .popupThumbnail img{
-  width: 120px; /* 将封面图片大小设置为80px */
+  width: 100%;
+  margin: auto;
   height: auto; /* 保持图片的宽高比 */
   bottom: 21px;
   border-radius: 4px;

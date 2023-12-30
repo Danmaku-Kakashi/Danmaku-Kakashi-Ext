@@ -44,6 +44,7 @@ export function CustomizedInputBase({onSearchTrigger}) {
   );
 }
 
+
 function VideoBox({ title, author, danmaku, duration, arcurl, pic, onClick }) {
   const [thumbnail, setThumbnail] = useState('');
   // Download the thumbnail image in background.js and pass it to React
@@ -74,10 +75,14 @@ function VideoBox({ title, author, danmaku, duration, arcurl, pic, onClick }) {
   );
 }
 
-function Modal({ show, onClose, children, arcurl, onLoadDanmakus }) {
+function Modal({ show, onClose, children, arcurl, onLoadDanmakus, pic, title}) {
+  const [thumb, setThumbnail] = useState('');
   if (!show) {
     return null;
   }
+  chrome.runtime.sendMessage({ type: 'GET_THUMBNAIL', url: pic }, (response) => {
+    setThumbnail(response.thumbnail);
+  });
 
   return (
     <div className="modal-backdrop">
@@ -88,6 +93,12 @@ function Modal({ show, onClose, children, arcurl, onLoadDanmakus }) {
         onClick={onClose} className="modal-close-button">
           <CloseRoundedIcon />
         </IconButton>
+        <div className="popupThumbnail">
+          {thumb === '' ? <Spinner /> :
+            <img src={thumb} alt={title} />
+          }
+          <p className='popuptitle'>{title}</p>
+        </div>
         {children}
         <Button 
         style={{position: 'relative', bottom: 15, textTransform: 'none',}}
@@ -252,13 +263,11 @@ function App() {
             <CustomizedInputBase onSearchTrigger={handleSearchTrigger}/>
 
             <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)} 
-            arcurl={selectedVideo ? selectedVideo.arcurl : ''} onLoadDanmakus={handleLoadDanmakusClick}>
+            arcurl={selectedVideo ? selectedVideo.arcurl : ''} onLoadDanmakus={handleLoadDanmakusClick} 
+            pic = {selectedVideo ? selectedVideo.pic : ''} title={selectedVideo ? selectedVideo.title : ''}>
               {selectedVideo && (
                 <div>
-                  <div className="popupThumbnail">
-                    <img src={selectedVideo.pic} alt={selectedVideo.title}/>
-                    <p className='popuptitle'>{selectedVideo.title}</p>
-                  </div>
+                  
                 </div>
               )}
             </Modal>
