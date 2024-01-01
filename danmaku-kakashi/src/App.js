@@ -30,7 +30,7 @@ export function CustomizedInputBase({onSearchTrigger}) {
       <Paper component="form" sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
         <InputBase
           sx={{ ml: 1, flex: 1 }}
-          placeholder="Search..."
+          placeholder="Search by keyword or BV number..."
           inputProps={{ 'aria-label': 'search...' }}
           value={searchTerm}
           onChange={handleSearchChange}
@@ -120,15 +120,11 @@ function App() {
   const Logo = chrome.runtime.getURL("icons/logo.png");
   const LogoIcon = chrome.runtime.getURL("icons/logoicon.png");
 
-  const possibleMatchVideos = [
-    //...
-  ];
-
   const [searchMatchVideos, setSearchMatchVideos] = useState([]);
   const [showMainControls, setShowMainControls] = useState(true);
   const handleSearchTrigger = (searchInput) => {
     setShowMainControls(false);
-    chrome.runtime.sendMessage({ type: 'SEARCH', query: searchInput }, (response) => {
+    chrome.runtime.sendMessage({ type: 'SEARCH', query: encodeURI(searchInput) }, (response) => {
       if (response.error) {
         console.error('Error:', response.error);
         return;
@@ -181,6 +177,7 @@ function App() {
   };
 
   const [bestMatchVideos, setBestMatchVideos] = useState([]);
+  const [possibleMatchVideos, setPossibleMatchVideos] = useState([]);
   const [youtubeUrl, setYoutubeUrl] = useState('');
 
   useEffect(() => {
@@ -194,6 +191,23 @@ function App() {
         })
         .catch(error => console.error('Error:', error));
     }
+    const handlePossibleMatch = (youtubeUrl) => {
+      chrome.runtime.sendMessage({ type: 'SEARCH', query: youtubeUrl.vid }, (response) => {
+        if (response.error) {
+          console.error('Error:', response.error);
+          return;
+        }
+        const searchMatch = response.videosResult.data.result.find(section => section.result_type === "video").data;
+        searchMatch.forEach((video) => {
+          if (video.pic.startsWith('//'))
+            video.pic = video.pic.replace('//', 'https://');
+        });
+        searchMatch.forEach((video) => {
+          video.title = video.title.replace(/<em class="keyword">([\s\S]*?)<\/em>/g, '$1');
+        });
+        setPossibleMatchVideos(searchMatch); //Get Search Result list
+      });
+    };
 
     const handleNewUrl = (message, sender, sendResponse) => {
       if (message.type === 'youtubeid') {
@@ -207,10 +221,12 @@ function App() {
   
       // Add Chrome message listener
     chrome.runtime.onMessage.addListener(handleNewUrl);
+    chrome.runtime.onMessage.addListener(handlePossibleMatch);
   
       // Clean up Chrome message listener
     return () => {
         chrome.runtime.onMessage.removeListener(handleNewUrl);
+        chrome.runtime.onMessage.removeListener(handlePossibleMatch);
         // observer.disconnect();
     };
 
@@ -242,6 +258,14 @@ function App() {
   const handleLogoClick = () => {
     setIsPopupOpen(true); // return to popup page
   };
+
+  // const SearchbarListener = () => {
+  //   chrome.runtime.onMessage.addListener(handleSearchTrigger);
+
+  //   return () => {
+  //     chrome.runtime.onMessage.removeListener(handleSearchTrigger);
+  //   }
+  // }
 
 
   return (

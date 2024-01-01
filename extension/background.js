@@ -40,8 +40,9 @@ chrome.runtime.onMessage.addListener(
 
     // Get Search Text from content search by bilibili api and send back result
     if (request.type === 'SEARCH') {
-      const str = encodeURI(request.query);
-      fetch('https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=' + str,
+      console.log("Request: ", request);
+      
+      fetch('https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=' + request.query,
         {
           method: 'GET',
           credentials: 'include'
