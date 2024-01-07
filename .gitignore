@@ -131,3 +131,6 @@ dist
 
 # VSCode configs
 .vscode/*
+
+# Built content
+extension/content.js
