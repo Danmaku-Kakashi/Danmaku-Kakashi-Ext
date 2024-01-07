@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import Danmaku from './danmaku';
 import reportWebVitals from './reportWebVitals';
 
 const rootElement = document.createElement("div");
@@ -25,11 +26,44 @@ root.render(
 // Wait for YouTube to load
 const checkExist = setInterval(function() {
   if (document.getElementById("secondary-inner")) {
-    console.log("Exists!");
     clearInterval(checkExist);// Find YouTube side bar and insert root element
     const youtubeSideBar = document.getElementById("secondary-inner");
     console.log(youtubeSideBar);
     youtubeSideBar.prepend(rootElement);
+  }
+}, 100); // check every 100ms
+
+// Wait for YouTube video player to load
+const checkExist2 = setInterval(function() {
+  let videoPlayer = document.getElementsByTagName("video")[0];
+  if (videoPlayer) {
+    console.log("Video loaded");
+    clearInterval(checkExist2);// Find YouTube side bar and insert root element
+    console.log(videoPlayer);
+    let danmakuDOM = document.getElementById("danmaku-container");
+    if (danmakuDOM) {
+      danmakuDOM.remove();
+    }
+    danmakuDOM = document.createElement("div");
+    danmakuDOM.id = "danmaku-container";
+    danmakuDOM.style.position = "absolute";
+    danmakuDOM.style.cssText = [
+      `width: ${videoPlayer.style.width || 640};`,
+      `height: ${videoPlayer.style.height || 360};`,
+      `left: ${videoPlayer.style.left || 0};`,
+      `top: ${videoPlayer.style.top || 0};`,
+      `z-index: 0;`,
+      `background-color: #00000000;`,
+      `pointer-events: none;`
+    ].join(" ");
+    videoPlayer.parentElement.appendChild(danmakuDOM);
+    console.log("Danmaku container created");
+    const danmakuRoot = ReactDOM.createRoot(danmakuDOM);
+    danmakuRoot.render(
+      <React.StrictMode>
+        <Danmaku />
+      </React.StrictMode>
+    );
   }
 }, 100); // check every 100ms
 
