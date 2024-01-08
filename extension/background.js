@@ -58,6 +58,37 @@ chrome.runtime.onMessage.addListener(
         });
       return true;
     }
+
+    if (request.type === 'GET_VIDEO_DANMAKU') {
+      console.log("Request: ", request);
+      console.log("https://api.bilibili.com/x/player/pagelist?bvid=", request.bvid);
+      fetch('https://api.bilibili.com/x/player/pagelist?bvid=' + request.bvid,
+        {
+          method: 'GET',
+          credentials: 'include'
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data && data.data && data.data.length > 0) {
+              return data.data[0].cid; 
+          }
+          throw new Error('No data found');
+        })
+        .then(cid => {
+          console.log("Response3: ", cid);
+          sendResponse({videocid: cid});
+        })
+        .catch(error => {
+          console.error('Error fetching cid:', error)
+          sendResponse({error: "Failed to fetch data"});
+        });
+      return true;
+    }
   }
 );
 

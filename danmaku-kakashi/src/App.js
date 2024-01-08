@@ -147,6 +147,15 @@ function App() {
   const handleLoadDanmakusClick = () => {
     if (selectedVideo) {
       uploadVideo(selectedVideo);
+      chrome.runtime.sendMessage({ type: 'GET_VIDEO_DANMAKU', bvid: selectedVideo.bvid }, (response) => {
+        if (response.error) {
+          console.error('Error:', response.error);
+          return;
+        }
+        const cid = response.videocid;
+        const danmakuUrl = `https://comment.bilibili.com/${cid}.xml`;
+        console.log('Danmaku URL:', danmakuUrl);  // return danmaku url
+      });
       setIsModalOpen(false);  // close popup page model
     }
   };
@@ -188,6 +197,7 @@ function App() {
         .then(response => response.json())
         .then(data => {
           setBestMatchVideos(data);  // return videolist
+          bestMatchVideos.sort((a, b) => a.numused - b.numused); // sort by numused
         })
         .catch(error => console.error('Error:', error));
     }
