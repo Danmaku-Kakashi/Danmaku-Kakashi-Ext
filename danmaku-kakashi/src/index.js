@@ -5,9 +5,9 @@ import App from './App';
 import Danmaku from './danmaku';
 import reportWebVitals from './reportWebVitals';
 
+// Create side panel root element
 const rootElement = document.createElement("div");
 rootElement.id = 'danmaku-kakashi-root';
-
 const globalStyles = document.createElement("style");
 globalStyles.innerHTML = `
   #${rootElement.id} {
@@ -17,13 +17,8 @@ globalStyles.innerHTML = `
 document.head.appendChild(globalStyles);
 
 const root = ReactDOM.createRoot(rootElement);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
 
-// Wait for YouTube to load
+// Wait for YouTube to load and insert root element
 const checkExist = setInterval(function() {
   if (document.getElementById("secondary-inner")) {
     clearInterval(checkExist);// Find YouTube side bar and insert root element
@@ -31,7 +26,23 @@ const checkExist = setInterval(function() {
     console.log(youtubeSideBar);
     youtubeSideBar.prepend(rootElement);
   }
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
 }, 100); // check every 100ms
+
+// Create danmaku container
+let danmakuDOM = document.getElementById("danmaku-container");
+if (danmakuDOM) {
+  danmakuDOM.remove();
+}
+danmakuDOM = document.createElement("div");
+danmakuDOM.id = "danmaku-container";
+danmakuDOM.style.position = "absolute";
+console.log("Danmaku container created");
+const danmakuRoot = ReactDOM.createRoot(danmakuDOM);
 
 // Wait for YouTube video player to load
 const checkExist2 = setInterval(function() {
@@ -39,14 +50,7 @@ const checkExist2 = setInterval(function() {
   if (videoPlayer) {
     console.log("Video loaded");
     clearInterval(checkExist2);// Find YouTube side bar and insert root element
-    console.log(videoPlayer);
-    let danmakuDOM = document.getElementById("danmaku-container");
-    if (danmakuDOM) {
-      danmakuDOM.remove();
-    }
-    danmakuDOM = document.createElement("div");
-    danmakuDOM.id = "danmaku-container";
-    danmakuDOM.style.position = "absolute";
+    videoPlayer.parentElement.appendChild(danmakuDOM);
     danmakuDOM.style.cssText = [
       `width: ${videoPlayer.style.width || 640};`,
       `height: ${videoPlayer.style.height || 360};`,
@@ -56,9 +60,6 @@ const checkExist2 = setInterval(function() {
       `background-color: #00000000;`,
       `pointer-events: none;`
     ].join(" ");
-    videoPlayer.parentElement.appendChild(danmakuDOM);
-    console.log("Danmaku container created");
-    const danmakuRoot = ReactDOM.createRoot(danmakuDOM);
     danmakuRoot.render(
       <React.StrictMode>
         <Danmaku />
