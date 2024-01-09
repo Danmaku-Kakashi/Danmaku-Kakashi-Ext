@@ -134,3 +134,4 @@ dist
 
 # Built content
 extension/content.js
+extension/*.bundle.js

@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import Danmaku from './danmaku';
-import reportWebVitals from './reportWebVitals';
 
 // Create side panel root element
 const rootElement = document.createElement("div");
