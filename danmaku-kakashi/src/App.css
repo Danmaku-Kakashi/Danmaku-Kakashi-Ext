@@ -17,10 +17,11 @@
   color: var(--dm-main-fg-color);
 }
 .dmHeader {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: bold;
   text-align: left;
-  margin: 0;
+  margin-bottom: 3px;
+  color: rgb(241, 241, 241);
 }
 #DanMuPopupBody .u-mZ {
   margin: 0 !important;
@@ -63,20 +64,7 @@
   cursor: pointer;
 }
 
- /*
- * Close popup button when displayed in-page (top-right corner)
- */
- .dmCloseButton {
-  background: transparent;
-  border: 0;
-  padding: 8px;
-  cursor: pointer;
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  opacity: 0.5;
-  z-index: 1;
-}
+
 
 .dmCloseButton:hover {
   opacity: 1;
@@ -156,7 +144,7 @@
 }
 
 .dmVideoThumbnail img {
-  width: 80px; /* 将封面图片大小设置为80px */
+  width: 95px; /* 将封面图片大小设置为80px */
   height: auto; /* 保持图片的宽高比 */
   border-radius: 4px;
   margin-left: 0;
@@ -188,6 +176,7 @@
   -webkit-line-clamp: 2; /* Limit to two lines */
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
+  color: rgb(241, 241, 241);
 }
 
 
@@ -238,16 +227,17 @@
 }
 
 .modal-content {
+  position: relative;
   background-color: #262020;
-  padding: 20px;
+  padding: 3vh;
   
   border-radius: 5px;
-  width: 100px;
-  border: 4px solid #B61A2B; /* 添加边框 */
+  width: 32vh;
+  border: 0.5vh solid #B61A2B; /* 添加边框 */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8); /* 可选的阴影效果 */
 }
 .popuptitle {
-  font-size: 0.8em; /* Adjust the video title font size as needed */
+  font-size: 2vh; /* Adjust the video title font size as needed */
   margin: 0 0 2px 0;
   width: 100%;
   color: #fff;
@@ -264,19 +254,13 @@
 .popupThumbnail img{
   width: 100%;
   margin: auto;
+  margin-top: 3vh;
+  margin-bottom: 1vh;
   height: auto; /* 保持图片的宽高比 */
   bottom: 21px;
   border-radius: 4px;
   border: 2px solid #B61A2B; 
   position: relative;
-}
-
-.modal-close-button{
-  position: absolute;
-  bottom: 5px;
-  right: 6px;
-  color: #fff;
-
 }
 
 .popupbottom {

@@ -8,7 +8,14 @@ import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import Spinner from '@mui/material/CircularProgress';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 export function CustomizedInputBase({onSearchTrigger}) {
   const [searchTerm, setSearchTerm] = useState(''); // Track contant of search box
@@ -27,9 +34,15 @@ export function CustomizedInputBase({onSearchTrigger}) {
   };
   return (
     <div className="topsearch">
-      <Paper component="form" sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+      <Paper component="form" sx={{ display: 'flex', alignItems: 'center', width: '100%', 
+      backgroundColor: 'palette.text.secondary', border: '2px solid #B61A2B'}}>
         <InputBase
-          sx={{ ml: 1, flex: 1 }}
+          sx={{ ml: 1, flex: 1, backgroundColor: 'palette.text.secondary',
+          '& .MuiInputBase-input::placeholder': { // Targeting the placeholder
+            color: '#F1F1F1', // Change placeholder color here
+            fontSize: '12px',       // Change placeholder font size here
+          },
+        }}
           placeholder="Search by keyword or BV number..."
           inputProps={{ 'aria-label': 'search...' }}
           value={searchTerm}
@@ -89,9 +102,9 @@ function Modal({ show, onClose, children, arcurl, onLoadDanmakus, pic, title}) {
       <div className="modal-content">
         <IconButton 
         color="inherit"
-        style={{position: 'relative', bottom: 20, left: 60, zIndex: 9999, margin: 0, padding: 0,}}
+        style={{position: 'absolute', top: 3, right: 3, zIndex: 1, margin: 0, padding: 0}}
         onClick={onClose} className="modal-close-button">
-          <CloseRoundedIcon />
+          <CloseRoundedIcon style={{fontSize: '3vh'}}/>
         </IconButton>
         <div className="popupThumbnail">
           {thumb === '' ? <Spinner /> :
@@ -101,13 +114,13 @@ function Modal({ show, onClose, children, arcurl, onLoadDanmakus, pic, title}) {
         </div>
         {children}
         <Button 
-        style={{position: 'relative', bottom: 15, textTransform: 'none',}}
+        style={{bottom: 15, textTransform: 'none', fontSize: '2vh', margin: '0.5vh'}}
         variant="contained" color="error" onClick={onLoadDanmakus}>
           Load Danmakus
         </Button>
         <Button variant="contained" color="error">
           <a href={arcurl} target="_blank" rel="noopener noreferrer" 
-          style={{ textDecoration: 'none', color: 'inherit', textTransform: 'none'}}>
+          style={{ textDecoration: 'none', color: 'inherit', textTransform: 'none', fontSize: '2vh'}}>
           Open on BiliBili
           </a> 
         </Button>
@@ -269,16 +282,9 @@ function App() {
     setIsPopupOpen(true); // return to popup page
   };
 
-  // const SearchbarListener = () => {
-  //   chrome.runtime.onMessage.addListener(handleSearchTrigger);
-
-  //   return () => {
-  //     chrome.runtime.onMessage.removeListener(handleSearchTrigger);
-  //   }
-  // }
-
-
   return (
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
     <div>
     {!isPopupOpen ? (
       <img src={LogoIcon} alt="DamMuname" width="30" height="30" onClick={handleLogoClick} />
@@ -308,12 +314,14 @@ function App() {
 
             {!showMainControls ? (
               <div>
-                <Button variant="contained" color="error" style={{marginRight: '58%'}}>
-                  <a target="_blank" rel="noopener noreferrer" onClick={showVideoBox}
-                  style={{ textDecoration: 'none', color: 'inherit', textTransform: 'none'}}>
-                  &lt;&lt; Return to Match Video
-                  </a> 
-                </Button>
+                <div style={{textAlign: 'left', margin: '8px'}}>
+                  <Button variant="contained" color="error">
+                    <a target="_blank" rel="noopener noreferrer" onClick={showVideoBox}
+                    style={{ textDecoration: 'none', color: 'inherit', textTransform: 'none' }}>
+                    &lt;&lt; Return to Match Video
+                    </a> 
+                  </Button>
+                </div>
 
                 <div id="mainControls" style={{ display: "block" }}>
                   <h1 className="dmHeader">Search Result</h1>
@@ -330,7 +338,7 @@ function App() {
 
               <div>
                 <div id="mainControls" style={{ display: "block" }}>
-                  <h1 className="dmHeader">Best match (User)</h1>
+                  <h1 className="dmHeader">Best matches (User)</h1>
                   {bestMatchVideos.length > 0 ? (
                     bestMatchVideos.map((video, index) => (
                       <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
@@ -341,7 +349,7 @@ function App() {
                 </div>
 
                 <div id="mainControls" style={{ display: "block" }}>
-                  <h1 className="dmHeader">Possible match</h1>
+                  <h1 className="dmHeader">Possible matches</h1>
                   {possibleMatchVideos.length > 0 ? (
                     possibleMatchVideos.map((video, index) => (
                       <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
@@ -355,6 +363,7 @@ function App() {
     </div>
     )}
   </div>
+  </ThemeProvider>
   );
 }
 

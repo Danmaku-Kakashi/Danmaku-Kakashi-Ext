@@ -91,21 +91,3 @@ chrome.runtime.onMessage.addListener(
     }
   }
 );
-
-
-
-// // Test fetch
-// fetch('https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=', {method: 'GET', credentials: 'include'})
-// .then(response => response.json())
-// .then(data => console.log(data))
-// .catch(error => console.error('Error fetching thumbnail:', error));
-
-// const str = encodeURI("")
-// fetch('https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword='+str, 
-// {
-//     method: 'GET',
-//     credentials: 'include'
-// })
-// .then(response => console.log(response.json()))
-// .then(data => console.log(data))
-// .catch(error => console.error('Error fetching thumbnail:', error));
