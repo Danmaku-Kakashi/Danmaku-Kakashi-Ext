@@ -11,6 +11,9 @@ const globalStyles = document.createElement("style");
 globalStyles.innerHTML = `
   #${rootElement.id} {
     max-height: 600px;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    margin-bottom: 10px;
   }
 `;
 document.head.appendChild(globalStyles);

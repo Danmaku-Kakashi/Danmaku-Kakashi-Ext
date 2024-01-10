@@ -24,7 +24,7 @@ export function CustomizedInputBase({onSearchTrigger}) {
   };
   const handleSearch = () => {
     onSearchTrigger(searchTerm); // Call the prop function
-    setSearchTerm(''); // Reset the input field
+    // setSearchTerm(''); // Reset the input field
   };
   const handleKeyPress = (event) => { // Handle Enter key press
     if (event.key === 'Enter') {
@@ -233,13 +233,14 @@ function App() {
     };
 
     const handleNewUrl = (message, sender, sendResponse) => {
+      setShowMainControls(true); // when new url, return to main controls
       if (message.type === 'youtubeid') {
           setYoutubeUrl(message.vid); // Update new YouTube URL
           console.log('Received YouTube URL:', message.vid);
           var response_text = message.vid + ' received by React';
           sendResponse({text: response_text});
           return true;
-        }
+      }
     };
   
       // Add Chrome message listener
@@ -273,13 +274,20 @@ function App() {
 
   const OpenDanmakuControlHandler = async() => {}
 
+  const rootElement = document.getElementById('danmaku-kakashi-root');
+
   const [isPopupOpen, setIsPopupOpen] = useState(true);
   const handleCloseIconClick = () => {
+    rootElement.style.height = '40px';
+    rootElement.style.maxHeight = '40px';
+    rootElement.offsetHeight; // Trigger a reflow to enable transition
     setIsPopupOpen(false); // close popup page
   };
 
   const handleLogoClick = () => {
     setIsPopupOpen(true); // return to popup page
+    rootElement.style.height = '600px';
+    rootElement.style.maxHeight = '600px';
   };
 
   return (
@@ -287,7 +295,13 @@ function App() {
       <CssBaseline />
     <div>
     {!isPopupOpen ? (
-      <img src={LogoIcon} alt="DamMuname" width="30" height="30" onClick={handleLogoClick} />
+      <Button variant="contained" onClick={handleLogoClick} style={{width:'100%', borderRadius:'18px', 
+      backgroundColor:'#0e0e0e', border: '2px solid #B61A2B'}}>
+      <a style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '14px'}}>
+      ▼ Open Danmaku Selection Panel ▼
+      </a> 
+      </Button>
+      // <img src={LogoIcon} alt="DamMuname" width="30" height="30"  />
     ) : (
       <div id="DanMuPopup" className="DanMuPageBody dm-preload"v>
           <IconButton color="inherit" onClick={handleCloseIconClick}
