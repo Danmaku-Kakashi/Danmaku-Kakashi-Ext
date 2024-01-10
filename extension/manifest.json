@@ -13,7 +13,7 @@
                 "https://*.youtube.com/*"
             ],
             "js": [
-                "index.bundle.js"
+                "content.js"
             ]
         }
     ],

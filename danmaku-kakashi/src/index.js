@@ -14,8 +14,12 @@ globalStyles.innerHTML = `
   }
 `;
 document.head.appendChild(globalStyles);
-
 const root = ReactDOM.createRoot(rootElement);
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
 
 // Wait for YouTube to load and insert root element
 const checkExist = setInterval(function() {
@@ -25,11 +29,6 @@ const checkExist = setInterval(function() {
     console.log(youtubeSideBar);
     youtubeSideBar.prepend(rootElement);
   }
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
 }, 100); // check every 100ms
 
 // Create danmaku container
@@ -40,16 +39,20 @@ if (danmakuDOM) {
 danmakuDOM = document.createElement("div");
 danmakuDOM.id = "danmaku-container";
 danmakuDOM.style.position = "absolute";
-console.log("Danmaku container created");
 const danmakuRoot = ReactDOM.createRoot(danmakuDOM);
+danmakuRoot.render(
+  <>
+    <Danmaku />
+  </>
+);
+console.log("Danmaku container created");
 
 // Wait for YouTube video player to load
 const checkExist2 = setInterval(function() {
   let videoPlayer = document.getElementsByTagName("video")[0];
   if (videoPlayer) {
     console.log("Video loaded");
-    clearInterval(checkExist2);// Find YouTube side bar and insert root element
-    videoPlayer.parentElement.appendChild(danmakuDOM);
+    clearInterval(checkExist2);
     danmakuDOM.style.cssText = [
       `width: ${videoPlayer.style.width || 640};`,
       `height: ${videoPlayer.style.height || 360};`,
@@ -59,11 +62,7 @@ const checkExist2 = setInterval(function() {
       `background-color: #00000000;`,
       `pointer-events: none;`
     ].join(" ");
-    danmakuRoot.render(
-      <React.StrictMode>
-        <Danmaku />
-      </React.StrictMode>
-    );
+    videoPlayer.parentElement.appendChild(danmakuDOM);
   }
 }, 100); // check every 100ms
 

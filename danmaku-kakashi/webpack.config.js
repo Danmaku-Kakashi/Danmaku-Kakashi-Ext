@@ -1,11 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: {
-        index: './src/index.js',
-        App: './src/App.js',
-        danmaku: './src/danmaku.js'
-    },
+    entry: './src/index.js',
     mode: 'production',
     devtool: 'inline-source-map',
     module: {
@@ -31,7 +27,7 @@ module.exports = {
         extensions: ['.*', '.js', '.jsx']
     },
     output: {
-        filename: '[name].bundle.js',
+        filename: 'content.js',
         path: path.resolve(__dirname, '..', 'extension')
     }
 };
