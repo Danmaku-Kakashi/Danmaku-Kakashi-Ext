@@ -14,9 +14,9 @@ class Danmaku extends React.Component {
         this.commentManager = new CommentManager(danmakuCanvas);
         this.commentManager.init();
         this.commentManager.options.global.opacity = 0.8;
-        this.commentManager.options.global.scale = 1.5;
+        this.commentManager.options.global.scale = 1.2;
         this.commentManager.options.scroll.opacity = 0.8;
-        this.commentManager.options.scroll.scale = 1.5;
+        this.commentManager.options.scroll.scale = 1.2;
         this.commentManager.start();
 
         console.log("Comment manager initialized");
@@ -62,14 +62,10 @@ class Danmaku extends React.Component {
             console.log("Creating mutation observer");
             this.mutationObserver = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
-                    // if (mutation.type === "attributes") {
-                    //     if (mutation.attributeName === "style") {
-                            console.log("Video player style changed");
-                            this.resizeDanmakuCanvas();
-                    //     }
-                    // }
+                    this.resizeDanmakuCanvas();
                 });
             });
+            this.mutationObserver.observe(videoPlayer, { attributes: true, attributeFilter: ["style"] });
         }
     }
 
@@ -99,10 +95,10 @@ class Danmaku extends React.Component {
     addDanmakuSource = (source) => {
         source = "http://localhost:8080/danmaku.xml"
         console.log("Adding danmaku source", source);
-        this.commentProvider.addStaticSource(CommentProvider.XMLProvider('GET', source), CommentProvider.SOURCE_XML);
         this.commentProvider.addParser(new BilibiliFormat.XMLParser(), CommentProvider.SOURCE_XML);
-        this.commentProvider.addTarget(this.commentManager);
-        this.commentManager.init();
+        this.commentProvider.addStaticSource(CommentProvider.XMLProvider('GET', source), CommentProvider.SOURCE_XML);
+        // this.commentProvider.addTarget(this.commentManager);
+        // this.commentManager.init();
 
         this.commentProvider.load().then(() => {
             console.log("Comment provider loaded");
@@ -134,7 +130,7 @@ class Danmaku extends React.Component {
     }
 
     componentDidUpdate() {
-        this.commentManager.setBounds(0, 0, this.state.width, this.state.height);
+        console.log("Danmaku component updated");
     }
 
     componentWillUnmount() {
@@ -144,7 +140,7 @@ class Danmaku extends React.Component {
     render() {
         console.log("Danmaku render");
         return (
-            <div id="danmaku-canvas" />
+            <div id="danmaku-canvas" className={`container`} />
         );
     }
 }
