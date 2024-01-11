@@ -46,7 +46,7 @@
   position: relative;
   text-align: center;
   margin: 0;
-  width: 374px;
+  width: 100%;
   max-width: 100%; /* NOTE: Ensures content doesn't exceed restricted popup widths in Firefox */
   height: 600px;
   max-height: 100%;

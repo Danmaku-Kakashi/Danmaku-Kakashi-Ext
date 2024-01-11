@@ -265,19 +265,23 @@ function App() {
       DanmuBtn.className = "ytp-button " + "DanmuControl" ;
       DanmuBtn.title = "Click to open danmaku conrol panel";
       
-      const youtubeLeftControls = document.getElementsByClassName("ytp-right-controls")[0];
-      // const youtubePlayer = document.getElementsByClassName('video-stream')[0];
-      youtubeLeftControls.prepend(DanmuBtn);
-      DanmuBtn.addEventListener("click", OpenDanmakuControlHandler);
+      // Wait for YouTube player elements to load and insert DanmuBtn
+      const checkExist = setInterval(function() {
+        var youtubeRightControls = document.getElementsByClassName("ytp-right-controls")[0];
+        if (youtubeRightControls) {
+          clearInterval(checkExist);
+          youtubeRightControls.prepend(DanmuBtn);
+          DanmuBtn.addEventListener("click", OpenDanmakuControlHandler);
+        }
+      }, 100); // check every 100ms
     }
   }
 
   const OpenDanmakuControlHandler = async() => {}
 
-  const rootElement = document.getElementById('danmaku-kakashi-root');
-
   const [isPopupOpen, setIsPopupOpen] = useState(true);
   const handleCloseIconClick = () => {
+    var rootElement = document.getElementById('danmaku-kakashi-root');
     rootElement.style.height = '40px';
     rootElement.style.maxHeight = '40px';
     rootElement.offsetHeight; // Trigger a reflow to enable transition
@@ -285,6 +289,7 @@ function App() {
   };
 
   const handleLogoClick = () => {
+    var rootElement = document.getElementById('danmaku-kakashi-root');
     setIsPopupOpen(true); // return to popup page
     rootElement.style.height = '600px';
     rootElement.style.maxHeight = '600px';
@@ -292,7 +297,6 @@ function App() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
     <div>
     {!isPopupOpen ? (
       <Button variant="contained" onClick={handleLogoClick} style={{width:'100%', borderRadius:'18px', 
