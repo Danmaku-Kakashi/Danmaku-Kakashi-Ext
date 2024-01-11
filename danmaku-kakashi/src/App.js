@@ -168,6 +168,8 @@ function App() {
         const cid = response.videocid;
         const danmakuUrl = `https://comment.bilibili.com/${cid}.xml`;
         console.log('Danmaku URL:', danmakuUrl);  // return danmaku url
+        window.addDanmakuSource(danmakuUrl);
+        console.log("Tried to send Danmaku Source to player.");
       });
       setIsModalOpen(false);  // close popup page model
     }
