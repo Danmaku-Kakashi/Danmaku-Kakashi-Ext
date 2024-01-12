@@ -237,6 +237,9 @@ function App() {
     const handleNewUrl = (message, sender, sendResponse) => {
       setShowMainControls(true); // when new url, return to main controls
       if (message.type === 'youtubeid') {
+          if (message.vid === youtubeUrl) {
+            return;
+          }
           setYoutubeUrl(message.vid); // Update new YouTube URL
           console.log('Received YouTube URL:', message.vid);
           var response_text = message.vid + ' received by React';
