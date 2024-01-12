@@ -267,4 +267,11 @@
   margin: 5px;
 }
 
+.hideDanmakus {
+  visibility: hidden;
+}
+
+.makeGray {
+  filter: grayscale(100%);
+}
 

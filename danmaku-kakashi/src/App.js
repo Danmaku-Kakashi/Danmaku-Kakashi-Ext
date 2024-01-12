@@ -265,7 +265,9 @@ function App() {
       const DanmuBtn = document.createElement("img");
       DanmuBtn.src = LogoIcon;
       DanmuBtn.className = "ytp-button " + "DanmuControl" ;
+      DanmuBtn.id = "DanmakuControlBtn";
       DanmuBtn.title = "Click to open danmaku conrol panel";
+      DanmuBtn.style.transition = "all 0.5s ease-out";
       
       // Wait for YouTube player elements to load and insert DanmuBtn
       const checkExist = setInterval(function() {
@@ -279,7 +281,15 @@ function App() {
     }
   }
 
-  const OpenDanmakuControlHandler = async() => {}
+  const OpenDanmakuControlHandler = async() => {
+    var result = window.toggleDanmakuVisibility();
+    console.log("Danmaku Visibility: ", result);
+    if (result) {
+      document.getElementById("DanmakuControlBtn").classList.remove("makeGray");
+    } else {
+      document.getElementById("DanmakuControlBtn").classList.add("makeGray");
+    }
+  }
 
   const [isPopupOpen, setIsPopupOpen] = useState(true);
   const handleCloseIconClick = () => {
