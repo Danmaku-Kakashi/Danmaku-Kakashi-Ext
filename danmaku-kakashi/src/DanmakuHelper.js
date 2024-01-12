@@ -6,6 +6,7 @@ import "./ccl-base.css";
 function injectDanmakuDOM() {
     // Prevent multiple injection
     if (document.getElementById("danmaku-container-injecting")) {
+        console.log("Danmaku DOM already injected")
         return;
     }
     const danmakuContainerInjecting = document.createElement("div");
@@ -18,6 +19,7 @@ function injectDanmakuDOM() {
     if (danmakuDOM) {
         // Reset danmakus
         window.resetDanmakus();
+        danmakuContainerInjecting.remove();
         console.log("Called Danmaku container reset");
     } else {
         danmakuDOM = document.createElement("div");

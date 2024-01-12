@@ -5,6 +5,8 @@ import {BilibiliFormat, CommentManager, CommentProvider} from "./CommentCoreLibr
 class Danmaku extends React.Component {
     resetDanmakus = () => {
         this.commentManager.clear();
+        this.commentProvider.destroy();
+        this.initCCL();
         console.log("Danmakus reset");
     }
 
@@ -21,6 +23,10 @@ class Danmaku extends React.Component {
 
         console.log("Comment manager initialized");
 
+        this.initCommentProvider();
+    }
+
+    initCommentProvider = () => {
         // Set up comment provider
         this.commentProvider = new CommentProvider();
         this.commentProvider.addParser(new BilibiliFormat.XMLParser(), CommentProvider.SOURCE_XML);
@@ -45,6 +51,7 @@ class Danmaku extends React.Component {
         });
         videoPlayer.addEventListener("seeking", () => {
             console.log("Video seeking");
+            this.commentManager.clear();
             this.commentManager.time(videoPlayer.currentTime * 1000);
         });
         videoPlayer.addEventListener("timeupdate", () => {
@@ -56,7 +63,7 @@ class Danmaku extends React.Component {
                     return;
                 }
             }
-            this.commentManager.time(Math.floor(videoPlayer.currentTime * 1000));
+            this.commentManager.time(videoPlayer.currentTime * 1000);
         });
         if (!this.mutationObserver) {
             console.log("Creating mutation observer");
@@ -96,14 +103,30 @@ class Danmaku extends React.Component {
         console.log("Adding danmaku source", source);
         chrome.runtime.sendMessage({type: "DOWNLOAD_DANMAKU", url: source}, (response) => {
             console.log("Response: ", response);
+            this.commentManager.stop();
+            this.commentManager.time(0);
             this.commentProvider.addStaticSource(CommentProvider.XMLProvider('GET', response.danmakuxml), CommentProvider.SOURCE_XML);
 
             this.commentProvider.load().then(() => {
                 console.log("Comment provider loaded");
+                this.commentManager.start();
             }).catch((err) => {
                 console.error("Comment provider failed to load", err);
             });
         });
+    }
+
+    toggleDanmakuVisibility = () => {
+        const danmakuContainer = document.getElementById("danmaku-container");
+        if (danmakuContainer) {
+            if (danmakuContainer.classList.contains("hideDanmakus")) {
+                danmakuContainer.classList.remove("hideDanmakus");
+                return true;
+            } else {
+                danmakuContainer.classList.add("hideDanmakus");
+                return false;
+            }
+        }
     }
 
     constructor(props) {
@@ -124,6 +147,7 @@ class Danmaku extends React.Component {
         // Set up window methods
         window.resetDanmakus = this.resetDanmakus;
         window.addDanmakuSource = this.addDanmakuSource;
+        window.toggleDanmakuVisibility = this.toggleDanmakuVisibility;
         console.log("Danmaku component mounted");
     }
 
@@ -137,6 +161,7 @@ class Danmaku extends React.Component {
 
     render() {
         console.log("Danmaku render");
+
         return (
             <div id="danmaku-canvas" className={`container`} />
         );

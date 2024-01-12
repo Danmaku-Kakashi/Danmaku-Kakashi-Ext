@@ -22,9 +22,9 @@ globalStyles.innerHTML = `
 document.head.appendChild(globalStyles);
 const root = ReactDOM.createRoot(rootElement);
 root.render(
-  <React.StrictMode>
+  <>
     <App />
-  </React.StrictMode>
+  </>
 );
 
 // Wait for YouTube to load and insert root element
