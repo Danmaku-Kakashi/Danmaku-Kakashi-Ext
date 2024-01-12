@@ -45,7 +45,7 @@ class Danmaku extends React.Component {
         });
         videoPlayer.addEventListener("seeking", () => {
             console.log("Video seeking");
-            this.commentManager.seek(videoPlayer.currentTime * 1000);
+            this.commentManager.time(videoPlayer.currentTime * 1000);
         });
         videoPlayer.addEventListener("timeupdate", () => {
             console.log("Video timeupdate");
@@ -96,16 +96,12 @@ class Danmaku extends React.Component {
         console.log("Adding danmaku source", source);
         chrome.runtime.sendMessage({type: "DOWNLOAD_DANMAKU", url: source}, (response) => {
             console.log("Response: ", response);
-            // this.commentProvider.addParser(new BilibiliFormat.XMLParser(), CommentProvider.SOURCE_XML);
             this.commentProvider.addStaticSource(CommentProvider.XMLProvider('GET', response.danmakuxml), CommentProvider.SOURCE_XML);
-            // this.commentProvider.addTarget(this.commentManager);
-            // this.commentManager.init();
 
             this.commentProvider.load().then(() => {
                 console.log("Comment provider loaded");
             }).catch((err) => {
-                console.error(err);
-                console.log("Comment provider failed to load");
+                console.error("Comment provider failed to load", err);
             });
         });
     }
