@@ -22,7 +22,7 @@ chrome.runtime.onMessage.addListener(
       fetch(request.url, {
         method: 'GET',
         headers: {
-          'Referer': 'no-referer'
+          'Referer': ''
         }
       })
         .then(response => response.blob())
@@ -88,6 +88,27 @@ chrome.runtime.onMessage.addListener(
           sendResponse({error: "Failed to fetch data"});
         });
       return true;
+    }
+
+    if (request.type === 'DOWNLOAD_DANMAKU') {
+      console.log("Got danmaku download request: ", request);
+      fetch(request.url, {
+        method: 'GET',
+        headers: {
+          'Referer': 'no-referer'
+        }
+      })
+        .then(response => response.blob())
+        .then(blob => {
+          const reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onloadend = function () {
+            // Send the dataurl encoded danmaku xml
+            sendResponse({danmakuxml: reader.result});
+          };
+        })
+        .catch(error => console.error('Error downloading danmaku:', error));
+      return true; // Indicates that the response will be sent asynchronously
     }
   }
 );

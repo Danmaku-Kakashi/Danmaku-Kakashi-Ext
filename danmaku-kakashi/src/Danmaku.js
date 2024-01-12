@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BilibiliFormat, CommentManager, CommentProvider } from "./CommentCoreLibrary";
+import {BilibiliFormat, CommentManager, CommentProvider} from "./CommentCoreLibrary";
 
 class Danmaku extends React.Component {
     resetDanmakus = () => {
@@ -51,10 +51,10 @@ class Danmaku extends React.Component {
             console.log("Video timeupdate");
             let movie_player = document.getElementById('movie_player');
             if (movie_player) {
-              // Ignore timeupdate events when ads are playing
-              if (movie_player.classList.contains("ad-interrupting")) {
-                return;
-              }
+                // Ignore timeupdate events when ads are playing
+                if (movie_player.classList.contains("ad-interrupting")) {
+                    return;
+                }
             }
             this.commentManager.time(Math.floor(videoPlayer.currentTime * 1000));
         });
@@ -65,7 +65,7 @@ class Danmaku extends React.Component {
                     this.resizeDanmakuCanvas();
                 });
             });
-            this.mutationObserver.observe(videoPlayer, { attributes: true, attributeFilter: ["style"] });
+            this.mutationObserver.observe(videoPlayer, {attributes: true, attributeFilter: ["style"]});
         }
     }
 
@@ -93,18 +93,20 @@ class Danmaku extends React.Component {
     }
 
     addDanmakuSource = (source) => {
-        source = "http://localhost:8080/danmaku.xml"
         console.log("Adding danmaku source", source);
-        this.commentProvider.addParser(new BilibiliFormat.XMLParser(), CommentProvider.SOURCE_XML);
-        this.commentProvider.addStaticSource(CommentProvider.XMLProvider('GET', source), CommentProvider.SOURCE_XML);
-        // this.commentProvider.addTarget(this.commentManager);
-        // this.commentManager.init();
+        chrome.runtime.sendMessage({type: "DOWNLOAD_DANMAKU", url: source}, (response) => {
+            console.log("Response: ", response);
+            // this.commentProvider.addParser(new BilibiliFormat.XMLParser(), CommentProvider.SOURCE_XML);
+            this.commentProvider.addStaticSource(CommentProvider.XMLProvider('GET', response.danmakuxml), CommentProvider.SOURCE_XML);
+            // this.commentProvider.addTarget(this.commentManager);
+            // this.commentManager.init();
 
-        this.commentProvider.load().then(() => {
-            console.log("Comment provider loaded");
-        }).catch((err) => {
-            console.error(err);
-            console.log("Comment provider failed to load");
+            this.commentProvider.load().then(() => {
+                console.log("Comment provider loaded");
+            }).catch((err) => {
+                console.error(err);
+                console.log("Comment provider failed to load");
+            });
         });
     }
 
