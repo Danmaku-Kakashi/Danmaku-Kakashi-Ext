@@ -180,7 +180,7 @@ function App() {
       ...video,
       youtubeid: youtubeUrl,  
     };
-    fetch('http://127.0.0.1:8000/create/', {
+    fetch('http://127.0.0.1:8000/create/video', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -211,8 +211,8 @@ function App() {
       fetch(url)  // Django API
         .then(response => response.json())
         .then(data => {
+          data.sort((a, b) => b.numused - a.numused); // sort by numused
           setBestMatchVideos(data);  // return videolist
-          bestMatchVideos.sort((a, b) => a.numused - b.numused); // sort by numused
         })
         .catch(error => console.error('Error:', error));
     }
