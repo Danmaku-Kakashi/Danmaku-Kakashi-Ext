@@ -30,16 +30,20 @@ function injectDanmakuDOM() {
         // Wait for YouTube video player to load
         const checkExist = setInterval(function () {
             let videoPlayer = document.getElementsByTagName("video")[0];
-            if (videoPlayer) {
+            let movie_player = document.getElementById('movie_player');
+            if (videoPlayer && movie_player) {
                 console.log("Video loaded");
+                let width = movie_player.offsetWidth || 640;
+                let height = movie_player.offsetHeight || 360;
+                console.log("Video dimensions: " + width + "x" + height);
                 clearInterval(checkExist);
                 danmakuDOM.classList.add("m20");
                 danmakuDOM.classList.add("abp");
                 danmakuDOM.style.cssText = [
-                    `width: ${videoPlayer.style.width || 640};`,
-                    `height: ${videoPlayer.style.height || 360};`,
-                    `left: ${videoPlayer.style.left || 0};`,
-                    `top: ${videoPlayer.style.top || 0};`,
+                    `width: ${width}px;`,
+                    `height: ${height}px;`,
+                    `left: 0;`,
+                    `top: 0;`,
                 ].join(" ");
                 videoPlayer.parentElement.insertBefore(danmakuDOM, videoPlayer.nextSibling);
                 const danmakuRoot = ReactDOM.createRoot(danmakuDOM);

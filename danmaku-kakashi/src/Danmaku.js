@@ -77,26 +77,29 @@ class Danmaku extends React.Component {
     }
 
     resizeDanmakuCanvas = () => {
-        const danmakuCanvas = document.getElementById("danmaku-canvas");
-        const videoPlayer = document.getElementsByTagName("video")[0];
-        if (!danmakuCanvas || !videoPlayer) {
-            console.log("Danmaku canvas or video player not found");
+        var danmakuCanvas = document.getElementById("danmaku-canvas");
+        var danmakuContainer = document.getElementById("danmaku-container");
+        var videoContainer = document.getElementById("movie_player");
+        if (!danmakuCanvas || !videoContainer) {
+            console.log("Danmaku canvas or video container not found");
             return;
         }
 
         console.log("Resizing danmaku canvas");
+        var width = videoContainer.offsetWidth;
+        var height = videoContainer.offsetHeight;
+        console.log("New dimensions: " + width + "x" + height);
 
-        this.commentManager.stage.style.width = videoPlayer.style.width;
-        this.commentManager.stage.style.height = videoPlayer.style.height;
+        danmakuContainer.style.width = width + "px";
+        danmakuContainer.style.height = height + "px";
 
-        danmakuCanvas.style.width = videoPlayer.style.width;
-        danmakuCanvas.style.height = videoPlayer.style.height;
-        danmakuCanvas.style.left = videoPlayer.style.left;
-        danmakuCanvas.style.top = videoPlayer.style.top;
+        danmakuCanvas.style.width = width + "px";
+        danmakuCanvas.style.height = height + "px";
 
-        var width = parseInt(videoPlayer.style.width, 10);
-        var height = parseInt(videoPlayer.style.height, 10);
-        this.commentManager.setBounds(width, height);
+        this.commentManager.stage.style.width = width + "px";
+        this.commentManager.stage.style.height = height + "px";
+
+        this.commentManager.setBounds(parseInt(width, 10), parseInt(height, 10));
     }
 
     addDanmakuSource = (source) => {
