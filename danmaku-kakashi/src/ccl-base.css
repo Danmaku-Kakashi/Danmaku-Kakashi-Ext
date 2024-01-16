@@ -3,6 +3,7 @@
 }
 
 .abp .container {
+  transform-origin: top left;
   border: 0;
   bottom: 0;
   display: block;

@@ -16,9 +16,9 @@ class Danmaku extends React.Component {
         this.commentManager = new CommentManager(danmakuCanvas);
         this.commentManager.init();
         this.commentManager.options.global.opacity = 0.8;
-        this.commentManager.options.global.scale = 1.2;
+        this.commentManager.options.global.scale = 1.3;
         this.commentManager.options.scroll.opacity = 0.8;
-        this.commentManager.options.scroll.scale = 1.2;
+        this.commentManager.options.scroll.scale = 1.3;
         this.commentManager.start();
 
         console.log("Comment manager initialized");
@@ -85,21 +85,32 @@ class Danmaku extends React.Component {
             return;
         }
 
-        console.log("Resizing danmaku canvas");
-        var width = videoContainer.offsetWidth;
-        var height = videoContainer.offsetHeight;
+        var defWidth = 1280;
+        var defHeight = 720;
+        // var videoWidth = videoPlayer.style.width;
+        // var videoHeight = videoPlayer.style.height;
+        var width = parseInt(videoContainer.offsetWidth, 10);
+        var height = parseInt(videoContainer.offsetHeight, 10);
+
+        var scale = Math.sqrt(Math.min(width / defWidth, height / defHeight));
+        var relWidth = Math.floor(width / scale);
+        var relHeight = Math.floor(height / scale);
+
         console.log("New dimensions: " + width + "x" + height);
 
         danmakuContainer.style.width = width + "px";
         danmakuContainer.style.height = height + "px";
 
-        danmakuCanvas.style.width = width + "px";
-        danmakuCanvas.style.height = height + "px";
+        this.commentManager.stage.style.width = relWidth + "px";
+        this.commentManager.stage.style.height = relHeight + "px";
+        this.commentManager.stage.style.transform = "scale(" + scale + ")";
 
-        this.commentManager.stage.style.width = width + "px";
-        this.commentManager.stage.style.height = height + "px";
+        this.commentManager.setBounds(relWidth, relHeight);
 
-        this.commentManager.setBounds(parseInt(width, 10), parseInt(height, 10));
+        console.log("Canvas dimensions: " + danmakuCanvas.style.width + "x" + danmakuCanvas.style.height)
+        // danmakuCanvas.style.width = relWidth + "px";
+        // danmakuCanvas.style.height = relHeight + "px";
+        console.log("Canvas dimensions: " + danmakuCanvas.style.width + "x" + danmakuCanvas.style.height)
     }
 
     addDanmakuSource = (source) => {
