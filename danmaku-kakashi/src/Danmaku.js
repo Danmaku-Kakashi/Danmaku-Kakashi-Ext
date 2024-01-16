@@ -87,8 +87,6 @@ class Danmaku extends React.Component {
 
         var defWidth = 1280;
         var defHeight = 720;
-        // var videoWidth = videoPlayer.style.width;
-        // var videoHeight = videoPlayer.style.height;
         var width = parseInt(videoContainer.offsetWidth, 10);
         var height = parseInt(videoContainer.offsetHeight, 10);
 
@@ -106,11 +104,6 @@ class Danmaku extends React.Component {
         this.commentManager.stage.style.transform = "scale(" + scale + ")";
 
         this.commentManager.setBounds(relWidth, relHeight);
-
-        console.log("Canvas dimensions: " + danmakuCanvas.style.width + "x" + danmakuCanvas.style.height)
-        // danmakuCanvas.style.width = relWidth + "px";
-        // danmakuCanvas.style.height = relHeight + "px";
-        console.log("Canvas dimensions: " + danmakuCanvas.style.width + "x" + danmakuCanvas.style.height)
     }
 
     addDanmakuSource = (source) => {
