@@ -142,7 +142,6 @@ function App() {
     return () => {
         chrome.runtime.onMessage.removeListener(handleNewUrl);
         chrome.runtime.onMessage.removeListener(handlePossibleMatch);
-        // observer.disconnect();
     };
 
   }, [youtubeUrl]);
@@ -206,7 +205,6 @@ function App() {
       ▼ Open Danmaku Selection Panel ▼
       </a> 
       </Button>
-      // <img src={LogoIcon} alt="DamMuname" width="30" height="30"  />
     ) : (
       <div id="DanMuPopup" className="DanMuPageBody dm-preload"v>
           <IconButton color="inherit" onClick={handleCloseIconClick}

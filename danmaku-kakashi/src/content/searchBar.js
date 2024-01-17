@@ -13,8 +13,7 @@ const CustomizedInputBase = ({onSearchTrigger}) => {
       setSearchTerm(event.target.value); // Update searchTerm value
     };
     const handleSearch = () => {
-      onSearchTrigger(searchTerm); // Call the prop function
-      // setSearchTerm(''); // Reset the input field
+      onSearchTrigger(searchTerm); // Call the prop function with searchTerm as argument
     };
     const handleKeyPress = (event) => { // Handle Enter key press
       if (event.key === 'Enter') {

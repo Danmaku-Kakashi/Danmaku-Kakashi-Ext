@@ -78,7 +78,6 @@
   top: 10px;
   font-weight: bold;
   user-select: none;
-  /* padding: 10px 0px 0px; */
 }
 .dmPopupLogo img {
   margin: 2px;
@@ -96,9 +95,6 @@
   padding: 10px 0px 0px;
   font-size: 40px;
 }
-/* .dmPopupLogo img {
-  margin: 2px;
-} */
 
 /* Style the search box inside the navigation bar */
 .topsearch{
@@ -107,10 +103,6 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
-/*   
-.dmSearchButton:hover {
-  opacity: 1;
-} */
 
   /*
  * Submit box
@@ -144,8 +136,8 @@
 }
 
 .dmVideoThumbnail img {
-  width: 95px; /* 将封面图片大小设置为80px */
-  height: auto; /* 保持图片的宽高比 */
+  width: 95px; /* set image size */
+  height: auto; 
   border-radius: 4px;
   margin-left: 0;
 }
@@ -158,7 +150,7 @@
   color: #fff;
   padding: 2px 4px;
   border-radius: 2px;
-  font-size: 0.75em; /* 视频时长的字体大小保持不变 */
+  font-size: 0.75em; /* video duration size */
 }
 
 .dmVideoDetails {
@@ -181,7 +173,7 @@
 
 
 .dmVideoAuthor {
-  font-size: 0.65em; /* 根据需要调整作者名的字体大小 */
+  font-size: 0.65em; 
   color: #fff;
   margin: 0 0 5px 0;
 
@@ -192,18 +184,18 @@
 }
 
 .dmVideoViews {
-  font-size: 0.6em; /* 根据需要调整播放量的字体大小 */
+  font-size: 0.6em; 
   color: #fff;
   margin: 0;
 }
 
 .dmVideoLink {
-  text-decoration: none; /* 去除下划线 */
-  color: inherit; /* 链接颜色继承父元素的颜色 */
+  text-decoration: none; /* delete under line */
+  color: inherit; 
 }
 
 .dmVideoLink:hover .dmVideoDetails {
-  text-decoration: underline; /* 鼠标悬停时给文本添加下划线 */
+  text-decoration: underline; 
 }
 
 .Unfoundtext{
@@ -233,8 +225,8 @@
   
   border-radius: 5px;
   width: 32vh;
-  border: 0.5vh solid #B61A2B; /* 添加边框 */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8); /* 可选的阴影效果 */
+  border: 0.5vh solid #B61A2B; 
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8); /* add shadow */
 }
 .popuptitle {
   font-size: 2vh; /* Adjust the video title font size as needed */
@@ -256,7 +248,7 @@
   margin: auto;
   margin-top: 3vh;
   margin-bottom: 1vh;
-  height: auto; /* 保持图片的宽高比 */
+  height: auto; 
   bottom: 21px;
   border-radius: 4px;
   border: 2px solid #B61A2B; 
