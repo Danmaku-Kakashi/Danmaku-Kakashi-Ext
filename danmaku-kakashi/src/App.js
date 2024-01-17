@@ -255,7 +255,7 @@ function App() {
 
               <div>
                 <div id="mainControls" style={{ display: "block" }}>
-                  <h1 className="dmHeader">Best matches (User)</h1>
+                  <h1 className="dmHeader">Best matches (Used by other Users)</h1>
                   {bestMatchVideos.length > 0 ? (
                     bestMatchVideos.map((video, index) => (
                       <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
