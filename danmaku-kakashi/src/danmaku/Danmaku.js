@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import {BilibiliFormat, CommentManager, CommentProvider} from "./CommentCoreLibrary";
 
 class Danmaku extends React.Component {

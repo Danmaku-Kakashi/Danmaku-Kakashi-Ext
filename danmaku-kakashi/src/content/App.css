@@ -1,0 +1,277 @@
+:root {
+  --dm-main-font-family: "Source Sans Pro", sans-serif;
+  --dm-main-bg-color: #262020;
+  --dm-main-fg-color: #B61A2B;
+  --dm-grey-bg-color: #B61A2B;
+  --dm-grey-fg-color: #c0ca08;
+  --dm-red-bg-color: #cc1717;
+}
+
+/*
+ * Generic utilities
+ */
+ .grey-text {
+  color: var(--dm-grey-fg-color);
+}
+.white-text {
+  color: var(--dm-main-fg-color);
+}
+.dmHeader {
+  font-size: 15px;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 3px;
+  color: rgb(241, 241, 241);
+}
+#DanMuPopupBody .u-mZ {
+  margin: 0 !important;
+  position: relative;
+}
+
+#DanMuPopupBody .hidden, #DanMuPopupBody .dmhidden {
+  display: none !important;
+}
+
+/*
+ * Main containers
+ */
+ #DanMuPopupHTML {
+  color-scheme: dark;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+
+#DanMuPopup {
+  position: relative;
+  text-align: center;
+  margin: 0;
+  width: 100%;
+  max-width: 100%; /* NOTE: Ensures content doesn't exceed restricted popup widths in Firefox */
+  height: 600px;
+  max-height: 100%;
+  overflow-y: auto;
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: var(--dm-main-font-family);
+  background-color: var(--dm-main-bg-color);
+  color: var(--dm-main-fg-color);
+  color-scheme: dark;
+}
+
+#DanMuPopup a,
+#DanMuPopup button {
+  cursor: pointer;
+}
+
+
+
+.dmCloseButton:hover {
+  opacity: 1;
+}
+
+/*
+ * Header logo
+ */
+ .dmPopupLogo {
+  position: relative;
+  top: 10px;
+  font-weight: bold;
+  user-select: none;
+  /* padding: 10px 0px 0px; */
+}
+.dmPopupLogo img {
+  margin: 2px;
+}
+
+  /*
+ * Header name
+ */
+ .DanMuPopupName {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  user-select: none;
+  padding: 10px 0px 0px;
+  font-size: 40px;
+}
+/* .dmPopupLogo img {
+  margin: 2px;
+} */
+
+/* Style the search box inside the navigation bar */
+.topsearch{
+  width: 95%;
+  margin-left: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+/*   
+.dmSearchButton:hover {
+  opacity: 1;
+} */
+
+  /*
+ * Submit box
+ */
+ #mainControls {
+  margin: 8px;
+  padding: 3px 3px;
+  text-align: left;
+  border-radius: 8px;
+  border: 2px solid var(--dm-grey-bg-color);
+}
+.sponsorStartHint {
+  display: block;
+  text-align: left;
+  padding-top: 3px;
+}
+
+  /*
+ * Video info
+ */
+.dmVideoItem {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.dmVideoThumbnail {
+  position: relative;
+  margin-right: 10px;
+}
+
+.dmVideoThumbnail img {
+  width: 95px; /* 将封面图片大小设置为80px */
+  height: auto; /* 保持图片的宽高比 */
+  border-radius: 4px;
+  margin-left: 0;
+}
+
+.dmVideoDuration {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-size: 0.75em; /* 视频时长的字体大小保持不变 */
+}
+
+.dmVideoDetails {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.dmVideoTitle {
+  font-size: 0.8em; /* Adjust the video title font size as needed */
+  margin: 0 0 2px 0;
+  width: 100%;
+
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2; /* Limit to two lines */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  color: rgb(241, 241, 241);
+}
+
+
+.dmVideoAuthor {
+  font-size: 0.65em; /* 根据需要调整作者名的字体大小 */
+  color: #fff;
+  margin: 0 0 5px 0;
+
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dmVideoViews {
+  font-size: 0.6em; /* 根据需要调整播放量的字体大小 */
+  color: #fff;
+  margin: 0;
+}
+
+.dmVideoLink {
+  text-decoration: none; /* 去除下划线 */
+  color: inherit; /* 链接颜色继承父元素的颜色 */
+}
+
+.dmVideoLink:hover .dmVideoDetails {
+  text-decoration: underline; /* 鼠标悬停时给文本添加下划线 */
+}
+
+.Unfoundtext{
+  color: #fff;
+}
+
+  /*
+ * Video small popup
+ */
+ .modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 500;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  position: relative;
+  background-color: #262020;
+  padding: 3vh;
+  
+  border-radius: 5px;
+  width: 32vh;
+  border: 0.5vh solid #B61A2B; /* 添加边框 */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8); /* 可选的阴影效果 */
+}
+.popuptitle {
+  font-size: 2vh; /* Adjust the video title font size as needed */
+  margin: 0 0 2px 0;
+  width: 100%;
+  color: #fff;
+  position: relative;
+  bottom: 21px;
+
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 3; /* Limit to two lines */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+}
+
+.popupThumbnail img{
+  width: 100%;
+  margin: auto;
+  margin-top: 3vh;
+  margin-bottom: 1vh;
+  height: auto; /* 保持图片的宽高比 */
+  bottom: 21px;
+  border-radius: 4px;
+  border: 2px solid #B61A2B; 
+  position: relative;
+}
+
+.popupbottom {
+  margin: 5px;
+}
+
+.hideDanmakus {
+  visibility: hidden;
+}
+
+.makeGray {
+  filter: grayscale(100%);
+}
+

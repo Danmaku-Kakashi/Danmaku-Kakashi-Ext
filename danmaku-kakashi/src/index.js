@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './content/index.css';
 import App from './App';
-import DanmakuHelper from './DanmakuHelper';
+import DanmakuHelper from './danmaku/DanmakuHelper';
 
 // Create side panel root element
 const rootElement = document.createElement("div");
