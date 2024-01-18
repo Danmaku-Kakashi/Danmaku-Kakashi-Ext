@@ -5,7 +5,8 @@
     "manifest_version": 3,
     "host_permissions": [
         "https://*.youtube.com/*",
-        "https://*.bilibili.com/*"
+        "https://*.bilibili.com/*",
+        "https://*.dm-kks.com/*"
     ],
     "content_scripts": [
         {

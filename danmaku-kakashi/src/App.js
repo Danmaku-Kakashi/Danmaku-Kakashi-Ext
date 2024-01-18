@@ -8,6 +8,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CustomizedInputBase from './content/searchBar.js';
 import Modal from './content/Modal.js';
 import VideoBox from './content/VideoBox.js';
+import UserInfo from './content/UserInfo.js';
 
 const darkTheme = createTheme({
   palette: {
@@ -206,7 +207,8 @@ function App() {
       </a> 
       </Button>
     ) : (
-      <div id="DanMuPopup" className="DanMuPageBody dm-preload"v>
+      <div id="DanMuPopup" className="DanMuPageBody dm-preload">
+          <UserInfo />
           <IconButton color="inherit" onClick={handleCloseIconClick}
           style={{position: 'absolute', top: 5, right: 5, zIndex: 1, margin: 0, padding: 0}}>
             <CloseRoundedIcon style={{fontSize: 24}}/>
