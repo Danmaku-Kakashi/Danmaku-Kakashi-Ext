@@ -61,7 +61,6 @@ chrome.runtime.onMessage.addListener(
 
     if (request.type === 'GET_VIDEO_DANMAKU') {
       console.log("Request: ", request);
-      console.log("https://api.bilibili.com/x/player/pagelist?bvid=", request.bvid);
       fetch('https://api.bilibili.com/x/player/pagelist?bvid=' + request.bvid,
         {
           method: 'GET',
@@ -108,6 +107,26 @@ chrome.runtime.onMessage.addListener(
           };
         })
         .catch(error => console.error('Error downloading danmaku:', error));
+      return true; // Indicates that the response will be sent asynchronously
+    }
+
+    if (request.type === 'UPDATE_BEST_MATCH') {
+      console.log("Got best match update request: ", request);
+      fetch('https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=' + request.bvid,
+      {
+        method: 'GET',
+        credentials: 'include'
+      })
+      .then(response => response.json())
+      .then(data => {
+        // console.log("update best match", data.videosResult.data.result.find(section => section.result_type === "video").data);
+        console.log("update best match", data.data.result.find(section => section.result_type === "video").data[0]);
+        sendResponse({video: data.data.result.find(section => section.result_type === "video").data[0]});
+      })
+      .catch(error => {
+        console.error('Error fetching best match:', error)
+        sendResponse({error: "Failed to fetch data"});
+      });
       return true; // Indicates that the response will be sent asynchronously
     }
   }

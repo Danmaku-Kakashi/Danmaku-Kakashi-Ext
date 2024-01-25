@@ -62,20 +62,54 @@ function App() {
   };
 
   const uploadVideo = (video) => {
-    const VideoData = {
-      ...video,
-      youtubeid: youtubeUrl,  
-    };
-    fetch('http://127.0.0.1:8000/create/video', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(VideoData),
-    })
-    .then(response => response.json())
-    .then(data => {console.log(data)})
-    .catch((error) => console.error('Error:', error));
+    let VideoData = {};
+    //check if video contain the arcrank key
+    let cur_video = video;
+    console.log('Video:', cur_video);
+    const updateVideoData = new Promise((resolve, reject) => {
+      if ('cover' in video) {
+        console.log('Video contains view key');
+        VideoData = {
+          ...cur_video,
+          youtubeid: youtubeUrl,
+        };
+        resolve(VideoData);
+      } else {
+        console.log('Video does not contain view key');
+        chrome.runtime.sendMessage({ type: 'UPDATE_BEST_MATCH', bvid: video.bvid }, (response) => {
+          if (response.error) {
+            console.error('Error:', response.error);
+            reject(response.error);
+            return;
+          }
+          cur_video = response;
+          if (cur_video.video.pic.startsWith('//'))
+            cur_video.video.pic = cur_video.video.pic.replace('//', 'https://');
+          console.log('Video best:', cur_video);
+          VideoData = {
+            ...cur_video.video,
+            youtubeid: youtubeUrl,
+          };
+          
+          console.log('VideoData best:', VideoData);
+          resolve(VideoData);
+        });
+      }
+    });
+
+    updateVideoData.then(VideoData => {
+      console.log('VideoData:', VideoData);
+      fetch('http://127.0.0.1:8000/create/video', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(VideoData),
+      })
+      .then(response => response.json())
+      .then(data => {console.log(data)})
+      .catch((error) => console.error('Error:', error));
+    });
   }
 
   const [isModalOpen, setIsModalOpen] = useState(false);
