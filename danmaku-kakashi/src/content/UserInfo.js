@@ -11,7 +11,7 @@ const UserInfo = () => {
     useEffect(() => {
         chrome.runtime.sendMessage({
             type: 'FETCH_GENERAL',
-            url: 'https://dev-api.dm-kks.com/api/token/refresh/',
+            url: process.env.REACT_APP_API_BASE_URL + '/api/token/refresh/',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -31,7 +31,7 @@ const UserInfo = () => {
         if (accessToken) {
             chrome.runtime.sendMessage({
                 type: 'FETCH_GENERAL',
-                url: 'https://dev-api.dm-kks.com/api/check-login-status/',
+                url: process.env.REACT_APP_API_BASE_URL + '/api/check-login-status/',
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

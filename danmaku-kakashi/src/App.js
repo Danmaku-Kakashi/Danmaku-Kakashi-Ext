@@ -67,7 +67,7 @@ function App() {
       ...video,
       youtubeid: youtubeUrl,  
     };
-    fetch('http://127.0.0.1:8000/create/video', {
+    fetch(process.env.REACT_APP_API_BASE_URL + '/create/video', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ function App() {
 
   useEffect(() => {
     if (youtubeUrl){
-      const url = `http://127.0.0.1:8000/api/videos/?youtubeid=${youtubeUrl}`;
+      const url = process.env.REACT_APP_API_BASE_URL + `/api/videos/?youtubeid=${youtubeUrl}`;
       newVideo();
       fetch(url)  // Django API
         .then(response => response.json())
