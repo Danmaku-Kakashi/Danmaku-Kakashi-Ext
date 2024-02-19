@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react'
+import { useTranslation } from 'react-i18next';
 import './content/App.css';
 import * as React from 'react';
 import Button from '@mui/material/Button';
@@ -17,6 +18,8 @@ const darkTheme = createTheme({
 });
 
 function App() {
+  const { t } = useTranslation();
+
   const Logo = chrome.runtime.getURL("icons/logo.png");
   const LogoIcon = chrome.runtime.getURL("icons/logoicon.png");
 
@@ -201,9 +204,9 @@ function App() {
     <div>
     {!isPopupOpen ? (
       <Button variant="contained" onClick={handleLogoClick} style={{width:'100%', borderRadius:'18px', 
-      backgroundColor:'#0e0e0e', border: '2px solid #B61A2B'}}>
+      backgroundColor:'#0e0e0e', border: '2px solid #BF360C'}}>
       <a style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '14px'}}>
-      ▼ Open Danmaku Selection Panel ▼
+      {t('▼ Open Danmaku Selection Panel ▼')}
       </a> 
       </Button>
     ) : (
@@ -237,19 +240,19 @@ function App() {
                   <Button variant="contained" color="error">
                     <a target="_blank" rel="noopener noreferrer" onClick={showVideoBox}
                     style={{ textDecoration: 'none', color: 'inherit', textTransform: 'none' }}>
-                    &lt;&lt; Return to Match Video
+                    &lt;&lt; {t('Return to Match Video')}
                     </a> 
                   </Button>
                 </div>
 
                 <div id="mainControls" style={{ display: "block" }}>
-                  <h1 className="dmHeader">Search Result</h1>
+                  <h1 className="dmHeader">{t('Search Results')}</h1>
                   {searchMatchVideos.length > 0 ? (
                     searchMatchVideos.map((video, index) => (
                       <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
                     ))
                   ) : (
-                    <p className='Unfoundtext'>No match found :(</p>
+                    <p className='Unfoundtext'>{t('No match found :(')}</p>
                   )}
                 </div>
               </div>
@@ -257,24 +260,24 @@ function App() {
 
               <div>
                 <div id="mainControls" style={{ display: "block" }}>
-                  <h1 className="dmHeader">Best matches (Used by other Users)</h1>
+                  <h1 className="dmHeader">{t('Best matches (Used by other Users)')}</h1>
                   {bestMatchVideos.length > 0 ? (
                     bestMatchVideos.map((video, index) => (
                       <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
                     ))
                   ) : (
-                    <p className='Unfoundtext'>No match found :(</p>
+                    <p className='Unfoundtext'>{t('No match found :(')}</p>
                   )}
                 </div>
 
                 <div id="mainControls" style={{ display: "block" }}>
-                  <h1 className="dmHeader">Possible matches</h1>
+                  <h1 className="dmHeader">{t('Possible matches')}</h1>
                   {possibleMatchVideos.length > 0 ? (
                     possibleMatchVideos.map((video, index) => (
                       <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
                     ))
                   ) : (
-                    <p className='Unfoundtext'>No match found :(</p>
+                    <p className='Unfoundtext'>{t('No match found :(')}</p>
                   )}
                 </div>
               </div>
