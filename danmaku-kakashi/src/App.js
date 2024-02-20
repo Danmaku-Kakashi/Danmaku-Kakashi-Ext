@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import { useTranslation } from 'react-i18next';
+import { useAccessToken } from './AccessTokenContext';
 import './content/App.css';
 import * as React from 'react';
 import Button from '@mui/material/Button';
@@ -19,6 +20,7 @@ const darkTheme = createTheme({
 
 function App() {
   const { t } = useTranslation();
+  const { accessToken, setAccessToken } = useAccessToken();
 
   const Logo = chrome.runtime.getURL("icons/logo.png");
   const LogoIcon = chrome.runtime.getURL("icons/logoicon.png");
@@ -65,15 +67,19 @@ function App() {
     }
   };
 
+  
   const uploadVideo = (video) => {
+    console.log('accessTokens:', accessToken);
     const VideoData = {
       ...video,
       youtubeid: youtubeUrl,  
+      access: accessToken,
     };
     fetch(process.env.REACT_APP_API_BASE_URL + '/create/video', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...(accessToken && {'Authorization': accessToken}), // Add access token to headers if it exists
       },
       body: JSON.stringify(VideoData),
     })
