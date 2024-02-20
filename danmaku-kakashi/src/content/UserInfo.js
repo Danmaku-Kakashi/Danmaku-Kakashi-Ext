@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import './User.css';
+import { useAccessToken } from '../AccessTokenContext';
 import {useState} from 'react';
 import { useTranslation } from 'react-i18next'; 
 import IconButton from '@mui/material/IconButton';
@@ -9,6 +10,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Avatar from '@mui/material/Avatar';
 
 export function WebMenu() {
+
     // State for anchor element of the menu (null when menu is closed)
     const [anchorEl, setAnchorEl] = useState(null);
     const { t } = useTranslation();
@@ -68,11 +70,15 @@ const UserInfo = () => {
     const { t, i18n } = useTranslation();
     const [lang, setLang] = React.useState(i18n.language);
 
-    const [accessToken, setAccessToken] = useState('');
+    const { accessToken, setAccessToken } = useAccessToken();
     const [username, setUsername] = useState('');
     const [isLogin, setIsLogin] = useState(false);
     const [emoji, setEmoji] = useState('');
     const [backgroundColor, setBackgroundColor] = useState('');
+
+    const updateAccessToken = (newToken) => {
+        setAccessToken(newToken);
+    };
 
     // Get access token
     useEffect(() => {
@@ -87,7 +93,7 @@ const UserInfo = () => {
             if (response) {
                 if (response.result) {
                     console.log("", response.result);
-                    setAccessToken(response.result.access);
+                    updateAccessToken(response.result.access);
                 }
             }
         });

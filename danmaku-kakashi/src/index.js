@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './content/index.css';
 import App from './App';
 import DanmakuHelper from './danmaku/DanmakuHelper';
+import { AccessTokenProvider } from './AccessTokenContext';
 import { LanguageProvider } from './i18n/LanguageContext';
 import './i18n/i18n';
 
@@ -27,7 +28,9 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <>
     <LanguageProvider>
-      <App />
+      <AccessTokenProvider>
+        <App />
+      </AccessTokenProvider>
     </LanguageProvider>
   </>
 );
