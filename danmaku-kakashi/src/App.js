@@ -208,15 +208,13 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
     <div>
-    {!isPopupOpen ? (
       <Button variant="contained" onClick={handleLogoClick} style={{width:'100%', borderRadius:'18px', 
-      backgroundColor:'#0e0e0e', border: '2px solid #BF360C'}}>
+      backgroundColor:'#0e0e0e', border: '2px solid #BF360C', display: isPopupOpen? 'none' : 'block' }}>
       <a style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '14px'}}>
       {t('▼ Open Danmaku Selection Panel ▼')}
       </a> 
       </Button>
-    ) : (
-      <div id="DanMuPopup" className="DanMuPageBody dm-preload">
+      <div id="DanMuPopup" className="DanMuPageBody dm-preload" style={{ display: isPopupOpen ? 'block' : 'none' }}>
           <UserInfo />
           <IconButton color="inherit" onClick={handleCloseIconClick}
           style={{position: 'absolute', top: 5, right: 5, zIndex: 1, margin: 0, padding: 0}}>
@@ -289,7 +287,6 @@ function App() {
               </div>
             )}
     </div>
-    )}
   </div>
   </ThemeProvider>
   );
