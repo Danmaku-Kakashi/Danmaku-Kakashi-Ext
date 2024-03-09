@@ -21,9 +21,9 @@ English | [简体中文](README.zh.md)
 
 2. Open any YouTube video on [youtube.com](https://www.youtube.com/).
 
-3. Select or search video on Danmaku Kakashi panel.
+3. Select or search for videos on the Danmaku Kakashi panel.
 
-4. Click "Load Danmaku" bottom.
+4. Click "Load Danmaku" buttom.
 
 5. Enjoy Danmaku!
 
@@ -47,7 +47,8 @@ English | [简体中文](README.zh.md)
 
 - Material UI (MUI)
 
-- Comment Core Library
+- [Comment Core Library](https://github.com/jabbany/CommentCoreLibrary) - Licensed under the MIT license
+
 
 ##### Video Showcase
 
