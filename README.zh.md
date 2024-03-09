@@ -6,8 +6,6 @@
 
 <h1 align="center">Danmaku Kakashi</h1>
 
-[![播放演示](https://raw.githubusercontent.com/Danmaku-Kakashi/Danmaku-Kakashi-Ext/main/danmaku-kakashi/public/videoCover_zh.png)](https://www.youtube.com/watch?v=U25MSKsE_pQ)
-
 ### 在 YouTube™上享受弹幕
 
 ##### 功能
@@ -49,6 +47,10 @@
 - Material UI (MUI)
 
 - Comment Core Library
+
+##### 视频演示
+
+[<img src="https://raw.githubusercontent.com/Danmaku-Kakashi/Danmaku-Kakashi-Ext/main/danmaku-kakashi/public/videoCover_zh.png" alt="播放演示" style="zoom: 50%;" />](https://www.youtube.com/watch?v=U25MSKsE_pQ)
 
 ##### 作者
 

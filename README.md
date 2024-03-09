@@ -7,8 +7,6 @@ English | [简体中文](README.zh.md)
 
 <h1 align="center">Danmaku Kakashi</h1>
 
-[![Play the Showcase](https://raw.githubusercontent.com/Danmaku-Kakashi/Danmaku-Kakashi-Ext/main/danmaku-kakashi/public/videoCover_en.png)](https://www.youtube.com/watch?v=U25MSKsE_pQ)
-
 ### Enjoy Danmaku on YouTube™
 
 ##### Features
@@ -50,6 +48,10 @@ English | [简体中文](README.zh.md)
 - Material UI (MUI)
 
 - Comment Core Library
+
+##### Video Showcase
+
+[<img src="https://raw.githubusercontent.com/Danmaku-Kakashi/Danmaku-Kakashi-Ext/main/danmaku-kakashi/public/videoCover_en.png" alt="Play the Showcase" style="zoom: 50%;" />](https://www.youtube.com/watch?v=U25MSKsE_pQ)
 
 ##### Authors
 
