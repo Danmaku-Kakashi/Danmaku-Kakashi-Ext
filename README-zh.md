@@ -1,6 +1,8 @@
-[English](./README.md) | 简体中文
+[English](README.md) | 简体中文
 
-<img title="" src="https://raw.githubusercontent.com/Danmaku-Kakashi/Danmaku-Kakashi-Ext/Add-basic-user-functionality/extension/icons/logoicon-cropped.png" alt="" width="128" data-align="center">
+<p align="center">
+<img src="https://raw.githubusercontent.com/Danmaku-Kakashi/Danmaku-Kakashi-Ext/Add-basic-user-functionality/extension/icons/logoicon-cropped.png" alt="" width="128">
+</p>
 
 <h1 align="center">Danmaku Kakashi</h1>
 
