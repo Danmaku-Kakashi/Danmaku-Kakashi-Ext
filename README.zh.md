@@ -50,7 +50,7 @@
 
 ##### 视频演示
 
-[<img src="https://raw.githubusercontent.com/Danmaku-Kakashi/Danmaku-Kakashi-Ext/main/danmaku-kakashi/public/videoCover_zh.png" alt="播放演示" style="zoom: 50%;" />](https://www.youtube.com/watch?v=U25MSKsE_pQ)
+[<img src="https://raw.githubusercontent.com/Danmaku-Kakashi/Danmaku-Kakashi-Ext/main/danmaku-kakashi/public/videoCover_zh.png" alt="播放演示" width="512" style="zoom: 50%;" />](https://www.youtube.com/watch?v=U25MSKsE_pQ)
 
 ##### 作者
 
