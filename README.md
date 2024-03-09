@@ -1,4 +1,4 @@
-English | [简体中文](README-zh.md)
+English | [简体中文](README.zh.md)
 
 
 <p align="center">
@@ -6,6 +6,8 @@ English | [简体中文](README-zh.md)
 </p>
 
 <h1 align="center">Danmaku Kakashi</h1>
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=U25MSKsE_pQ)
 
 ### Enjoy Danmaku on YouTube™
 
