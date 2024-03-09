@@ -46,7 +46,7 @@
 
 - Material UI (MUI)
 
-- Comment Core Library
+- [Comment Core Library](https://github.com/jabbany/CommentCoreLibrary) - Licensed under the MIT license
 
 ##### 视频演示
 
