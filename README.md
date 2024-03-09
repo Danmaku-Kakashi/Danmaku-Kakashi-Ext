@@ -17,7 +17,7 @@ English | [简体中文](README.zh.md)
 
 ##### How to use
 
-1. Add Danmaku Kakashi from web extension store.
+1. Add Danmaku Kakashi from the web extension store.
 
 2. Open any YouTube video on [youtube.com](https://www.youtube.com/).
 
@@ -29,7 +29,7 @@ English | [简体中文](README.zh.md)
 
 6. (Optional) [Login](https://www.dm-kks.com/home) or [Register](https://www.dm-kks.com/home) to Danmaku Kakashi start gaining contribution points!
 
-##### Upcomming Features
+##### Upcoming Features
 
 - Add your own Danamaku to any YouTube Videos.
 
@@ -37,7 +37,7 @@ English | [简体中文](README.zh.md)
 
 - Contribution Leaderboard
 
-##### Technogies Used
+##### Technologies Used
 
 - React.js
 
@@ -51,7 +51,7 @@ English | [简体中文](README.zh.md)
 
 ##### Video Showcase
 
-[<img src="https://raw.githubusercontent.com/Danmaku-Kakashi/Danmaku-Kakashi-Ext/main/danmaku-kakashi/public/videoCover_en.png" alt="Play the Showcase" style="zoom: 50%;" />](https://www.youtube.com/watch?v=U25MSKsE_pQ)
+[<img src="https://raw.githubusercontent.com/Danmaku-Kakashi/Danmaku-Kakashi-Ext/main/danmaku-kakashi/public/videoCover_en.png" alt="Play the Showcase" width="512" style="zoom: 50%;" />](https://www.youtube.com/watch?v=U25MSKsE_pQ)
 
 ##### Authors
 
