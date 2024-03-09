@@ -7,7 +7,7 @@ English | [简体中文](README.zh.md)
 
 <h1 align="center">Danmaku Kakashi</h1>
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=U25MSKsE_pQ)
+[![Play the Showcase](https://raw.githubusercontent.com/Danmaku-Kakashi/Danmaku-Kakashi-Ext/main/danmaku-kakashi/public/videoCover_en.png)](https://www.youtube.com/watch?v=U25MSKsE_pQ)
 
 ### Enjoy Danmaku on YouTube™
 
