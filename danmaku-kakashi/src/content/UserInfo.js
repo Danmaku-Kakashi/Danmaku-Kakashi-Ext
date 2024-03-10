@@ -159,7 +159,7 @@ const UserInfo = () => {
                     margin: 0, 
                     padding: 0
                     }}
-                    onClick={() => window.open(process.env.REACT_APP_API_WEB_URL + 'home', '_blank')}>
+                    onClick={() => window.open(process.env.REACT_APP_API_WEB_URL + 'leaderboard', '_blank')}>
                     {emoji}
                 </Avatar>
             </div>
@@ -167,7 +167,7 @@ const UserInfo = () => {
             <div className="register-container">
                 <button 
                 // if click, it will open a new tab to login
-                onClick={() => window.open(process.env.REACT_APP_API_WEB_URL + 'home', '_blank')}
+                onClick={() => window.open(process.env.REACT_APP_API_WEB_URL + 'leaderboard', '_blank')}
                 style={{position: 'absolute', top: 8.5, left: 40, zIndex: 1, margin: 0, padding: 0}}>
                     Login
                 </button>
