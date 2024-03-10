@@ -26,7 +26,7 @@
 
 5. 开看！
 
-6. (可选) [登录](https://www.dm-kks.com/home) 或 [注册](https://www.dm-kks.com/home) Danmaku Kakashi 账号开始获得贡献点数!
+6. (可选) [登录](https://www.dm-kks.com/leaderboard) 或 [注册](https://www.dm-kks.com/leaderboard) Danmaku Kakashi 账号开始获得贡献点数!
 
 ##### 即将推出的功能
 

@@ -27,7 +27,7 @@ English | [简体中文](README.zh.md)
 
 5. Enjoy Danmaku!
 
-6. (Optional) [Login](https://www.dm-kks.com/home) or [Register](https://www.dm-kks.com/home) to Danmaku Kakashi start gaining contribution points!
+6. (Optional) [Login](https://www.dm-kks.com/leaderboard) or [Register](https://www.dm-kks.com/leaderboard) to Danmaku Kakashi start gaining contribution points!
 
 ##### Upcoming Features
 
