@@ -27,10 +27,10 @@ export function WebMenu() {
 
     const TabUrl = {
         'site': process.env.REACT_APP_API_WEB_URL,
-        'doc': process.env.REACT_APP_API_WEB_URL + 'doc',
-        'about': process.env.REACT_APP_API_WEB_URL + 'about',
+        'docs': process.env.REACT_APP_API_WEB_URL + '/docs',
+        'about': process.env.REACT_APP_API_WEB_URL + '/about',
         'github': 'https://github.com/Danmaku-Kakashi/Danmaku-Kakashi-Ext',
-        'donate': process.env.REACT_APP_API_WEB_URL + 'donate'
+        'donate': process.env.REACT_APP_API_WEB_URL + '/donate'
     }
     const handleItemClick = (url) => {
         window.open(url, '_blank');
@@ -56,7 +56,7 @@ export function WebMenu() {
           onClose={handleClose} // Close the menu when an item is selected or clicking away
         >
           <MenuItem onClick={() => handleItemClick(TabUrl.site)}>{t('Our Site')}</MenuItem>
-          <MenuItem onClick={() => handleItemClick(TabUrl.doc)}>{t('Doc')}</MenuItem>
+          <MenuItem onClick={() => handleItemClick(TabUrl.docs)}>{t('Docs')}</MenuItem>
           <MenuItem onClick={() => handleItemClick(TabUrl.about)}>{t('About')}</MenuItem>
           <MenuItem onClick={() => handleItemClick(TabUrl.github)}>GitHub</MenuItem>
           <MenuItem onClick={() => handleItemClick(TabUrl.donate)}>{t('Donate')}</MenuItem>
@@ -159,7 +159,7 @@ const UserInfo = () => {
                     margin: 0, 
                     padding: 0
                     }}
-                    onClick={() => window.open(process.env.REACT_APP_API_WEB_URL + 'leaderboard', '_blank')}>
+                    onClick={() => window.open(process.env.REACT_APP_API_WEB_URL + '/leaderboard', '_blank')}>
                     {emoji}
                 </Avatar>
             </div>
@@ -167,7 +167,7 @@ const UserInfo = () => {
             <div className="register-container">
                 <button 
                 // if click, it will open a new tab to login
-                onClick={() => window.open(process.env.REACT_APP_API_WEB_URL + 'leaderboard', '_blank')}
+                onClick={() => window.open(process.env.REACT_APP_API_WEB_URL + '/leaderboard', '_blank')}
                 style={{position: 'absolute', top: 8.5, left: 40, zIndex: 1, margin: 0, padding: 0}}>
                     Login
                 </button>
