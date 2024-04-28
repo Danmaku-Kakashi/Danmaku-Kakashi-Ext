@@ -142,7 +142,9 @@ function App() {
           console.error('Error:', response.error);
           return;
         }
-        const searchMatch = response.videosResult.data.result.find(section => section.result_type === "video").data;
+        const searchMatch1 = response.videosResult.data.result.find(section => section.result_type === "video").data;
+        // check if video's danmaku number is 0 or not, if so, delete it from the list
+        const searchMatch = searchMatch1.filter(video => video.danmaku !== 0);
         searchMatch.forEach((video) => {
           if (video.pic.startsWith('//'))
             video.pic = video.pic.replace('//', 'https://');
