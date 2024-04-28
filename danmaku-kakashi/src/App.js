@@ -231,6 +231,16 @@ function App() {
     rootElement.style.maxHeight = '600px';
   };
 
+  const [bestMatchVideoExpanded, setBestMatchVideoExpanded] = useState(false);
+  const handleBestMatchVideoExpand = () => {
+    setBestMatchVideoExpanded(!bestMatchVideoExpanded);
+  };
+  
+  const [possibleMatchVideoExpanded, setPossibleMatchVideoExpanded] = useState(false);
+  const handlePossibleMatchVideoExpand = () => {
+    setPossibleMatchVideoExpanded(!possibleMatchVideoExpanded);
+  };
+
   return (
     <ThemeProvider theme={darkTheme}>
     <div>
@@ -289,28 +299,54 @@ function App() {
               </div>
             ) : (
 
-              <div>
-                <div id="mainControls" style={{ display: "block" }}>
-                  <h1 className="dmHeader">Best matches (Used by other Users)</h1>
-                  {bestMatchVideos.length > 0 ? (
-                    bestMatchVideos.map((video, index) => (
-                      <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
-                    ))
-                  ) : (
-                    <p className='Unfoundtext'>No match found :(</p>
-                  )}
-                </div>
+              <div> 
+                {bestMatchVideoExpanded ? (
+                  <div id="mainControls" style={{ display: "block" }}>
+                    <h1 className="dmHeader">Best matches (Used by other Users)</h1>
+                    <a onClick={handleBestMatchVideoExpand} 
+                    style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '10px', position: 'relative', left: '90%', top: '-24px'}}>
+                    Hide▲
+                    </a>
+                    {bestMatchVideos.length > 0 ? (
+                      bestMatchVideos.map((video, index) => (
+                        <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
+                      ))
+                    ) : (
+                      <p className='Unfoundtext'>No match found :(</p>
+                    )}
+                  </div>
+                ) : (
+                  <Button variant="contained" onClick={handleBestMatchVideoExpand} style={{width:'96%', marginBottom: '1%',
+                    backgroundColor:'#0e0e0e', border: '2px solid #B61A2B'}}>
+                    <a style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '14px'}}>
+                    ▼ Open Best Match Videos List ▼
+                    </a> 
+                  </Button>
+                )}
 
-                <div id="mainControls" style={{ display: "block" }}>
-                  <h1 className="dmHeader">Possible matches</h1>
-                  {possibleMatchVideos.length > 0 ? (
-                    possibleMatchVideos.map((video, index) => (
-                      <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
-                    ))
-                  ) : (
-                    <p className='Unfoundtext'>No match found :(</p>
-                  )}
-                </div>
+                {possibleMatchVideoExpanded ? (
+                  <div id="mainControls" style={{ display: "block" }}>
+                    <h1 className="dmHeader">Possible matches</h1>
+                    <a onClick={handlePossibleMatchVideoExpand} 
+                    style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '10px', position: 'relative', left: '90%', top: '-24px'}}>
+                    Hide▲
+                    </a>
+                    {possibleMatchVideos.length > 0 ? (
+                      possibleMatchVideos.map((video, index) => (
+                        <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
+                      ))
+                    ) : (
+                      <p className='Unfoundtext'>No match found :(</p>
+                    )}
+                  </div>
+                ) : (
+                  <Button variant="contained" onClick={handlePossibleMatchVideoExpand} style={{width:'96%', marginTop: '1%',
+                    backgroundColor:'#0e0e0e', border: '2px solid #B61A2B'}}>
+                    <a style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '14px'}}>
+                    ▼ Open Possible Match Videos List ▼
+                    </a> 
+                  </Button>
+                )}
               </div>
             )}
     </div>
