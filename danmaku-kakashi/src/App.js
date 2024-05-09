@@ -241,7 +241,7 @@ function App() {
     rootElement.style.maxHeight = '600px';
   };
 
-  const [bestMatchVideoExpanded, setBestMatchVideoExpanded] = useState(false);
+  const [bestMatchVideoExpanded, setBestMatchVideoExpanded] = useState(true);
   const handleBestMatchVideoExpand = () => {
     setBestMatchVideoExpanded(!bestMatchVideoExpanded);
   };
