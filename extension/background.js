@@ -48,7 +48,26 @@ chrome.runtime.onMessage.addListener(
           credentials: 'include'
         })
         .then(response => response.json())
-        .then(response => {
+        .then(response => {    if (request.type === 'DOWNLOAD_DANMAKU') {
+          console.log("Got danmaku download request: ", request);
+          fetch(request.url, {
+            method: 'GET',
+            headers: {
+              'Referer': 'no-referer'
+            }
+          })
+            .then(response => response.blob())
+            .then(blob => {
+              const reader = new FileReader();
+              reader.readAsDataURL(blob);
+              reader.onloadend = function () {
+                // Send the dataurl encoded danmaku xml
+                sendResponse({danmakuxml: reader.result});
+              };
+            })
+            .catch(error => console.error('Error downloading danmaku:', error));
+          return true; // Indicates that the response will be sent asynchronously
+        }
           console.log("Response: ", response);
           sendResponse({videosResult: response});
         })
@@ -128,6 +147,26 @@ chrome.runtime.onMessage.addListener(
         sendResponse({error: "Failed to fetch data"});
       });
       return true; // Indicates that the response will be sent asynchronously
+    }
+
+    if (request.type === 'FETCH_GENERAL') {
+      console.log("Fetch Request: ", request);
+      fetch(request.url, 
+        {
+          method: request.method,
+          credentials: 'include',
+          headers: request.headers
+        })
+        .then(response => response.json())
+        .then(response => {
+          console.log("Fetch Response: ", response);
+          sendResponse({result: response});
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error)
+          sendResponse({error: "Failed to fetch data"});
+        });
+      return true;
     }
   }
 );

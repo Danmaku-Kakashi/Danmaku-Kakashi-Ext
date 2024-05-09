@@ -1,4 +1,6 @@
 import {useState, useEffect} from 'react'
+import { useTranslation } from 'react-i18next';
+import { useAccessToken } from './AccessTokenContext';
 import './content/App.css';
 import * as React from 'react';
 import Button from '@mui/material/Button';
@@ -8,6 +10,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CustomizedInputBase from './content/searchBar.js';
 import Modal from './content/Modal.js';
 import VideoBox from './content/VideoBox.js';
+import UserInfo from './content/UserInfo.js';
 
 const darkTheme = createTheme({
   palette: {
@@ -16,6 +19,9 @@ const darkTheme = createTheme({
 });
 
 function App() {
+  const { t } = useTranslation();
+  const { accessToken, setAccessToken } = useAccessToken();
+
   const Logo = chrome.runtime.getURL("icons/logo.png");
   const LogoIcon = chrome.runtime.getURL("icons/logoicon.png");
 
@@ -61,11 +67,13 @@ function App() {
     }
   };
 
+  
   const uploadVideo = (video) => {
     let VideoData = {};
     //check if video contain the arcrank key
     let cur_video = video;
     console.log('Video:', cur_video);
+    console.log('accessTokens:', accessToken);
     const updateVideoData = new Promise((resolve, reject) => {
       if ('cover' in video) {
         console.log('Video contains view key');
@@ -89,7 +97,8 @@ function App() {
           VideoData = {
             ...cur_video.video,
             youtubeid: youtubeUrl,
-          };
+            access: accessToken,
+    };
           
           console.log('VideoData best:', VideoData);
           resolve(VideoData);
@@ -99,11 +108,12 @@ function App() {
 
     updateVideoData.then(VideoData => {
       console.log('VideoData:', VideoData);
-      fetch('http://127.0.0.1:8000/create/video', {
+      fetch(process.env.REACT_APP_API_BASE_URL + '/create/video', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        },
+          ...(accessToken && {'Authorization': accessToken}), // Add access token to headers if it exists
+      },
         body: JSON.stringify(VideoData),
       })
       .then(response => response.json())
@@ -126,7 +136,7 @@ function App() {
 
   useEffect(() => {
     if (youtubeUrl){
-      const url = `http://127.0.0.1:8000/api/videos/?youtubeid=${youtubeUrl}`;
+      const url = process.env.REACT_APP_API_BASE_URL + `/api/videos/?youtubeid=${youtubeUrl}`;
       newVideo();
       fetch(url)  // Django API
         .then(response => response.json())
@@ -244,15 +254,14 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
     <div>
-    {!isPopupOpen ? (
       <Button variant="contained" onClick={handleLogoClick} style={{width:'100%', borderRadius:'18px', 
-      backgroundColor:'#0e0e0e', border: '2px solid #B61A2B'}}>
+      backgroundColor:'#0e0e0e', border: '2px solid #BF360C', display: isPopupOpen? 'none' : 'block' }}>
       <a style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '14px'}}>
-      ▼ Open Danmaku Selection Panel ▼
+      {t('▼ Open Danmaku Selection Panel ▼')}
       </a> 
       </Button>
-    ) : (
-      <div id="DanMuPopup" className="DanMuPageBody dm-preload"v>
+      <div id="DanMuPopup" className="DanMuPageBody dm-preload" style={{ display: isPopupOpen ? 'block' : 'none' }}>
+          <UserInfo />
           <IconButton color="inherit" onClick={handleCloseIconClick}
           style={{position: 'absolute', top: 5, right: 5, zIndex: 1, margin: 0, padding: 0}}>
             <CloseRoundedIcon style={{fontSize: 24}}/>
@@ -281,19 +290,19 @@ function App() {
                   <Button variant="contained" color="error">
                     <a target="_blank" rel="noopener noreferrer" onClick={showVideoBox}
                     style={{ textDecoration: 'none', color: 'inherit', textTransform: 'none' }}>
-                    &lt;&lt; Return to Match Video
+                    &lt;&lt; {t('Return to Match Video')}
                     </a> 
                   </Button>
                 </div>
 
                 <div id="mainControls" style={{ display: "block" }}>
-                  <h1 className="dmHeader">Search Result</h1>
+                  <h1 className="dmHeader">{t('Search Results')}</h1>
                   {searchMatchVideos.length > 0 ? (
                     searchMatchVideos.map((video, index) => (
                       <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
                     ))
                   ) : (
-                    <p className='Unfoundtext'>No match found :(</p>
+                    <p className='Unfoundtext'>{t('No match found :(')}</p>
                   )}
                 </div>
               </div>
@@ -302,7 +311,7 @@ function App() {
               <div> 
                 {bestMatchVideoExpanded ? (
                   <div id="mainControls" style={{ display: "block" }}>
-                    <h1 className="dmHeader">Best matches (Used by other Users)</h1>
+                    <h1 className="dmHeader">{t('Best matches (Used by other Users)')}</h1>
                     <a onClick={handleBestMatchVideoExpand} 
                     style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '10px', position: 'relative', left: '90%', top: '-24px'}}>
                     Hide▲
@@ -312,7 +321,7 @@ function App() {
                         <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
                       ))
                     ) : (
-                      <p className='Unfoundtext'>No match found :(</p>
+                      <p className='Unfoundtext'>{t('No match found :(')}</p>
                     )}
                   </div>
                 ) : (
@@ -326,7 +335,7 @@ function App() {
 
                 {possibleMatchVideoExpanded ? (
                   <div id="mainControls" style={{ display: "block" }}>
-                    <h1 className="dmHeader">Possible matches</h1>
+                    <h1 className="dmHeader">{t('Possible matches')}</h1>
                     <a onClick={handlePossibleMatchVideoExpand} 
                     style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '10px', position: 'relative', left: '90%', top: '-24px'}}>
                     Hide▲
@@ -336,7 +345,7 @@ function App() {
                         <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
                       ))
                     ) : (
-                      <p className='Unfoundtext'>No match found :(</p>
+                      <p className='Unfoundtext'>{t('No match found :(')}</p>
                     )}
                   </div>
                 ) : (
@@ -350,7 +359,6 @@ function App() {
               </div>
             )}
     </div>
-    )}
   </div>
   </ThemeProvider>
   );

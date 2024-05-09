@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './content/index.css';
 import App from './App';
 import DanmakuHelper from './danmaku/DanmakuHelper';
+import { AccessTokenProvider } from './AccessTokenContext';
+import { LanguageProvider } from './i18n/LanguageContext';
+import './i18n/i18n';
 
 // Create side panel root element
 const rootElement = document.createElement("div");
@@ -24,7 +27,11 @@ document.head.appendChild(globalStyles);
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <>
-    <App />
+    <LanguageProvider>
+      <AccessTokenProvider>
+        <App />
+      </AccessTokenProvider>
+    </LanguageProvider>
   </>
 );
 

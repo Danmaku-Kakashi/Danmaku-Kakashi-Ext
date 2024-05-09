@@ -1,8 +1,8 @@
 :root {
   --dm-main-font-family: "Source Sans Pro", sans-serif;
   --dm-main-bg-color: #262020;
-  --dm-main-fg-color: #B61A2B;
-  --dm-grey-bg-color: #B61A2B;
+  --dm-main-fg-color: #BF360C;
+  --dm-grey-bg-color: #BF360C;
   --dm-grey-fg-color: #c0ca08;
   --dm-red-bg-color: #cc1717;
 }
@@ -225,7 +225,7 @@
   
   border-radius: 5px;
   width: 32vh;
-  border: 0.5vh solid #B61A2B; 
+  border: 0.5vh solid #BF360C; 
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8); /* add shadow */
 }
 .popuptitle {
@@ -251,7 +251,7 @@
   height: auto; 
   bottom: 21px;
   border-radius: 4px;
-  border: 2px solid #B61A2B; 
+  border: 2px solid #BF360C; 
   position: relative;
 }
 
@@ -266,4 +266,6 @@
 .makeGray {
   filter: grayscale(100%);
 }
+
+
 
