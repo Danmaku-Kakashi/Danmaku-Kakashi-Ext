@@ -15,6 +15,23 @@ English | [简体中文](README.zh.md)
 
 - Load Danmaku from BiliBili video
 
+
+##### How to install
+
+- You can install Danmaku Kakashi from the Chrome Web Store (coming soon)
+
+- You can also install Danmaku Kakashi manually by following the steps below:
+
+    1. Download the crx file from the [release page](https://github.com/Danmaku-Kakashi/Danmaku-Kakashi-Ext/releases/tag/v1.0.0)
+
+    2. Open Chrome and go to `chrome://extensions/` (extension settings page)
+
+    3. Drag the crx file you downloaded into the Chrome window
+
+    4. Click "Install Extension" to install Danmaku Kakashi
+
+    5. Open any YouTube video and enjoy Danmaku!
+
 ##### How to use
 
 1. Add Danmaku Kakashi from the web extension store.
