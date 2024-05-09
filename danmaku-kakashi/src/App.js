@@ -69,23 +69,57 @@ function App() {
 
   
   const uploadVideo = (video) => {
+    let VideoData = {};
+    //check if video contain the arcrank key
+    let cur_video = video;
+    console.log('Video:', cur_video);
     console.log('accessTokens:', accessToken);
-    const VideoData = {
-      ...video,
-      youtubeid: youtubeUrl,  
-      access: accessToken,
+    const updateVideoData = new Promise((resolve, reject) => {
+      if ('cover' in video) {
+        console.log('Video contains view key');
+        VideoData = {
+          ...cur_video,
+          youtubeid: youtubeUrl,
+        };
+        resolve(VideoData);
+      } else {
+        console.log('Video does not contain view key');
+        chrome.runtime.sendMessage({ type: 'UPDATE_BEST_MATCH', bvid: video.bvid }, (response) => {
+          if (response.error) {
+            console.error('Error:', response.error);
+            reject(response.error);
+            return;
+          }
+          cur_video = response;
+          if (cur_video.video.pic.startsWith('//'))
+            cur_video.video.pic = cur_video.video.pic.replace('//', 'https://');
+          console.log('Video best:', cur_video);
+          VideoData = {
+            ...cur_video.video,
+            youtubeid: youtubeUrl,
+            access: accessToken,
     };
-    fetch(process.env.REACT_APP_API_BASE_URL + '/create/video', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(accessToken && {'Authorization': accessToken}), // Add access token to headers if it exists
+          
+          console.log('VideoData best:', VideoData);
+          resolve(VideoData);
+        });
+      }
+    });
+
+    updateVideoData.then(VideoData => {
+      console.log('VideoData:', VideoData);
+      fetch(process.env.REACT_APP_API_BASE_URL + '/create/video', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(accessToken && {'Authorization': accessToken}), // Add access token to headers if it exists
       },
-      body: JSON.stringify(VideoData),
-    })
-    .then(response => response.json())
-    .then(data => {console.log(data)})
-    .catch((error) => console.error('Error:', error));
+        body: JSON.stringify(VideoData),
+      })
+      .then(response => response.json())
+      .then(data => {console.log(data)})
+      .catch((error) => console.error('Error:', error));
+    });
   }
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -118,7 +152,9 @@ function App() {
           console.error('Error:', response.error);
           return;
         }
-        const searchMatch = response.videosResult.data.result.find(section => section.result_type === "video").data;
+        const searchMatch1 = response.videosResult.data.result.find(section => section.result_type === "video").data;
+        // check if video's danmaku number is 0 or not, if so, delete it from the list
+        const searchMatch = searchMatch1.filter(video => video.danmaku !== 0);
         searchMatch.forEach((video) => {
           if (video.pic.startsWith('//'))
             video.pic = video.pic.replace('//', 'https://');
@@ -205,6 +241,16 @@ function App() {
     rootElement.style.maxHeight = '600px';
   };
 
+  const [bestMatchVideoExpanded, setBestMatchVideoExpanded] = useState(false);
+  const handleBestMatchVideoExpand = () => {
+    setBestMatchVideoExpanded(!bestMatchVideoExpanded);
+  };
+  
+  const [possibleMatchVideoExpanded, setPossibleMatchVideoExpanded] = useState(false);
+  const handlePossibleMatchVideoExpand = () => {
+    setPossibleMatchVideoExpanded(!possibleMatchVideoExpanded);
+  };
+
   return (
     <ThemeProvider theme={darkTheme}>
     <div>
@@ -262,28 +308,54 @@ function App() {
               </div>
             ) : (
 
-              <div>
-                <div id="mainControls" style={{ display: "block" }}>
-                  <h1 className="dmHeader">{t('Best matches (Used by other Users)')}</h1>
-                  {bestMatchVideos.length > 0 ? (
-                    bestMatchVideos.map((video, index) => (
-                      <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
-                    ))
-                  ) : (
-                    <p className='Unfoundtext'>{t('No match found :(')}</p>
-                  )}
-                </div>
+              <div> 
+                {bestMatchVideoExpanded ? (
+                  <div id="mainControls" style={{ display: "block" }}>
+                    <h1 className="dmHeader">{t('Best matches (Used by other Users)')}</h1>
+                    <a onClick={handleBestMatchVideoExpand} 
+                    style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '10px', position: 'relative', left: '90%', top: '-24px'}}>
+                    Hide▲
+                    </a>
+                    {bestMatchVideos.length > 0 ? (
+                      bestMatchVideos.map((video, index) => (
+                        <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
+                      ))
+                    ) : (
+                      <p className='Unfoundtext'>{t('No match found :(')}</p>
+                    )}
+                  </div>
+                ) : (
+                  <Button variant="contained" onClick={handleBestMatchVideoExpand} style={{width:'96%', marginBottom: '1%',
+                    backgroundColor:'#0e0e0e', border: '2px solid #B61A2B'}}>
+                    <a style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '14px'}}>
+                    ▼ Open Best Match Videos List ▼
+                    </a> 
+                  </Button>
+                )}
 
-                <div id="mainControls" style={{ display: "block" }}>
-                  <h1 className="dmHeader">{t('Possible matches')}</h1>
-                  {possibleMatchVideos.length > 0 ? (
-                    possibleMatchVideos.map((video, index) => (
-                      <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
-                    ))
-                  ) : (
-                    <p className='Unfoundtext'>{t('No match found :(')}</p>
-                  )}
-                </div>
+                {possibleMatchVideoExpanded ? (
+                  <div id="mainControls" style={{ display: "block" }}>
+                    <h1 className="dmHeader">{t('Possible matches')}</h1>
+                    <a onClick={handlePossibleMatchVideoExpand} 
+                    style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '10px', position: 'relative', left: '90%', top: '-24px'}}>
+                    Hide▲
+                    </a>
+                    {possibleMatchVideos.length > 0 ? (
+                      possibleMatchVideos.map((video, index) => (
+                        <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
+                      ))
+                    ) : (
+                      <p className='Unfoundtext'>{t('No match found :(')}</p>
+                    )}
+                  </div>
+                ) : (
+                  <Button variant="contained" onClick={handlePossibleMatchVideoExpand} style={{width:'96%', marginTop: '1%',
+                    backgroundColor:'#0e0e0e', border: '2px solid #B61A2B'}}>
+                    <a style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '14px'}}>
+                    ▼ Open Possible Match Videos List ▼
+                    </a> 
+                  </Button>
+                )}
               </div>
             )}
     </div>
