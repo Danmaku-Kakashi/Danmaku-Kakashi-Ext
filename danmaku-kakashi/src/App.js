@@ -135,6 +135,7 @@ function App() {
   const [youtubeUrl, setYoutubeUrl] = useState('');
 
   useEffect(() => {
+    let intervalId = null;
     if (youtubeUrl){
       const url = process.env.REACT_APP_API_BASE_URL + `/api/videos/?youtubeid=${youtubeUrl}`;
       newVideo();
@@ -146,25 +147,53 @@ function App() {
         })
         .catch(error => console.error('Error:', error));
     }
-    const handlePossibleMatch = (youtubeUrl) => {
-      chrome.runtime.sendMessage({ type: 'SEARCH', query: youtubeUrl.vid }, (response) => {
-        if (response.error) {
-          console.error('Error:', response.error);
-          return;
+    if (youtubeUrl){
+      intervalId = setInterval(() => {
+        const titleElement = document.querySelector('yt-formatted-string.style-scope.ytd-watch-metadata');
+        if (titleElement) {
+          const title = titleElement.innerText || titleElement.textContent; // Use innerText or textContent based on which is available
+          clearInterval(intervalId); // Clear the interval once the title is found
+          
+          chrome.runtime.sendMessage({ type: 'SEARCH', query: title}, (response) => {
+            if (response.error) {
+              console.error('Error:', response.error);
+              return;
+            }
+            const searchMatch1 = response.videosResult.data.result.find(section => section.result_type === "video").data;
+            // check if video's danmaku number is 0 or not, if so, delete it from the list
+            const searchMatch = searchMatch1.filter(video => video.danmaku !== 0);
+            searchMatch.forEach((video) => {
+              if (video.pic.startsWith('//'))
+                video.pic = video.pic.replace('//', 'https://');
+            });
+            searchMatch.forEach((video) => {
+              video.title = video.title.replace(/<em class="keyword">([\s\S]*?)<\/em>/g, '$1');
+            });
+            setPossibleMatchVideos(searchMatch); //Get Search Result list
+          });
         }
-        const searchMatch1 = response.videosResult.data.result.find(section => section.result_type === "video").data;
-        // check if video's danmaku number is 0 or not, if so, delete it from the list
-        const searchMatch = searchMatch1.filter(video => video.danmaku !== 0);
-        searchMatch.forEach((video) => {
-          if (video.pic.startsWith('//'))
-            video.pic = video.pic.replace('//', 'https://');
-        });
-        searchMatch.forEach((video) => {
-          video.title = video.title.replace(/<em class="keyword">([\s\S]*?)<\/em>/g, '$1');
-        });
-        setPossibleMatchVideos(searchMatch); //Get Search Result list
-      });
-    };
+      }, 1000); // Check every 1000 milliseconds (1 second)
+    }
+
+    // const handlePossibleMatch = (youtubeUrl) => {
+    //   chrome.runtime.sendMessage({ type: 'SEARCH', query: youtubeUrl.vid }, (response) => {
+    //     if (response.error) {
+    //       console.error('Error:', response.error);
+    //       return;
+    //     }
+    //     const searchMatch1 = response.videosResult.data.result.find(section => section.result_type === "video").data;
+    //     // check if video's danmaku number is 0 or not, if so, delete it from the list
+    //     const searchMatch = searchMatch1.filter(video => video.danmaku !== 0);
+    //     searchMatch.forEach((video) => {
+    //       if (video.pic.startsWith('//'))
+    //         video.pic = video.pic.replace('//', 'https://');
+    //     });
+    //     searchMatch.forEach((video) => {
+    //       video.title = video.title.replace(/<em class="keyword">([\s\S]*?)<\/em>/g, '$1');
+    //     });
+    //     setPossibleMatchVideos(searchMatch); //Get Search Result list
+    //   });
+    // };
 
     const handleNewUrl = (message, sender, sendResponse) => {
       setShowMainControls(true); // when new url, return to main controls
@@ -182,12 +211,13 @@ function App() {
   
       // Add Chrome message listener
     chrome.runtime.onMessage.addListener(handleNewUrl);
-    chrome.runtime.onMessage.addListener(handlePossibleMatch);
+    // chrome.runtime.onMessage.addListener(handlePossibleMatch);
   
       // Clean up Chrome message listener
     return () => {
+        clearInterval(intervalId);
         chrome.runtime.onMessage.removeListener(handleNewUrl);
-        chrome.runtime.onMessage.removeListener(handlePossibleMatch);
+        // chrome.runtime.onMessage.removeListener(handlePossibleMatch);
     };
 
   }, [youtubeUrl]);
@@ -246,7 +276,7 @@ function App() {
     setBestMatchVideoExpanded(!bestMatchVideoExpanded);
   };
   
-  const [possibleMatchVideoExpanded, setPossibleMatchVideoExpanded] = useState(false);
+  const [possibleMatchVideoExpanded, setPossibleMatchVideoExpanded] = useState(true);
   const handlePossibleMatchVideoExpand = () => {
     setPossibleMatchVideoExpanded(!possibleMatchVideoExpanded);
   };
