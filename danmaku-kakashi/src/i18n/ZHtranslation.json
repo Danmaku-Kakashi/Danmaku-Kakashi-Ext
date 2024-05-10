@@ -12,5 +12,8 @@
     "Docs": "文档",
     "About": "关于我们",
     "Login": "登录",
-    "Donate": "支持我们"
+    "Donate": "支持我们",
+    "Hide": "隐藏 ▲",
+    "Possible Show": "▼ 显示可能匹配的视频 ▼",
+    "Best Show": "▼ 显示最佳匹配的视频 ▼"
 }

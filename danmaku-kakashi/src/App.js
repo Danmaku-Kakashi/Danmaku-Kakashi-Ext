@@ -314,7 +314,7 @@ function App() {
                     <h1 className="dmHeader">{t('Best matches (Used by other Users)')}</h1>
                     <a onClick={handleBestMatchVideoExpand} 
                     style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '10px', position: 'relative', left: '90%', top: '-24px'}}>
-                    Hide▲
+                    {t('Hide')}
                     </a>
                     {bestMatchVideos.length > 0 ? (
                       bestMatchVideos.map((video, index) => (
@@ -328,7 +328,7 @@ function App() {
                   <Button variant="contained" onClick={handleBestMatchVideoExpand} style={{width:'96%', marginBottom: '1%',
                     backgroundColor:'#0e0e0e', border: '2px solid #B61A2B'}}>
                     <a style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '14px'}}>
-                    ▼ Open Best Match Videos List ▼
+                    {t('Best Show')}
                     </a> 
                   </Button>
                 )}
@@ -338,7 +338,7 @@ function App() {
                     <h1 className="dmHeader">{t('Possible matches')}</h1>
                     <a onClick={handlePossibleMatchVideoExpand} 
                     style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '10px', position: 'relative', left: '90%', top: '-24px'}}>
-                    Hide▲
+                    {t('Hide')}
                     </a>
                     {possibleMatchVideos.length > 0 ? (
                       possibleMatchVideos.map((video, index) => (
@@ -352,7 +352,7 @@ function App() {
                   <Button variant="contained" onClick={handlePossibleMatchVideoExpand} style={{width:'96%', marginTop: '1%',
                     backgroundColor:'#0e0e0e', border: '2px solid #B61A2B'}}>
                     <a style={{ textDecoration: 'none', color: '#f1f1f1', textTransform: 'none', fontSize: '14px'}}>
-                    ▼ Open Possible Match Videos List ▼
+                    {t('Possible Show')}
                     </a> 
                   </Button>
                 )}
