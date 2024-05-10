@@ -215,6 +215,7 @@ function App() {
   
       // Clean up Chrome message listener
     return () => {
+        clearInterval(intervalId);
         chrome.runtime.onMessage.removeListener(handleNewUrl);
         // chrome.runtime.onMessage.removeListener(handlePossibleMatch);
     };
