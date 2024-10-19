@@ -3,11 +3,13 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     const queryParameters = tab.url.split("?")[1];
     const urlParameters = new URLSearchParams(queryParameters);
     const videoId = urlParameters.get('v');
+    const userLanguage = chrome.i18n.getUILanguage();
 
     console.log('YouTube Video URL Detected:', videoId);
     chrome.tabs.sendMessage(tabId, {
       type: 'youtubeid',
       vid: videoId,
+      lang: userLanguage
     }, function (response) {
       if (response)
         console.log("Got it from React ", response.text);

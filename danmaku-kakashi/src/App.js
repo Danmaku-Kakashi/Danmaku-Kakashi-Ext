@@ -19,7 +19,9 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [lang, setLang] = React.useState(i18n.language);
+  // const { t } = useTranslation();
   const { accessToken, setAccessToken } = useAccessToken();
 
   const Logo = chrome.runtime.getURL("icons/logo.png");
@@ -59,9 +61,9 @@ function App() {
         }
         const cid = response.videocid;
         const danmakuUrl = `https://comment.bilibili.com/${cid}.xml`;
-        console.log('Danmaku URL:', danmakuUrl);  // return danmaku url
+        // console.log('Danmaku URL:', danmakuUrl);  // return danmaku url
         window.addDanmakuSource(danmakuUrl);
-        console.log("Tried to send Danmaku Source to player.");
+        // console.log("Tried to send Danmaku Source to player.");
       });
       setIsModalOpen(false);  // close popup page model
     }
@@ -72,18 +74,18 @@ function App() {
     let VideoData = {};
     //check if video contain the arcrank key
     let cur_video = video;
-    console.log('Video:', cur_video);
-    console.log('accessTokens:', accessToken);
+    // console.log('Video:', cur_video);
+    // console.log('accessTokens:', accessToken);
     const updateVideoData = new Promise((resolve, reject) => {
       if ('cover' in video) {
-        console.log('Video contains view key');
+        // console.log('Video contains view key');
         VideoData = {
           ...cur_video,
           youtubeid: youtubeUrl,
         };
         resolve(VideoData);
       } else {
-        console.log('Video does not contain view key');
+        // console.log('Video does not contain view key');
         chrome.runtime.sendMessage({ type: 'UPDATE_BEST_MATCH', bvid: video.bvid }, (response) => {
           if (response.error) {
             console.error('Error:', response.error);
@@ -93,21 +95,21 @@ function App() {
           cur_video = response;
           if (cur_video.video.pic.startsWith('//'))
             cur_video.video.pic = cur_video.video.pic.replace('//', 'https://');
-          console.log('Video best:', cur_video);
+          // console.log('Video best:', cur_video);
           VideoData = {
             ...cur_video.video,
             youtubeid: youtubeUrl,
             access: accessToken,
     };
           
-          console.log('VideoData best:', VideoData);
+          // console.log('VideoData best:', VideoData);
           resolve(VideoData);
         });
       }
     });
 
     updateVideoData.then(VideoData => {
-      console.log('VideoData:', VideoData);
+      // console.log('VideoData:', VideoData);
       fetch(process.env.REACT_APP_API_BASE_URL + '/create/video', {
         method: 'POST',
         headers: {
@@ -201,6 +203,18 @@ function App() {
           if (message.vid === youtubeUrl) {
             return;
           }
+          // get lang from message and update i18n
+          let lang = message.lang;
+          // console.log('Received Language1:', lang);
+          // check if lang is not start with zh, then change it to en
+          if (lang.startsWith('zh')) {
+            lang = 'zh';
+          } else {
+            lang = 'en';
+          }
+          i18n.changeLanguage(lang);
+          setLang(lang);
+
           setYoutubeUrl(message.vid); // Update new YouTube URL
           console.log('Received YouTube URL:', message.vid);
           var response_text = message.vid + ' received by React';

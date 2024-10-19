@@ -115,9 +115,9 @@ const UserInfo = () => {
                     if (response.result) {
                         console.log("Get Result: ", response.result);
                         setUsername(response.result.username);
-                        console.log("lang: ", response.result.preferred_language);
-                        i18n.changeLanguage(response.result.preferred_language);
-                        setLang(response.result.preferred_language);
+                        // console.log("lang: ", response.result.preferred_language);
+                        // i18n.changeLanguage(response.result.preferred_language);
+                        // setLang(response.result.preferred_language);
                         const parts = response.result.user_pic.split(',');
                         if (parts.length === 2) {
                             setEmoji(parts[0]);
