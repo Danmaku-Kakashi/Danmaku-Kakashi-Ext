@@ -1,6 +1,6 @@
 {
     "name": "Danmaku Kakashi",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "permissions" :["tabs"],
     "manifest_version": 3,
     "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqusevku+gfqajEc5BS6TF20aJ+6it96CFn9WC/JWwZY10k0ITbShghBcXXsvuE3xRdN7NyH9JSULi3oT07bs5dvUDrKKWTdsXxP9hCdKsimqZ5Hy/8mlkbG8/0xsQSrOCUbL2bFN8zCTPaA0EwmY+VWu8d7B0qzDqLXgzqO3OLXSbhPYLrUQ7tmbEToBJtdzSaXENhqdU8A2amcd7wmlKY/XClaJwT9F+kWUZysiW3ipewIjEt/Et5tbG5JHj8Z8LEcJ/9l8H7KQ/niNuAJVcl0vT0dzw6j6E0Nq6h0My/T2x9Io2tT+qP7IEvZxv3P3DmZ6aswznGk1G51a8x/kWQIDAQAB",
