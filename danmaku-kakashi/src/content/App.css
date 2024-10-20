@@ -5,6 +5,11 @@
   --dm-grey-bg-color: #BF360C;
   --dm-grey-fg-color: #c0ca08;
   --dm-red-bg-color: #cc1717;
+  --dm-link-color: #d47a0c;
+}
+
+a {
+  color: var(--dm-link-color);
 }
 
 /*
