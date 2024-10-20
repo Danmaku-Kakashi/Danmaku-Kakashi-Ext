@@ -368,9 +368,9 @@ function App() {
                     searchError ? (
                       // Display error message with a link to login
                       <p className='Unfoundtext'>
-                        {t('Please login to Bilibili to search for videos')} 
+                        {t('Bilibili Not Login')} 
                         <a href="https://www.bilibili.com" target="_blank" rel="noopener noreferrer">
-                          {t('Login Bilibili')}
+                          {t('Bilibili Login')}
                         </a>
                       </p>
                     ) : (

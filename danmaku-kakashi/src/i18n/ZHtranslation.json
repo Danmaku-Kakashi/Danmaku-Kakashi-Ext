@@ -15,5 +15,8 @@
     "Donate": "支持我们",
     "Hide": "隐藏 ▲",
     "Possible Show": "▼ 显示可能匹配的视频 ▼",
-    "Best Show": "▼ 显示最佳匹配的视频 ▼"
+    "Best Show": "▼ 显示最佳匹配的视频 ▼",
+    "Bilibili Login": "登录B站",
+    "Bilibili Not Login": "请登录B站以搜索视频"
+
 }
