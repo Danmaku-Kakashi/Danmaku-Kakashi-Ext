@@ -43,6 +43,28 @@ chrome.runtime.onMessage.addListener(
     // Get Search Text from content search by bilibili api and send back result
     if (request.type === 'SEARCH') {
       console.log("Request: ", request);
+
+      console.log('0=====================================');
+      fetch('https://api.bilibili.com/x/web-interface/nav', 
+        {
+          method: 'GET',
+          credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(response => {
+          console.log(response);
+          console.log('Check Login:', response.code);
+          console.log('Check Login:', response.code === -101);
+          if (response.code === -101) {
+            console.log('Check Login:', response.code);
+            sendResponse({error: "Not logged in"});
+            return false;
+          }
+        })
+      // Check if the user is logged in by checking if the data.code is -101
+      console.log('1=====================================');
+      // console.log('Check Login:', response.code);
+      
       
       fetch('https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=' + request.query,
         {

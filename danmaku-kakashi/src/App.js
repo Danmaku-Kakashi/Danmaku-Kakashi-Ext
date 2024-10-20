@@ -29,14 +29,30 @@ function App() {
 
   const [searchMatchVideos, setSearchMatchVideos] = useState([]);
   const [showMainControls, setShowMainControls] = useState(true);
+  const [searchError, setSearchError] = useState(false);
   const handleSearchTrigger = (searchInput) => {
     setShowMainControls(false);
     chrome.runtime.sendMessage({ type: 'SEARCH', query: encodeURI(searchInput) }, (response) => {
       if (response.error) {
         console.error('Error:', response.error);
+        // check the error message, if it is not logged in, then set search error to true
+        if (response.error === 'Not logged in') {
+          setSearchError(true);
+        }
         return;
       }
       const searchMatch = response.videosResult.data.result.find(section => section.result_type === "video").data;
+      // check if the numbers of video is 0 then check user login status
+      // if (searchMatch.length === 20) {
+      //   console.log('No match found');
+      //   checkLogin().then((isLoggedIn) => {
+      //     if (!isLoggedIn) {
+      //       console.log('User is not logged in2');
+      //       setSearchError(true);
+      //     }
+      //   });
+      //   return;
+      // }
       searchMatch.forEach((video) => {
         if (video.pic.startsWith('//'))
           video.pic = video.pic.replace('//', 'https://');
@@ -45,6 +61,8 @@ function App() {
         video.title = video.title.replace(/<em class="keyword">([\s\S]*?)<\/em>/g, '$1');
       });
       setSearchMatchVideos(searchMatch); //Get Search Result list
+      setSearchError(false); // Reset search error
+      // setSearchError(true); // for testing
     });
   };
   const showVideoBox = () => {
@@ -346,7 +364,18 @@ function App() {
                       <VideoBox key={index} {...video} onClick={() => handleVideoClick(video)} />
                     ))
                   ) : (
-                    <p className='Unfoundtext'>{t('No match found :(')}</p>
+                    // check if search error, if so, show error message
+                    searchError ? (
+                      // Display error message with a link to login
+                      <p className='Unfoundtext'>
+                        {t('Please login to Bilibili to search for videos')} 
+                        <a href="https://www.bilibili.com" target="_blank" rel="noopener noreferrer">
+                          {t('Login Bilibili')}
+                        </a>
+                      </p>
+                    ) : (
+                      <p className='Unfoundtext'>{t('No match found :(')}</p>
+                    )
                   )}
                 </div>
               </div>
