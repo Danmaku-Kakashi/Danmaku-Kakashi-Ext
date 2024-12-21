@@ -11,6 +11,7 @@ import CustomizedInputBase from './content/searchBar.js';
 import Modal from './content/Modal.js';
 import VideoBox from './content/VideoBox.js';
 import UserInfo from './content/UserInfo.js';
+import appendDanmakuControl from './content/DamakuPanel.js';
 
 const darkTheme = createTheme({
   palette: {
@@ -260,22 +261,41 @@ function App() {
     if (!DanmuControl) {
       const DanmuBtn = document.createElement("img");
       DanmuBtn.src = LogoIcon;
-      DanmuBtn.className = "ytp-button " + "DanmuControl" ;
+      DanmuBtn.className = "ytp-button DanmuControl";
       DanmuBtn.id = "DanmakuControlBtn";
-      DanmuBtn.title = "Click to open danmaku conrol panel";
+      DanmuBtn.title = "Hover to open danmaku control panel";
       DanmuBtn.style.transition = "all 0.5s ease-out";
-      
-      // Wait for YouTube player elements to load and insert DanmuBtn
+      DanmuBtn.style.cursor = "pointer";
+  
       const checkExist = setInterval(function() {
-        var youtubeRightControls = document.getElementsByClassName("ytp-right-controls")[0];
+        const youtubeRightControls = document.getElementsByClassName("ytp-right-controls")[0];
         if (youtubeRightControls) {
           clearInterval(checkExist);
-          youtubeRightControls.prepend(DanmuBtn);
+          
+          // create danmaku control panel and append to youtubeRightControls
+          const DanmuPanel = appendDanmakuControl(youtubeRightControls, DanmuBtn);
+
           DanmuBtn.addEventListener("click", OpenDanmakuControlHandler);
+  
+          // setup hover event
+          DanmuBtn.addEventListener("mouseenter", () => {
+            DanmuPanel.style.display = "block"; 
+          });
+          DanmuBtn.addEventListener("mouseleave", () => {
+            DanmuPanel.style.display = "none";
+          });
+
+          DanmuPanel.addEventListener("mouseenter", () => {
+            DanmuPanel.style.display = "block";
+          });
+          DanmuPanel.addEventListener("mouseleave", () => {
+            DanmuPanel.style.display = "none";
+          });
+  
         }
       }, 100); // check every 100ms
     }
-  }
+  };
 
   const OpenDanmakuControlHandler = async() => {
     var result = window.toggleDanmakuVisibility();

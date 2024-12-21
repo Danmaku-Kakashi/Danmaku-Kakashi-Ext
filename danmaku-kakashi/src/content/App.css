@@ -272,5 +272,11 @@ a {
   filter: grayscale(100%);
 }
 
+.danmu-panel {  
+  bottom: 100%;   
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 
 
