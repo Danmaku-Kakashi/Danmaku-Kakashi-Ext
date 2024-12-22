@@ -273,7 +273,7 @@ a {
 }
 
 .danmu-panel {  
-  bottom: 100%;   
+  bottom: 90%;   
   left: 50%;
   transform: translateX(-50%);
 }

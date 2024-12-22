@@ -17,6 +17,8 @@
     "Possible Show": "▼ 显示可能匹配的视频 ▼",
     "Best Show": "▼ 显示最佳匹配的视频 ▼",
     "Bilibili Login": "去登录 B 站",
-    "Bilibili Not Login": "由于 API 限制，请登录 B 站以搜索视频 "
+    "Bilibili Not Login": "由于 API 限制，请登录 B 站以搜索视频 ",
+    "Danmaku Settings": "弹幕设置"
+
 
 }
