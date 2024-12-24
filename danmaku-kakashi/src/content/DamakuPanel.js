@@ -1,5 +1,5 @@
 // import { useTranslation } from 'react-i18next';
-
+const init_settings = { "displayArea": 100, "clearness": 100, "fontSize": 100, "speed": 50 };
 function createDanmakuPanel() {
 
     // const { t } = useTranslation();
@@ -140,6 +140,7 @@ function createDanmakuPanel() {
       <div class="slider-group">
         <span class="slider-label">显示区域</span>
         <input 
+          id="displayArea"
           type="range" 
           min="0" 
           max="100" 
@@ -160,21 +161,21 @@ function createDanmakuPanel() {
       <!-- clearness (0~100%) -->
       <div class="slider-group">
         <span class="slider-label">透明度</span>
-        <input type="range" min="0" max="100" value="100" class="danmu-slider" />
+        <input type="range" min="0" max="100" value="100" class="danmu-slider" id="clearness" />
         <span class="slider-value">100%</span>
       </div>
   
       <!-- front size (50~200%) -->
       <div class="slider-group">
         <span class="slider-label">字号</span>
-        <input type="range" min="50" max="200" value="100" class="danmu-slider" />
+        <input type="range" min="50" max="200" value="100" class="danmu-slider" id="fontSize" />
         <span class="slider-value">100%</span>
       </div>
   
       <!-- speed (1~100) -->
       <div class="slider-group">
         <span class="slider-label">速度</span>
-        <input type="range" min="1" max="100" value="50" class="danmu-slider" />
+        <input type="range" min="1" max="100" value="50" class="danmu-slider" id="speed" />
         <span class="slider-value">50</span>
       </div>
 
@@ -197,37 +198,52 @@ function createDanmakuPanel() {
       </div>
     `;
 
-  
-    // add event listener to sliders to update the value span
     const sliders = DanmuPanel.querySelectorAll(".danmu-slider");
-    sliders.forEach((slider) => {
-      const valueSpan = slider.parentElement.querySelector(".slider-value");
-      slider.addEventListener("input", (e) => {
-        const val = e.target.value;
-        const labelText = slider.previousElementSibling.innerText; 
-        
-        if (labelText.includes("速度")) {
-          // speed: 1~100, no need to add "%"
-          valueSpan.textContent = val;
-        } else if (labelText.includes("显示区域")) {
-          // display area: 25, 50, 75, full screen
-          if (val === "100") {
-            valueSpan.textContent = "全屏";
-          } else {
-            valueSpan.textContent = val + "%";
-          }
-        } else {
-          // clearness, front size: 0~100%, 50~200%
-          valueSpan.textContent = val + "%";
-        }
-      });
-    });
-
     const timeAdjustInput = DanmuPanel.querySelector(".time-adjust-input");
     const timeApplyButton = DanmuPanel.querySelector(".time-apply-button");
     const timeClearButton = DanmuPanel.querySelector(".time-clear-button");
     const offsetDisplay = DanmuPanel.querySelector(".time-current-offset");
     const warningText = DanmuPanel.querySelector(".time-adjust-warning");
+
+    // initialize panel by getting settings from storage, and update the sliders, if not exist, use default
+    // console.log("Init Settings...");
+    chrome.storage.sync.get(["danmakuSettings"], (result) => {
+        const settings = result.danmakuSettings || init_settings;
+        // console.log("Init Settings loaded1:", settings);
+
+        if (result.danmakuSettings) {
+            // inform the app to apply the settings
+            notifyApp(settings);
+        }
+
+        sliders.forEach((slider) => {
+            // update the slider value, display value and inform the app
+            let value;
+            const settingKey = slider.id; // get the setting key
+            const val = settings[settingKey]; // get the value from settings
+            if (val === undefined) {
+                value = init_settings[settingKey];
+            } else {
+                value = val;
+            }
+
+            slider.value = value;
+
+            // console.log("Init Settings key & value:", settingKey, value);
+
+            // Update UI display
+            if (settingKey === "displayArea") {
+                if (value == 100) {
+                    slider.nextElementSibling.nextElementSibling.textContent = "全屏";
+                } else {
+                    slider.nextElementSibling.nextElementSibling.textContent = value + "%";
+                }
+            } else {
+                slider.nextElementSibling.textContent = value + "%";
+            }
+                
+        });
+    });
 
     let currentOffset = 0.0;
     // update the offset display
@@ -236,6 +252,58 @@ function createDanmakuPanel() {
         "当前偏移: " + (currentOffset >= 0 ? "+" : "") + currentOffset.toFixed(1) + "s";
     }
 
+    // Notify the app to apply changes
+    function notifyApp(settings) {
+        // Send the settings to your app
+        chrome.runtime.sendMessage({ type: "UPDATE_DANMAKU_SETTINGS", payload: settings }, (response) => {
+            if (response && response.success) {
+                console.log("Settings applied in the app:", response);
+            } else {
+                console.error("Failed to apply settings in the app.");
+            }
+        });
+    }
+
+    // Save settings to storage and notify the app
+    function saveSettings(updatedSettings) {
+        notifyApp(updatedSettings); // Immediately notify the app to apply changes
+        chrome.storage.sync.set({ danmakuSettings: updatedSettings }, () => {
+            console.log("Settings saved:", updatedSettings);
+        });
+    }
+
+    // Handle slider changes
+    sliders.forEach((slider) => {
+        slider.addEventListener("input", (e) => {
+            const value = e.target.value;
+            const settingKey = slider.id;
+
+            const settings = {};
+            settings[settingKey] = parseInt(value);
+
+            // Update UI display
+            if (settingKey === "displayArea") {
+                // console.log("Display Area:", value);
+                if (value == 100) {
+                    slider.nextElementSibling.nextElementSibling.textContent = "全屏";
+                } else {
+                    slider.nextElementSibling.nextElementSibling.textContent = value + "%";
+                }
+            } else {
+                slider.nextElementSibling.textContent = value + "%";
+            }
+
+            // Save to storage and notify the app
+            chrome.storage.sync.get(["danmakuSettings"], (result) => {
+                const currentSettings = result.danmakuSettings || {};
+                const updatedSettings = { ...currentSettings, ...settings };
+                console.log("Updated settings:", updatedSettings);
+                saveSettings(updatedSettings);
+            });
+        });
+    });
+
+    // add event listener to apply button to adjust the time
     timeApplyButton.addEventListener("click", () => {
         const val = parseFloat(timeAdjustInput.value.trim());
         if (isNaN(val)) {
