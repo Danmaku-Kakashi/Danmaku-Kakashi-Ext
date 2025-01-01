@@ -254,6 +254,7 @@ function createDanmakuPanel() {
 
     // Notify the app to apply changes
     function notifyApp(settings) {
+        console.log("Notify app to apply settings:", settings);
         // Send the settings to your app
         chrome.runtime.sendMessage({ type: "UPDATE_DANMAKU_SETTINGS", payload: settings }, (response) => {
             if (response && response.success) {
@@ -272,18 +273,15 @@ function createDanmakuPanel() {
         });
     }
 
+    let debounceTimer; // Declare a timer variable for debouncing
     // Handle slider changes
     sliders.forEach((slider) => {
         slider.addEventListener("input", (e) => {
             const value = e.target.value;
             const settingKey = slider.id;
-
-            const settings = {};
-            settings[settingKey] = parseInt(value);
-
-            // Update UI display
+    
+            // Update UI display immediately
             if (settingKey === "displayArea") {
-                // console.log("Display Area:", value);
                 if (value == 100) {
                     slider.nextElementSibling.nextElementSibling.textContent = "全屏";
                 } else {
@@ -292,14 +290,22 @@ function createDanmakuPanel() {
             } else {
                 slider.nextElementSibling.textContent = value + "%";
             }
-
-            // Save to storage and notify the app
-            chrome.storage.sync.get(["danmakuSettings"], (result) => {
-                const currentSettings = result.danmakuSettings || {};
-                const updatedSettings = { ...currentSettings, ...settings };
-                console.log("Updated settings:", updatedSettings);
-                saveSettings(updatedSettings);
-            });
+    
+            // Debounce logic: delay the execution of saving settings
+            clearTimeout(debounceTimer); // Clear the timer on every event
+    
+            debounceTimer = setTimeout(() => { // Set a new timer
+                const settings = {};
+                settings[settingKey] = parseInt(value);
+    
+                // Save to storage and notify the app
+                chrome.storage.sync.get(["danmakuSettings"], (result) => {
+                    const currentSettings = result.danmakuSettings || {};
+                    const updatedSettings = { ...currentSettings, ...settings };
+                    console.log("Updated settings:", updatedSettings);
+                    saveSettings(updatedSettings); // Save the settings
+                });
+            }, 250); // Wait 250ms after the last input event before executing
         });
     });
 

@@ -43,17 +43,7 @@ function App() {
         return;
       }
       const searchMatch = response.videosResult.data.result.find(section => section.result_type === "video").data;
-      // check if the numbers of video is 0 then check user login status
-      // if (searchMatch.length === 20) {
-      //   console.log('No match found');
-      //   checkLogin().then((isLoggedIn) => {
-      //     if (!isLoggedIn) {
-      //       console.log('User is not logged in2');
-      //       setSearchError(true);
-      //     }
-      //   });
-      //   return;
-      // }
+
       searchMatch.forEach((video) => {
         if (video.pic.startsWith('//'))
           video.pic = video.pic.replace('//', 'https://');
@@ -217,7 +207,21 @@ function App() {
     // };
 
     const handleNewUrl = (message, sender, sendResponse) => {
-      setShowMainControls(true); // when new url, return to main controls
+
+      // get the Danmaku Panel from chrome stoarge, if not exist, create a new one set default value(True)
+      chrome.storage.sync.get(['MainPanel'], function(result) {
+        console.log('Value currently is MMMMMMMainPanel: ' + result.MainPanel);
+        if (result.MainPanel === undefined) {
+          chrome.storage.sync.set({MainPanel: true}, function() {
+            console.log('Value is set to ' + true);
+          });
+        } else {
+          if (result.MainPanel === false) {
+            handleCloseIconClick();
+          }
+        }
+      });
+
       if (message.type === 'youtubeid') {
           if (message.vid === youtubeUrl) {
             return;
@@ -314,6 +318,10 @@ function App() {
     rootElement.style.maxHeight = '40px';
     rootElement.offsetHeight; // Trigger a reflow to enable transition
     setIsPopupOpen(false); // close popup page
+    // update chrome storage to show main controls
+    chrome.storage.sync.set({MainPanel: false}, function() {
+      console.log('Value is set to ' + false);
+    });
   };
 
   const handleLogoClick = () => {
@@ -321,6 +329,10 @@ function App() {
     setIsPopupOpen(true); // return to popup page
     rootElement.style.height = '600px';
     rootElement.style.maxHeight = '600px';
+    // update chrome storage to show main controls
+    chrome.storage.sync.set({MainPanel: true}, function() {
+      console.log('Value is set to ' + true);
+    });
   };
 
   const [bestMatchVideoExpanded, setBestMatchVideoExpanded] = useState(true);
