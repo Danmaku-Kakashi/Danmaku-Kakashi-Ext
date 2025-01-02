@@ -18,7 +18,11 @@ English | [简体中文](README.zh.md)
 
 ##### How to install
 
-- You can install Danmaku Kakashi from the Chrome Web Store (coming soon)
+- You can install Danmaku Kakashi from the Chrome Web Store (Recommended)
+
+    [![Chrome Web Store](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/UV4C4ybeBTsZt43U4xis.png)](https://chromewebstore.google.com/detail/danmaku-kakashi/kjmomkcbphcpellfhcokdkifgdggkhjg)
+
+
 
 - You can also install Danmaku Kakashi manually by following the steps below:
 
