@@ -1,5 +1,5 @@
 // import { useTranslation } from 'react-i18next';
-const init_settings = { "displayArea": 100, "clearness": 100, "fontSize": 100, "speed": 50 };
+const init_settings = { "displayArea": 100, "opacity": 100, "fontSize": 100, "speed": 50 };
 function createDanmakuPanel() {
 
     // const { t } = useTranslation();
@@ -158,10 +158,10 @@ function createDanmakuPanel() {
         <span class="slider-value">全屏</span>
       </div>
   
-      <!-- clearness (0~100%) -->
+      <!-- opacity (0~100%) -->
       <div class="slider-group">
         <span class="slider-label">透明度</span>
-        <input type="range" min="0" max="100" value="100" class="danmu-slider" id="clearness" />
+        <input type="range" min="0" max="100" value="100" class="danmu-slider" id="opacity" />
         <span class="slider-value">100%</span>
       </div>
   
