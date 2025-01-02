@@ -1,7 +1,11 @@
 import React from "react";
 import {BilibiliFormat, CommentManager, CommentProvider} from "./CommentCoreLibrary";
 
+const defaultSettings = { "displayArea": 100, "opacity": 100, "fontSize": 100, "speed": 50 };
+
 class Danmaku extends React.Component {
+    settings = defaultSettings;
+
     resetDanmakus = () => {
         this.commentManager.clear();
         this.commentProvider.destroy();
@@ -9,20 +13,37 @@ class Danmaku extends React.Component {
         console.log("Danmakus reset");
     }
 
+    getSetting(key) {
+        return this.settings.danmakuSettings[key] || defaultSettings[key];
+    }
+
     initCCL = () => {
+        console.log("Initializing CCL");
+
+        console.log("Settings: ", this.settings);
+
         // Set up comment manager
         const danmakuCanvas = document.getElementById("danmaku-canvas");
+        console.log("Creating comment manager, canvas:", danmakuCanvas);
         this.commentManager = new CommentManager(danmakuCanvas);
         this.commentManager.init();
-        this.commentManager.options.global.opacity = 0.8;
-        this.commentManager.options.global.scale = 1.3;
-        this.commentManager.options.scroll.opacity = 0.8;
-        this.commentManager.options.scroll.scale = 1.3;
+        this.setCCLSettings();
+        console.log("Comment manager options", this.commentManager.options);
+
         this.commentManager.start();
 
         console.log("Comment manager initialized");
 
         this.initCommentProvider();
+    }
+
+    setCCLSettings = () => {
+        this.commentManager.options.global.opacity = this.getSetting("opacity") / 100;
+        this.commentManager.options.global.scale = 1.3 * ((100 - this.getSetting("speed")) / 50);
+        this.commentManager.options.global.fontScale = this.getSetting("fontSize") / 100;
+        this.commentManager.options.scroll.opacity = this.getSetting("opacity") / 100;
+        this.commentManager.options.scroll.scale = 1.3 * ((100 - this.getSetting("speed")) / 50);
+        this.commentManager.options.scroll.fontScale = this.getSetting("fontSize") / 100;
     }
 
     initCommentProvider = () => {
@@ -35,6 +56,18 @@ class Danmaku extends React.Component {
         }).catch((err) => {
             console.error(err);
             console.log("Comment provider failed to load");
+        });
+    }
+
+    registerSettingsListener = () => {
+        chrome.storage.onChanged.addListener((changes, namespace) => {
+            for (let key in changes) {
+                if (key === "danmakuSettings") {
+                    console.log("Danmaku settings changed: ", changes[key].newValue);
+                    this.settings[key] = changes[key].newValue;
+                    this.setCCLSettings();
+                }
+            }
         });
     }
 
@@ -101,6 +134,7 @@ class Danmaku extends React.Component {
         this.commentManager.stage.style.width = relWidth + "px";
         this.commentManager.stage.style.height = relHeight + "px";
         this.commentManager.stage.style.transform = "scale(" + scale + ")";
+        this.commentManager.stage.style.webkitFontSmoothing = "subpixel-antialiased";   // Set webkit font smoothing for better text rendering
 
         this.commentManager.setBounds(relWidth, relHeight);
     }
@@ -142,9 +176,9 @@ class Danmaku extends React.Component {
         this.mutationObserver = null;
     }
 
-    componentDidMount() {
-        const danmakuCanvas = document.getElementById("danmaku-canvas");
-        console.log("Creating comment manager");
+    async componentDidMount() {
+        this.settings = await chrome.storage.sync.get("danmakuSettings") || defaultSettings;
+        this.registerSettingsListener();
 
         this.initCCL();
         this.createVideoListeners();

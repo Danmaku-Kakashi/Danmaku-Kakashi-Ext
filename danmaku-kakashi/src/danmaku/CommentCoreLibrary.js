@@ -112,11 +112,13 @@ var CommentManager = (function () {
             global: {
                 opacity: 1,
                 scale: 1,
+                fontScale: 1,
                 className: "cmt"
             },
             scroll: {
                 opacity: 1,
-                scale: 1
+                scale: 1,
+                fontScale: 1
             },
             limit: 0,
             seekTrigger: 2000
@@ -431,6 +433,7 @@ var CoreComment = (function () {
         }
         this.dur *= this.parent.options.global.scale;
         this.ttl *= this.parent.options.global.scale;
+        this._size *= this.parent.options.global.fontScale;
         if (init.hasOwnProperty('text')) {
             this.text = init['text'];
         }
@@ -849,6 +852,7 @@ var ScrollComment = (function (_super) {
         var _this = _super.call(this, parent, data) || this;
         _this.dur *= _this.parent.options.scroll.scale;
         _this.ttl *= _this.parent.options.scroll.scale;
+        _this._size *= _this.parent.options.scroll.fontScale;
         return _this;
     }
     Object.defineProperty(ScrollComment.prototype, "alpha", {
