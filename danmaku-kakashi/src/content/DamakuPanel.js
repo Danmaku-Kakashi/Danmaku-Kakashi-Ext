@@ -322,6 +322,12 @@ function createDanmakuPanel() {
             currentOffset += val;
             updateOffsetDisplay();
             timeAdjustInput.value = "";
+
+            // Change the offset in the app
+            const danmakuOffsetElement = document.getElementById("danmaku-offset");
+            if (danmakuOffsetElement) {
+                danmakuOffsetElement.textContent = currentOffset;
+            }
         }
     });
 

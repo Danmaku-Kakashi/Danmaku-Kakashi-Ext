@@ -5,6 +5,7 @@ const defaultSettings = { "displayArea": 100, "opacity": 100, "fontSize": 100, "
 
 class Danmaku extends React.Component {
     settings = defaultSettings;
+    offset = 0;
 
     resetDanmakus = () => {
         this.commentManager.clear();
@@ -84,7 +85,7 @@ class Danmaku extends React.Component {
         videoPlayer.addEventListener("seeking", () => {
             console.log("Video seeking");
             this.commentManager.clear();
-            this.commentManager.time(videoPlayer.currentTime * 1000);
+            this.commentManager.time(videoPlayer.currentTime * 1000 + this.offset * 1000);
         });
         videoPlayer.addEventListener("timeupdate", () => {
             console.log("Video timeupdate");
@@ -95,7 +96,7 @@ class Danmaku extends React.Component {
                     return;
                 }
             }
-            this.commentManager.time(videoPlayer.currentTime * 1000);
+            this.commentManager.time(videoPlayer.currentTime * 1000 + this.offset * 1000);
         });
         if (!this.mutationObserver) {
             console.log("Creating mutation observer");
@@ -189,6 +190,16 @@ class Danmaku extends React.Component {
         window.addDanmakuSource = this.addDanmakuSource;
         window.toggleDanmakuVisibility = this.toggleDanmakuVisibility;
         console.log("Danmaku component mounted");
+
+        // Add listener for offset changes
+        const offsetElement = document.getElementById("danmaku-offset");
+        const offsetObserver = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                this.offset = parseInt(offsetElement.textContent, 10);
+                console.log("Offset changed: ", this.offset);
+            });
+        });
+        offsetObserver.observe(offsetElement, {childList: true});
     }
 
     componentDidUpdate() {
@@ -203,7 +214,10 @@ class Danmaku extends React.Component {
         console.log("Danmaku render");
 
         return (
-            <div id="danmaku-canvas" className={`container`} />
+            <>
+                <div id="danmaku-canvas" className={`container`} />
+                <div id="danmaku-offset" style={{display: "none"}} />
+            </>
         );
     }
 }
