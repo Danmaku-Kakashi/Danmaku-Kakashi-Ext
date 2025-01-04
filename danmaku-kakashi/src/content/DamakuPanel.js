@@ -1,5 +1,5 @@
 // import { useTranslation } from 'react-i18next';
-const init_settings = { "displayArea": 100, "opacity": 100, "fontSize": 100, "speed": 50 };
+const init_settings = { "maxDanmakuAmount": 100, "opacity": 100, "fontSize": 100, "speed": 50 };
 function createDanmakuPanel() {
 
     // const { t } = useTranslation();
@@ -138,24 +138,24 @@ function createDanmakuPanel() {
   
       <!-- display area 25, 50, 75, 100 -->
       <div class="slider-group">
-        <span class="slider-label">显示区域</span>
+        <span class="slider-label">最大数量</span>
         <input 
-          id="displayArea"
+          id="maxDanmakuAmount"
           type="range" 
           min="0" 
           max="100" 
           step="25"
           value="100" 
-          list="displayAreaList"
+          list="maxDanmakuAmount"
           class="danmu-slider" 
         />
-        <datalist id="displayAreaList">
-          <option value="25"  label="25%"></option>
-          <option value="50"  label="50%"></option>
-          <option value="75"  label="75%"></option>
-          <option value="100" label="全屏"></option>
+        <datalist id="maxDanmakuAmount">
+          <option value="25"  label="10"></option>
+          <option value="50"  label="50"></option>
+          <option value="75"  label="100"></option>
+          <option value="100" label="-1"></option>
         </datalist>
-        <span class="slider-value">全屏</span>
+        <span class="slider-value">无限制</span>
       </div>
   
       <!-- opacity (0~100%) -->
@@ -232,11 +232,12 @@ function createDanmakuPanel() {
             // console.log("Init Settings key & value:", settingKey, value);
 
             // Update UI display
-            if (settingKey === "displayArea") {
-                if (value == 100) {
-                    slider.nextElementSibling.nextElementSibling.textContent = "全屏";
+            if (settingKey === "maxDanmakuAmount") {
+                const displayValue = translateMaxDanmakuAmount(value);
+                if (displayValue == -1) {
+                    slider.nextElementSibling.nextElementSibling.textContent = "无限制";
                 } else {
-                    slider.nextElementSibling.nextElementSibling.textContent = value + "%";
+                    slider.nextElementSibling.nextElementSibling.textContent = displayValue;
                 }
             } else {
                 slider.nextElementSibling.textContent = value + "%";
@@ -281,11 +282,12 @@ function createDanmakuPanel() {
             const settingKey = slider.id;
     
             // Update UI display immediately
-            if (settingKey === "displayArea") {
-                if (value == 100) {
-                    slider.nextElementSibling.nextElementSibling.textContent = "全屏";
+            if (settingKey === "maxDanmakuAmount") {
+                const displayValue = translateMaxDanmakuAmount(value);
+                if (displayValue == -1) {
+                    slider.nextElementSibling.nextElementSibling.textContent = "无限制";
                 } else {
-                    slider.nextElementSibling.nextElementSibling.textContent = value + "%";
+                    slider.nextElementSibling.nextElementSibling.textContent = displayValue;
                 }
             } else {
                 slider.nextElementSibling.textContent = value + "%";
@@ -373,6 +375,20 @@ function appendDanmakuControl(youtubeRightControls, DanmuBtn) {
     youtubeRightControls.prepend(parentWrapper);
 
     return DanmuPanel;
+}
+
+function translateMaxDanmakuAmount(value) {
+    if (value == 100) {
+        return -1;
+    } else if (value == 75) {
+        return 100;
+    } else if (value == 50) {  
+        return 50;
+    } else if (value == 25) {
+        return 10;
+    } else if (value == 0) {
+        return 0;
+    }
 }
   
 export default appendDanmakuControl;
