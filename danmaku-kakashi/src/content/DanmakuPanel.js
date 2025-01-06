@@ -258,6 +258,7 @@ function appendDanmakuControl(youtubeRightControls, DanmuBtn) {
 
     const DanmuPan = document.createElement("div");
     DanmuPan.id = "DanmuPanel";
+    DanmuPan.style.display = "none";
 
     const DanmuPanelRoot = ReactDOM.createRoot(DanmuPan);
     DanmuPanelRoot.render(
