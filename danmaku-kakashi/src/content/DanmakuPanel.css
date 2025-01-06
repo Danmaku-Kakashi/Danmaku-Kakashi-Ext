@@ -1,0 +1,124 @@
+.danmu-panel {
+    /* hide by default
+    display: none; */
+
+    position: absolute;
+
+    width: 240px;
+    padding: 0px 8px; 
+    line-height: 35px !important;
+
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 4px;
+    z-index: 9999;  /* make sure it's on top of everything */
+    font-family: "Microsoft YaHei", sans-serif;
+}
+
+.danmu-panel h3 {
+    margin: 2px 0 !important;
+    font-size: 14px;
+}
+
+.slider-group {
+    margin: 2px 0 !important;
+    display: flex;
+    align-items: center;
+}
+
+.slider-label {
+    flex: 0 0 60px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.danmu-slider {
+    flex: 1;    
+}
+
+.slider-value {
+    width: 40px;
+    text-align: center;
+    margin-left: 6px;
+    font-size: 13px;
+}
+.danmu-slider[type=range] {
+    -webkit-appearance: none; /* remove default style */
+    height: 4px;
+    background: #555;
+    border-radius: 2px;
+    outline: none;
+}
+
+.danmu-slider[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 65, 49);
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -3px; 
+}
+
+
+/* time adjust section */
+.time-adjust-section {
+    margin-top: 10px;
+    border-top: 1px solid #555;
+    padding-top: 8px;
+}
+/* Title area, left is the title, right is the current offset */
+.time-adjust-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+.time-adjust-header h4 {
+    margin: 0;
+    font-size: 13px;
+}
+.time-current-offset {
+    font-size: 13px;
+}
+
+/* 输入+按钮 行 */
+.time-adjust-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px; 
+    width: 100%;
+}
+.time-adjust-input {
+    flex: 0 0 auto; 
+    width: 120px; 
+    padding: 4px 6px;
+    margin-right: 4px; 
+    border-radius: 3px;
+    border: 1px solid #666;
+    background: #222;
+    color: #fff;
+}
+.time-apply-button,
+.time-clear-button {
+    padding: 2px 6px; 
+    margin-right: 4px; 
+    background: #444;
+    color: #fff;
+    border: 1px solid #666;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px; 
+    min-width: 50px; 
+}
+/* leave space for the clear button */
+.time-clear-button {
+    margin-right: 0;
+}
+
+/* invalid input warning */
+.time-adjust-warning {
+    font-size: 12px;
+    color: #ff4f4f;
+    display: none; 
+}

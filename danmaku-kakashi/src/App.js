@@ -11,7 +11,7 @@ import CustomizedInputBase from './content/searchBar.js';
 import Modal from './content/Modal.js';
 import VideoBox from './content/VideoBox.js';
 import UserInfo from './content/UserInfo.js';
-import appendDanmakuControl from './content/DamakuPanel.js';
+import appendDanmakuControl from './content/DanmakuPanel.js';
 
 const darkTheme = createTheme({
   palette: {
