@@ -18,7 +18,18 @@
     "Best Show": "▼ 显示最佳匹配的视频 ▼",
     "Bilibili Login": "去登录 B 站",
     "Bilibili Not Login": "由于 API 限制，请登录 B 站以搜索视频 ",
-    "Danmaku Settings": "弹幕设置"
+    "Danmaku Settings": "弹幕设置",
+    "Max Danmaku Count": "最大数量",
+    "Unimited": "无限制",
+    "Opacity": "透明度",
+    "Font Size": "字体大小",
+    "Speed": "速度",
+    "Danmaku time offset": "插入时间调整",
+    "Current offset": "当前偏移: ",
+    "Offset placeholder": "i.e. \"-1\" -> 往前1秒",
+    "Apply": "应用",
+    "Clear": "清除",
+    "Invalid Input": "**无效输入**"
 
 
 }

@@ -18,6 +18,17 @@
     "Best Show": "▼ Open Best Match Videos List ▼",
     "Bilibili Login": "Login to Bilibili",
     "Bilibili Not Login": "Due to API restrictions, please login on Bilibili to search for videos ",
-    "Danmaku Settings": "Danmaku Settings"
+    "Danmaku Settings": "Danmaku Settings",
+    "Max Danmaku Count": "Max Count",
+    "Unimited": "Unimited",
+    "opacity": "Opacity",
+    "Font Size": "Font Size",
+    "Speed": "Speed",
+    "Danmaku time offset": "Time Adjustment",
+    "Current offset": "Current offset: ",
+    "Offset placeholder": "i.e. \"-1\" -> 1 second earlier",
+    "Apply": "Apply",
+    "Clear": "Clear",
+    "Invalid Input": "**Invalid Input**"
 
 }

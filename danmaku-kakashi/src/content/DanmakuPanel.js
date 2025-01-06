@@ -59,7 +59,7 @@ const init_settings = {
         displayValue = translateMaxDanmakuAmount(value);
         // If unlimited, display as such
         if (displayValue === -1) {
-          displayValue = '无限制';
+          displayValue = t('Unlimited');
         } else {
           displayValue = displayValue;
         }
@@ -143,11 +143,11 @@ const init_settings = {
     return (
       <div className="danmu-panel" id="DanmuControlPanel">
   
-        <h3>弹幕设置</h3>
+        <h3>{t('Danmaku Settings')}</h3>
   
         {/* Max Danmaku Amount */}
         <div className="slider-group">
-          <span className="slider-label">最大数量</span>
+          <span className="slider-label">{t('Max Danmaku Count')}</span>
           <input
             id="maxDanmakuAmount"
             type="range"
@@ -168,14 +168,14 @@ const init_settings = {
           </datalist>
           <span className="slider-value">
             {translateMaxDanmakuAmount(settings.maxDanmakuAmount) === -1
-              ? '无限制'
+              ? t('Unlimited')
               : translateMaxDanmakuAmount(settings.maxDanmakuAmount)}
           </span>
         </div>
   
         {/* Opacity */}
         <div className="slider-group">
-          <span className="slider-label">透明度</span>
+          <span className="slider-label">{t('Opacity')}</span>
           <input
             type="range"
             min="0"
@@ -190,7 +190,7 @@ const init_settings = {
   
         {/* Font Size */}
         <div className="slider-group">
-          <span className="slider-label">字号</span>
+          <span className="slider-label">{t('Font Size')}</span>
           <input
             type="range"
             min="50"
@@ -205,7 +205,7 @@ const init_settings = {
   
         {/* Speed */}
         <div className="slider-group">
-          <span className="slider-label">速度</span>
+          <span className="slider-label">{t('Speed')}</span>
           <input
             type="range"
             min="1"
@@ -221,9 +221,9 @@ const init_settings = {
         {/* Time Adjust Section */}
         <div className="time-adjust-section">
           <div className="time-adjust-header">
-            <h4>插入时间调整</h4>
+            <h4>{t('Danmaku time offset')}</h4>
             <div className="time-current-offset">
-              当前偏移: {currentOffset >= 0 ? '+' : ''}
+              {t('Current offset')} {currentOffset >= 0 ? '+' : ''}
               {currentOffset.toFixed(1)}s
             </div>
           </div>
@@ -232,19 +232,19 @@ const init_settings = {
             <input
               type="text"
               className="time-adjust-input"
-              placeholder='i.e. "-1" -> 往前1秒'
+              placeholder={t('Offset placeholder')}
               value={timeAdjustInput}
               onChange={(e) => setTimeAdjustInput(e.target.value)}
               onKeyDown={handleTimeAdjustKeyDown}
             />
             <button className="time-apply-button" onClick={handleApplyTime}>
-              apply
+                {t('Apply')}
             </button>
             <button className="time-clear-button" onClick={handleClearTime}>
-              clear
+                {t('Clear')}
             </button>
           </div>
-          <div className="time-adjust-warning">**无效输入**</div>
+          <div className="time-adjust-warning">t{('Invalid Input')}</div>
         </div>
       </div>
     );
