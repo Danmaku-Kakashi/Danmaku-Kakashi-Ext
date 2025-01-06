@@ -142,18 +142,19 @@ function createDanmakuPanel() {
         <input 
           id="maxDanmakuAmount"
           type="range" 
-          min="0" 
-          max="100" 
-          step="25"
-          value="100" 
+          min="1" 
+          max="5" 
+          step="1"
+          value="5" 
           list="maxDanmakuAmount"
           class="danmu-slider" 
         />
         <datalist id="maxDanmakuAmount">
-          <option value="25"  label="10"></option>
-          <option value="50"  label="50"></option>
-          <option value="75"  label="100"></option>
-          <option value="100" label="-1"></option>
+          <option value="1"     label="5"></option>
+          <option value="2"     label="10"></option>
+          <option value="3"     label="50"></option>
+          <option value="4"     label="100"></option>
+          <option value="5"     label="10000"></option>
         </datalist>
         <span class="slider-value">无限制</span>
       </div>
@@ -378,16 +379,16 @@ function appendDanmakuControl(youtubeRightControls, DanmuBtn) {
 }
 
 function translateMaxDanmakuAmount(value) {
-    if (value == 100) {
+    if (value == 5) {
         return -1;
-    } else if (value == 75) {
+    } else if (value == 4) {
         return 100;
-    } else if (value == 50) {  
+    } else if (value == 3) {  
         return 50;
-    } else if (value == 25) {
+    } else if (value == 2) {
         return 10;
-    } else if (value == 0) {
-        return 0;
+    } else if (value == 1) {
+        return 5;
     }
 }
   

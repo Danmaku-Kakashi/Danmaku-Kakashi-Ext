@@ -1,7 +1,7 @@
 import React from "react";
 import {BilibiliFormat, CommentManager, CommentProvider} from "./CommentCoreLibrary";
 
-const defaultSettings = { "displayArea": 100, "opacity": 100, "fontSize": 100, "speed": 50 };
+const defaultSettings = { "maxDanmakuAmount": 100, "opacity": 100, "fontSize": 100, "speed": 50 };
 
 class Danmaku extends React.Component {
     settings = defaultSettings;
@@ -15,7 +15,11 @@ class Danmaku extends React.Component {
     }
 
     getSetting(key) {
-        return this.settings.danmakuSettings[key] || defaultSettings[key];
+        const result = this.settings.danmakuSettings[key] || defaultSettings[key];
+        if (key === "maxDanmakuAmount") {
+            return this.translateMaxDanmakuAmount(result);
+        }
+        return result;
     }
 
     initCCL = () => {
@@ -45,6 +49,7 @@ class Danmaku extends React.Component {
         this.commentManager.options.scroll.opacity = this.getSetting("opacity") / 100;
         this.commentManager.options.scroll.scale = 1.3 * ((100 - this.getSetting("speed")) / 50);
         this.commentManager.options.scroll.fontScale = this.getSetting("fontSize") / 100;
+        this.commentManager.options.limit = this.getSetting("maxDanmakuAmount");
     }
 
     initCommentProvider = () => {
@@ -75,20 +80,20 @@ class Danmaku extends React.Component {
     createVideoListeners = () => {
         const videoPlayer = document.getElementsByTagName("video")[0];
         videoPlayer.addEventListener("play", () => {
-            console.log("Video play");
+            // console.log("Video play");
             this.commentManager.start();
         });
         videoPlayer.addEventListener("pause", () => {
-            console.log("Video pause");
+            // console.log("Video pause");
             this.commentManager.stop();
         });
         videoPlayer.addEventListener("seeking", () => {
-            console.log("Video seeking");
+            // console.log("Video seeking");
             this.commentManager.clear();
             this.commentManager.time(videoPlayer.currentTime * 1000 + this.offset * 1000);
         });
         videoPlayer.addEventListener("timeupdate", () => {
-            console.log("Video timeupdate");
+            // console.log("Video timeupdate");
             let movie_player = document.getElementById('movie_player');
             if (movie_player) {
                 // Ignore timeupdate events when ads are playing
@@ -99,7 +104,7 @@ class Danmaku extends React.Component {
             this.commentManager.time(videoPlayer.currentTime * 1000 + this.offset * 1000);
         });
         if (!this.mutationObserver) {
-            console.log("Creating mutation observer");
+            // console.log("Creating mutation observer");
             this.mutationObserver = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
                     this.resizeDanmakuCanvas();
@@ -167,6 +172,20 @@ class Danmaku extends React.Component {
                 danmakuContainer.classList.add("hideDanmakus");
                 return false;
             }
+        }
+    }
+
+    translateMaxDanmakuAmount = (value) => {
+        if (value == 5) {
+            return -1;
+        } else if (value == 4) {
+            return 100;
+        } else if (value == 3) {  
+            return 50;
+        } else if (value == 2) {
+            return 10;
+        } else if (value == 1) {
+            return 5;
         }
     }
 
