@@ -273,9 +273,12 @@ a {
 }
 
 .danmu-panel {  
-  bottom: 90%;   
+  position: absolute;
+  bottom: calc(100% - 2px);
   left: 50%;
   transform: translateX(-50%);
+  z-index: 2147483647;
+  pointer-events: auto;
 }
 
 

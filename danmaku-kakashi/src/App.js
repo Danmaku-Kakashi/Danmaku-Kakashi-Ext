@@ -281,21 +281,6 @@ function App() {
 
           DanmuBtn.addEventListener("click", OpenDanmakuControlHandler);
   
-          // setup hover event
-          DanmuBtn.addEventListener("mouseenter", () => {
-            DanmuPanel.style.display = "block"; 
-          });
-          DanmuBtn.addEventListener("mouseleave", () => {
-            DanmuPanel.style.display = "none";
-          });
-
-          DanmuPanel.addEventListener("mouseenter", () => {
-            DanmuPanel.style.display = "block";
-          });
-          DanmuPanel.addEventListener("mouseleave", () => {
-            DanmuPanel.style.display = "none";
-          });
-  
         }
       }, 100); // check every 100ms
     }
