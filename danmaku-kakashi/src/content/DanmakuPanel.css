@@ -3,6 +3,9 @@
     display: none; */
 
     position: absolute;
+    bottom: calc(100% - 2px);
+    left: 50%;
+    transform: translateX(-50%);
 
     width: 240px;
     padding: 0px 24px; 
@@ -11,7 +14,8 @@
     background-color: rgba(0, 0, 0, 0.8);
     color: #fff;
     border-radius: 4px;
-    z-index: 9999;  /* make sure it's on top of everything */
+    z-index: 2147483647;  /* make sure it's on top of everything */
+    pointer-events: auto;
     font-family: "Microsoft YaHei", sans-serif;
 }
 

@@ -255,10 +255,24 @@ function appendDanmakuControl(youtubeRightControls, DanmuBtn) {
     const parentWrapper = document.createElement("div");
     parentWrapper.style.position = "relative";
     parentWrapper.style.display = "inline-block";
+    parentWrapper.style.overflow = "visible";
+    parentWrapper.style.zIndex = "2147483647";
+
+    // YouTube progress bar and control containers may create clipping/stacking contexts.
+    // Lift these containers so the panel can float above the timeline.
+    youtubeRightControls.style.overflow = "visible";
+    youtubeRightControls.style.zIndex = "2147483646";
+
+    const chromeBottom = youtubeRightControls.closest(".ytp-chrome-bottom");
+    if (chromeBottom) {
+      chromeBottom.style.overflow = "visible";
+      chromeBottom.style.zIndex = "2147483645";
+    }
 
     const DanmuPan = document.createElement("div");
     DanmuPan.id = "DanmuPanel";
     DanmuPan.style.display = "none";
+    DanmuPan.style.zIndex = "2147483647";
 
     const DanmuPanelRoot = ReactDOM.createRoot(DanmuPan);
     DanmuPanelRoot.render(
@@ -266,11 +280,45 @@ function appendDanmakuControl(youtubeRightControls, DanmuBtn) {
             <DanmuPanel />
         </>
     );
+
+    DanmuPan.style.display = "none";
+
+    let hideTimer = null;
+
+    const clearHideTimer = () => {
+      if (hideTimer) {
+        clearTimeout(hideTimer);
+        hideTimer = null;
+      }
+    };
+
+    const showPanel = () => {
+      clearHideTimer();
+      DanmuPan.style.display = "block";
+    };
+
+    const scheduleHidePanel = () => {
+      clearHideTimer();
+      hideTimer = setTimeout(() => {
+        DanmuPan.style.display = "none";
+      }, 120);
+    };
+
+    const markWrapperEnter = () => {
+      showPanel();
+    };
+
+    const markWrapperLeave = () => {
+      scheduleHidePanel();
+    };
+
+    parentWrapper.addEventListener("mouseenter", markWrapperEnter);
+    parentWrapper.addEventListener("mouseleave", markWrapperLeave);
   
     // add event listener to DanmuBtn to toggle the panel
     parentWrapper.appendChild(DanmuBtn);
     parentWrapper.appendChild(DanmuPan);
-  
+
     // append the wrapper to the right controls
     youtubeRightControls.prepend(parentWrapper);
 
