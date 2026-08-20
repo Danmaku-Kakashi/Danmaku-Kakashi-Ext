@@ -1,5 +1,5 @@
-import React from "react"
-import {useState} from 'react'
+import React, { useEffect, useState } from "react"
+import { createPortal } from "react-dom";
 import { useTranslation } from 'react-i18next';
 import './App.css';
 import IconButton from '@mui/material/IconButton';
@@ -11,15 +11,31 @@ import Spinner from '@mui/material/CircularProgress';
 const Modal = ({ show, onClose, children, arcurl, onLoadDanmakus, pic, title}) => {
   const { t } = useTranslation();
   const [thumb, setThumbnail] = useState('');
+
+  useEffect(() => {
+    if (!show || !pic) {
+      setThumbnail('');
+      return;
+    }
+
+    let isMounted = true;
+    chrome.runtime.sendMessage({ type: 'GET_THUMBNAIL', url: pic }, (response) => {
+      if (!isMounted) {
+        return;
+      }
+      setThumbnail(response?.thumbnail || '');
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [show, pic]);
   
   if (!show) {
     return null;
   }
-  chrome.runtime.sendMessage({ type: 'GET_THUMBNAIL', url: pic }, (response) => {
-    setThumbnail(response.thumbnail);
-  });
 
-  return (
+  const modalBody = (
     <div className="modal-backdrop">
       <div className="modal-content">
         <IconButton 
@@ -53,6 +69,8 @@ const Modal = ({ show, onClose, children, arcurl, onLoadDanmakus, pic, title}) =
       </div>
     </div>
   );
+
+  return createPortal(modalBody, document.body);
 }
 
 export default Modal;
